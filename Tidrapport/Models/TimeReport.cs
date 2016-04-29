@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
+
+namespace Tidrapport.Models
+{
+	public enum Status
+	{
+		Draft = 1,
+		Submitted = 2,
+		Approved = 3, 
+        Returned = 4
+	}
+
+	public class TimeReport
+	{
+		[Key]
+		public int UserId { get; set; }
+
+		[Key]
+		[DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:YY-MM-DD}", 
+			           ApplyFormatInEditMode = true)]
+        [Display(Name = "Datum")]
+		public DateTime Date { get; set; }
+		
+        [Key]
+		public int ActivityId { get; set; }
+        
+        [Display(Name="Antal Timmar")]
+		public double NumberOfHours { get; set; }
+		
+        public Status Status{ get; set; }
+
+        [Display(Name = "Inskickad av")]
+        public string SubmittedBy { get; set; }
+
+        [Display(Name = "Inskickad tid")]
+        public DateTime SubmittedTimeStamp { get; set; }
+
+        [Display(Name = "Godkänd av")]
+        public string ApprovedBy { get; set; }
+
+        [Display(Name = "Godkänd tid")]       
+        public DateTime ApprovedTimeStamp { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual Employee Employee { get; set; }
+
+        [ForeignKey("ActivityId")]
+        public virtual Activity Activity { get; set; }
+	}
+}
