@@ -1,0 +1,90 @@
+﻿@model Tidrapport.Models.TimeReport
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TimeReport</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Activity.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Activity.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.SSN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.SSN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmittedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubmittedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmittedTimeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubmittedTimeStamp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovedTimeStamp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovedTimeStamp)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
