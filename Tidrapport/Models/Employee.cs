@@ -10,7 +10,8 @@ namespace Tidrapport.Models
 	public class Employee
 	{
 		[Key]
-		public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+		public int EmployeeId { get; set; }
 
         [Display(Name="Personnr")]
 		public string SSN { get; set; }

@@ -10,9 +10,8 @@ namespace Tidrapport.Models
 	public class Project
 	{
 		[Key]
-		public int Id { get; set; }
+		public int ProjectId { get; set; }
 
-		[MaxLength(128)]
 		[Display(Name="Projekt nr")]
 		public string Number { get; set; }
 
@@ -21,10 +20,12 @@ namespace Tidrapport.Models
         public string Name { get; set; }
 
         [Display(Name = "Startdatum")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         
         [Display(Name = "Slutdatum")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
+        public int CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]
         public virtual Customer Customer { get; set; }

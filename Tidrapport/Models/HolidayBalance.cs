@@ -10,15 +10,23 @@ namespace Tidrapport.Models
     public class HolidayBalance
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
-        [Key]
-        public string Period { get; set; }
+        [Display(Name = "Giltig från")]
+        public DateTime ValidFrom { get; set; }
+
+        [Display(Name = "Giltig till")]
+        public DateTime ValidTo { get; set; }
         
         [Display(Name="Betald semester")]
-        public double PayedHolidayBalance { get; set; }
+        public int PayedHolidayBalance { get; set; }
         
         [Display(Name="Obetald semester")]
-        public double UnPayedHolidayBalance { get; set; }
+        public int UnPayedHolidayBalance { get; set; }
+
+        public int EmployeeId { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public virtual Employee Employee { get; set; }
     }
 }

@@ -29,5 +29,23 @@ namespace Tidrapport.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.Customer> Customers { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.Employee> Employees { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.Project> Projects { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.Activity> Activities { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.NationalHolidayBalance> NationalHolidayBalances { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.HolidayBalance> HolidayBalances { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.ProjectEmployee> ProjectEmployees { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.TimeReport> TimeReports { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.TimeReportTemplate> TimeReportTemplates { get; set; }
     }
 }

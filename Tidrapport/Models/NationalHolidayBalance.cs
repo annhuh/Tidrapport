@@ -10,12 +10,20 @@ namespace Tidrapport.Models
     public class NationalHolidayBalance
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
-        [Key]
-        public string Period { get; set; }
+        [Display(Name = "Giltig från")]
+        public DateTime ValidFrom { get; set; }
 
-        [Display(Name = "Saldo")]
+        [Display(Name = "Giltig till")]
+        public DateTime ValidTo { get; set; }
+            
+        [Display(Name="Saldo")]
         public double Balance { get; set; }
+
+        public int EmployeeId { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public virtual Employee Employee { get; set; }
     }
 }

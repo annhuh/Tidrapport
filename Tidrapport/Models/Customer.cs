@@ -10,7 +10,7 @@ namespace Tidrapport.Models
 	public class Customer
 	{
 		[Key]
-		public int Id { get; set; }
+		public int CustomerId { get; set; }
 
 		[Display(Name = "Organisations nr")]
 		public string OrgRegNo { get; set; }

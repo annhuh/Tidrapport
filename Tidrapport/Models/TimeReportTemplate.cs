@@ -7,24 +7,26 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-    public class Template
+    public class TimeReportTemplate
 	{
 		[Key]
-		public int UserId { get; set; }
+		public int Id { get; set; }
 
-        [Key]
 		public DayOfWeek DayOfWeek { get; set; }
-
-		[Key]
-		public int ActivityId { get; set; }
 
         [Display(Name = "Antal timmar")]
 		public double NumberOfHours { get; set; }
 
-        [ForeignKey("UserId")]
+        [Required]
+        public int EmployeeId { get; set; }
+
+        [Required]
+        public int ActivityId { get; set; }
+
+        [ForeignKey("EmployeeId"), Column(Order = 1)]
         public virtual Employee Employee { get; set; }
 
-        [ForeignKey("ActivityId")]
+        [ForeignKey("ActivityId"), Column(Order = 2)]
         public virtual Activity Activity { get; set; }
 	}
 }

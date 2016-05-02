@@ -18,17 +18,13 @@ namespace Tidrapport.Models
 	public class TimeReport
 	{
 		[Key]
-		public int UserId { get; set; }
+		public int Id { get; set; }
 
-		[Key]
 		[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:YY-MM-DD}", 
 			           ApplyFormatInEditMode = true)]
         [Display(Name = "Datum")]
 		public DateTime Date { get; set; }
-		
-        [Key]
-		public int ActivityId { get; set; }
         
         [Display(Name="Antal Timmar")]
 		public double NumberOfHours { get; set; }
@@ -39,16 +35,20 @@ namespace Tidrapport.Models
         public string SubmittedBy { get; set; }
 
         [Display(Name = "Inskickad tid")]
-        public DateTime SubmittedTimeStamp { get; set; }
+        public DateTime? SubmittedTimeStamp { get; set; }
 
         [Display(Name = "Godkänd av")]
         public string ApprovedBy { get; set; }
 
         [Display(Name = "Godkänd tid")]       
-        public DateTime ApprovedTimeStamp { get; set; }
+        public DateTime? ApprovedTimeStamp { get; set; }
 
-        [ForeignKey("UserId")]
+        public int EmployeeId { get; set; }
+
+        [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
+
+        public int ActivityId { get; set; }
 
         [ForeignKey("ActivityId")]
         public virtual Activity Activity { get; set; }

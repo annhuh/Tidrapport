@@ -7,6 +7,17 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
+    public enum BalanceEffect {
+        NoEffect = 0,
+        Flex = 1, 
+        Overtime1 = 2, 
+        Overtime2 = 3,
+        PayedHoliday = 4,
+        UnpayedHoliday = 5,
+        SavedHolidays = 6,
+        NationalHoliday = 7
+    }
+
 	public class Activity
 	{
 		[Key]
@@ -19,6 +30,8 @@ namespace Tidrapport.Models
         public bool IsActive { get; set; }
         
         public int ProjectId { get; set; }
+
+        public BalanceEffect BalanceEffect { get; set; } 
 		
         [ForeignKey("ProjectId")]
 		public virtual Project Project { get; set; }
