@@ -20,6 +20,9 @@ namespace Tidrapport.Models
 		[Key]
 		public int Id { get; set; }
 
+        [Display(Name = "Vecka")]
+        public string YearWeek { get; set; }
+        
 		[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:YY-MM-DD}", 
 			           ApplyFormatInEditMode = true)]
