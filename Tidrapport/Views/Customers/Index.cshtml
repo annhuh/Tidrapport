@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Tidrapport.Models.Customer>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Kund";
 }
 
 <h2>Index</h2>
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CustomerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerId })
         </td>
     </tr>
 }
