@@ -49,7 +49,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Period,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalance holidayBalance)
+        public async Task<ActionResult> Create([Bind(Include = "Id,ValidFrom,ValidTo,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalance holidayBalance)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Period,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalance holidayBalance)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ValidFrom,ValidTo,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalance holidayBalance)
         {
             if (ModelState.IsValid)
             {

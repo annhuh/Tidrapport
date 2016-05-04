@@ -47,7 +47,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,OrgRegNo,Name")] Customer customer)
+        public async Task<ActionResult> Create([Bind(Include = "CustomerId,OrgRegNo,Name")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,OrgRegNo,Name")] Customer customer)
+        public async Task<ActionResult> Edit([Bind(Include = "CustomerId,OrgRegNo,Name")] Customer customer)
         {
             if (ModelState.IsValid)
             {

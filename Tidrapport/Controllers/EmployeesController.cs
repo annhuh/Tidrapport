@@ -22,7 +22,7 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Employees/Details/5
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -60,7 +60,7 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Employees/Edit/5
-        public async Task<ActionResult> Edit(string id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -91,7 +91,7 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Employees/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -108,7 +108,7 @@ namespace Tidrapport.Controllers
         // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Employee employee = await db.Employees.FindAsync(id);
             db.Employees.Remove(employee);
