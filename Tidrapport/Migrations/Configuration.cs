@@ -156,7 +156,7 @@ namespace Tidrapport.Migrations
                     new Company {OrgRegNo = "16111111-2222", Name = "Company 2"},
                     new Company {OrgRegNo = "16222222-3333", Name = "Company 3"}
                 };
-                
+
                 companies.ForEach(company => context.Companies.AddOrUpdate(company));
 
                 context.SaveChanges();
@@ -168,19 +168,88 @@ namespace Tidrapport.Migrations
             // ----------------------------------------------------------------------------------------------
             #region Employee
 
+           // var userStore = new UserStore<ApplicationUser>(context);
+           // var userManager = new UserManager<ApplicationUser>(userStore);
+
+           //Employee e = new Employee
+           // {
+           //     EmployeeId = 1,
+           //     SSN = "19700101-1111",
+           //     FirstName = "Anna",
+           //     LastName = "Andersson",
+           //     Address = "AGatan 1",
+           //     EmployedFrom = new DateTime(2016, 1, 1),
+           //     EmployedTo = new DateTime(2016, 1, 31),
+           //     NormalWeekHours = 40.0,
+           //     NumberOfHolidaysPerYear = 25,
+           //     ZipCode = "11111",
+           //     City = "Astad",
+           //     Country = "Alabanien",
+           //     FlexBalance = 0.0,
+           //     OverTimeBalance1 = 0.0,
+           //     OverTimeBalance2 = 0.0,
+           //     OverTimeBalance3 = 0.0,
+           //     SavedHolidays = 1,
+           //     CompanyId = 1
+           // };
+
+           // context.Employees.AddOrUpdate(e);
+           // context.SaveChanges();
+
             if (!context.Employees.Any())
             {
                 var employees = new System.Collections.Generic.List<Employee>                          
                 {                            
-                    new Employee { EmployeeId = 1, SSN = "19700101-1111", FirstName = "Anna", LastName = "Andersson", Address = "AGatan 1", EmployedFrom = new DateTime(2016-01-01), 
-                        NormalWeekHours = 40, NumberOfHolidaysPerYear = 25,
-                        ZipCode = "11111", City = "Astad", Country  = "Alabanien", FlexBalance = 0.0, OverTimeBalance1 = 0.0, OverTimeBalance2 = 0.0, OverTimeBalance3 = 0.0, SavedHolidays = 1, CompanyId = 1 },
-                    new Employee { EmployeeId = 2, SSN = "19700202-2222", FirstName = "Björn", LastName = "Björnsson", Address = "BGatan 1", EmployedFrom = new DateTime(2016-01-02), 
-                        NormalWeekHours = 40, NumberOfHolidaysPerYear = 28,  
-                        ZipCode = "22222", City = "Bstad", Country  = "Belgien", FlexBalance = 2.0, OverTimeBalance1 = 0.0, OverTimeBalance2 = 0.0, OverTimeBalance3 = 0.0, SavedHolidays = 2, CompanyId = 1  },                     
-                    new Employee { EmployeeId = 3, SSN = "19700303-3333", FirstName = "Cilla", LastName = "Carlsson", Address = "CGatan 1", EmployedFrom = new DateTime(2016-01-03), 
-                        NormalWeekHours = 40, NumberOfHolidaysPerYear = 30,
-                        ZipCode = "33333", City = "Cstad", Country  = "Cypern", FlexBalance = 33.0, OverTimeBalance1 = 0.0, OverTimeBalance2 = 0.0, OverTimeBalance3 = 0.0, SavedHolidays = 3, CompanyId = 2  }
+                    new Employee { 
+                        EmployeeId = 1, 
+                        SSN = "19700101-1111", 
+                        FirstName = "Anna", 
+                        LastName = "Andersson", 
+                        Address = "AGatan 1", 
+                        EmployedFrom = new DateTime(2016, 1, 1), 
+                        NormalWeekHours = 40.0, 
+                        NumberOfHolidaysPerYear = 25,
+                        ZipCode = "11111", City = "Astad", Country  = "Alabanien", 
+                        FlexBalance = 0.0, OverTimeBalance1 = 0.0, OverTimeBalance2 = 0.0, OverTimeBalance3 = 0.0, SavedHolidays = 1, 
+                        CompanyId = 1 },
+                    new Employee { 
+                        EmployeeId = 2, 
+                        SSN = "19700202-2222", 
+                        FirstName = "Björn", 
+                        LastName = "Björnsson", 
+                        Address = "BGatan 1", 
+                        EmployedFrom = new DateTime(2016, 1, 2), 
+                        NormalWeekHours = 40.0, 
+                        NumberOfHolidaysPerYear = 28,  
+                        ZipCode = "22222", 
+                        City = "Bstad", 
+                        Country  = "Belgien", 
+                        FlexBalance = 2.0, 
+                        OverTimeBalance1 = 0.0, 
+                        OverTimeBalance2 = 0.0, 
+                        OverTimeBalance3 = 0.0, 
+                        SavedHolidays = 2, 
+                        CompanyId = 1  
+                    },                     
+                    new Employee { 
+                        EmployeeId = 3, 
+                        SSN = "19700303-3333", 
+                        FirstName = "Cilla", 
+                        LastName = "Carlsson", 
+                        Address = "CGatan 1", 
+                        EmployedFrom = new DateTime(2016, 1, 3), 
+                        NormalWeekHours = 40.0, 
+                        NumberOfHolidaysPerYear = 30,
+                        ZipCode = "33333", 
+                        City = "Cstad", 
+                        Country  = "Cypern", 
+                        FlexBalance = 33.0, 
+                        OverTimeBalance1 = 0.0, 
+                        OverTimeBalance2 = 0.0, 
+                        OverTimeBalance3 = 0.0, 
+                        SavedHolidays = 3, 
+                        CompanyId = 2  
+                    }
                 };
 
                 employees.ForEach(employee => context.Employees.AddOrUpdate(employee));
