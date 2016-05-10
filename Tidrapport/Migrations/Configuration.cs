@@ -168,34 +168,6 @@ namespace Tidrapport.Migrations
             // ----------------------------------------------------------------------------------------------
             #region Employee
 
-           // var userStore = new UserStore<ApplicationUser>(context);
-           // var userManager = new UserManager<ApplicationUser>(userStore);
-
-           //Employee e = new Employee
-           // {
-           //     EmployeeId = 1,
-           //     SSN = "19700101-1111",
-           //     FirstName = "Anna",
-           //     LastName = "Andersson",
-           //     Address = "AGatan 1",
-           //     EmployedFrom = new DateTime(2016, 1, 1),
-           //     EmployedTo = new DateTime(2016, 1, 31),
-           //     NormalWeekHours = 40.0,
-           //     NumberOfHolidaysPerYear = 25,
-           //     ZipCode = "11111",
-           //     City = "Astad",
-           //     Country = "Alabanien",
-           //     FlexBalance = 0.0,
-           //     OverTimeBalance1 = 0.0,
-           //     OverTimeBalance2 = 0.0,
-           //     OverTimeBalance3 = 0.0,
-           //     SavedHolidays = 1,
-           //     CompanyId = 1
-           // };
-
-           // context.Employees.AddOrUpdate(e);
-           // context.SaveChanges();
-
             if (!context.Employees.Any())
             {
                 var employees = new System.Collections.Generic.List<Employee>                          
@@ -293,6 +265,26 @@ namespace Tidrapport.Migrations
                 };
 
                 nationalHolidayBalancePeriods.ForEach(nationalHolidayBalancePeriod => context.NationalHolidayBalancePeriods.AddOrUpdate(nationalHolidayBalancePeriod));
+
+                context.SaveChanges();
+            }
+            #endregion
+
+            // ----------------------------------------------------------------------------------------------
+            // OvertimeBalancePeriod
+            // ----------------------------------------------------------------------------------------------
+            #region OvertimeBalancePeriod
+
+            if (!context.OvertimeBalancePeriods.Any())
+            {
+                var overtimeBalancePeriods = new System.Collections.Generic.List<OvertimeBalancePeriod>
+                {
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 2.0, OverTimeBalance3 = 3.0, EmployeeId = 1 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 4.0, OverTimeBalance3 = 6.0, EmployeeId = 2 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 8.0, OverTimeBalance3 = 16.0, EmployeeId = 3 },
+                };
+
+                overtimeBalancePeriods.ForEach(overtimeBalancePeriod => context.OvertimeBalancePeriods.AddOrUpdate(overtimeBalancePeriod));
 
                 context.SaveChanges();
             }
