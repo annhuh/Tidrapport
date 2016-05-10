@@ -85,12 +85,12 @@ namespace Tidrapport.Migrations
             if (!context.Projects.Any())
             {
                 var projects = new System.Collections.Generic.List<Project>
-                        {
-                        new Project { Name = "Frånvaro", CustomerId = 1 },
-                        new Project { Name = "MALL Företag1", CustomerId = 1, StartDate = new DateTime(2012, 1, 1), IsTemplate = true},
-                        new Project { Name = "Project 2", StartDate = new DateTime(2016, 5, 15), CustomerId = 2 },
-                        new Project { Name = "Project 3", StartDate = new DateTime(2016, 5, 20), EndDate = new DateTime(2016, 10, 15), CustomerId = 2 },
-                        };
+                {
+                    new Project { Name = "Frånvaro", CustomerId = 1 },
+                    new Project { Name = "MALL - YYY AB", CustomerId = 1, StartDate = new DateTime(2012, 1, 1), IsTemplate = true},
+                    new Project { Name = "Project 2", StartDate = new DateTime(2016, 5, 15), CustomerId = 2 },
+                    new Project { Name = "Project 3", StartDate = new DateTime(2016, 5, 20), EndDate = new DateTime(2016, 10, 15), CustomerId = 2 },
+                };
 
                 projects.ForEach(project => context.Projects.AddOrUpdate(project));
 
@@ -153,8 +153,13 @@ namespace Tidrapport.Migrations
                 var companies = new System.Collections.Generic.List<Company>
                 {
                     new Company {OrgRegNo = "16111111-1111", Name = "Company 1"},
-                    new Company {OrgRegNo = "16222222-1111", Name = "Company 2"}
+                    new Company {OrgRegNo = "16111111-2222", Name = "Company 2"},
+                    new Company {OrgRegNo = "16222222-3333", Name = "Company 3"}
                 };
+                
+                companies.ForEach(company => context.Companies.AddOrUpdate(company));
+
+                context.SaveChanges();
             }
             #endregion
 
