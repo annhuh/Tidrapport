@@ -42,7 +42,7 @@ namespace Tidrapport.Migrations
 
                 var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin" };
                 var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekomomi" };
-                var k1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh" };
+                var k1 = new ApplicationUser { Email = "annhuh@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh" };
 
                 userManager.Create(a1, "Pass#1");
                 userManager.Create(e1, "Pass#1");
