@@ -41,7 +41,7 @@ namespace Tidrapport.Migrations
                 var userManager = new UserManager<ApplicationUser>(userStore);
 
                 var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin" };
-                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekomomi" };
+                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekonomi" };
                 var k1 = new ApplicationUser { Email = "annhuh@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh" };
 
                 userManager.Create(a1, "Pass#1");
@@ -179,10 +179,14 @@ namespace Tidrapport.Migrations
                         LastName = "Andersson", 
                         Address = "AGatan 1", 
                         EmployedFrom = new DateTime(2016, 1, 1), 
-                        NormalWeekHours = 40.0, 
+                        NormalWeekHours = 40.0M, 
                         NumberOfHolidaysPerYear = 25,
                         ZipCode = "11111", City = "Astad", Country  = "Alabanien", 
-                        FlexBalance = 0.0, OverTimeBalance1 = 0.0, OverTimeBalance2 = 0.0, OverTimeBalance3 = 0.0, SavedHolidays = 1, 
+                        FlexBalance = 0.0M, 
+                        OverTimeBalance1 = 0.0M, 
+                        OverTimeBalance2 = 1.25M, 
+                        OverTimeBalance3 = 2.5M, 
+                        SavedHolidays = 1, 
                         CompanyId = 1 },
                     new Employee { 
                         EmployeeId = 2, 
@@ -191,15 +195,15 @@ namespace Tidrapport.Migrations
                         LastName = "Björnsson", 
                         Address = "BGatan 1", 
                         EmployedFrom = new DateTime(2016, 1, 2), 
-                        NormalWeekHours = 40.0, 
+                        NormalWeekHours = 40.0M, 
                         NumberOfHolidaysPerYear = 28,  
                         ZipCode = "22222", 
                         City = "Bstad", 
                         Country  = "Belgien", 
-                        FlexBalance = 2.0, 
-                        OverTimeBalance1 = 0.0, 
-                        OverTimeBalance2 = 0.0, 
-                        OverTimeBalance3 = 0.0, 
+                        FlexBalance = 2.0M, 
+                        OverTimeBalance1 = 0.0M, 
+                        OverTimeBalance2 = 2.75M, 
+                        OverTimeBalance3 = 3.5M, 
                         SavedHolidays = 2, 
                         CompanyId = 1  
                     },                     
@@ -210,15 +214,15 @@ namespace Tidrapport.Migrations
                         LastName = "Carlsson", 
                         Address = "CGatan 1", 
                         EmployedFrom = new DateTime(2016, 1, 3), 
-                        NormalWeekHours = 40.0, 
+                        NormalWeekHours = 40.0M, 
                         NumberOfHolidaysPerYear = 30,
                         ZipCode = "33333", 
                         City = "Cstad", 
                         Country  = "Cypern", 
-                        FlexBalance = 33.0, 
-                        OverTimeBalance1 = 0.0, 
-                        OverTimeBalance2 = 0.0, 
-                        OverTimeBalance3 = 0.0, 
+                        FlexBalance = 33.0M, 
+                        OverTimeBalance1 = 0.0M, 
+                        OverTimeBalance2 = 0.5M, 
+                        OverTimeBalance3 = 1.0M, 
                         SavedHolidays = 3, 
                         CompanyId = 2  
                     }
@@ -259,9 +263,9 @@ namespace Tidrapport.Migrations
             {
                 var nationalHolidayBalancePeriods = new System.Collections.Generic.List<NationalHolidayBalancePeriod>
                 {
-                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 8.0, EmployeeId = 1 },
-                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 7.0, EmployeeId = 2 },
-                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 6.0, EmployeeId = 3 }
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 8.0M, EmployeeId = 1 },
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 7.0M, EmployeeId = 2 },
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 6.0M, EmployeeId = 3 }
                 };
 
                 nationalHolidayBalancePeriods.ForEach(nationalHolidayBalancePeriod => context.NationalHolidayBalancePeriods.AddOrUpdate(nationalHolidayBalancePeriod));
@@ -279,9 +283,9 @@ namespace Tidrapport.Migrations
             {
                 var overtimeBalancePeriods = new System.Collections.Generic.List<OvertimeBalancePeriod>
                 {
-                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 2.0, OverTimeBalance3 = 3.0, EmployeeId = 1 },
-                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 4.0, OverTimeBalance3 = 6.0, EmployeeId = 2 },
-                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0, OverTimeBalance2 = 8.0, OverTimeBalance3 = 16.0, EmployeeId = 3 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 2.0M, OverTimeBalance3 = 3.0M, EmployeeId = 1 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 4.0M, OverTimeBalance3 = 6.0M, EmployeeId = 2 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 8.0M, OverTimeBalance3 = 16.0M, EmployeeId = 3 },
                 };
 
                 overtimeBalancePeriods.ForEach(overtimeBalancePeriod => context.OvertimeBalancePeriods.AddOrUpdate(overtimeBalancePeriod));
