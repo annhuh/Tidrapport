@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-    public class NationalHolidayBalance
+    public class NationalHolidayBalancePeriod
     {
         [Key]
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace Tidrapport.Models
         public DateTime ValidTo { get; set; }
             
         [Display(Name="Saldo")]
-        public double Balance { get; set; }
+        public decimal Balance { get; set; }
 
         public int EmployeeId { get; set; }
 

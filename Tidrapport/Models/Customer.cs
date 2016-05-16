@@ -12,12 +12,14 @@ namespace Tidrapport.Models
 		[Key]
 		public int CustomerId { get; set; }
 
+        [Required]
+        [MaxLength(13)]
 		[Display(Name = "Organisations nr")]
 		public string OrgRegNo { get; set; }
 		
         [Required]
-		[MaxLength(128)]
-        [Display(Name = "Namn")]
+		[MaxLength(256)]
+        [Display(Name = "Företagsamn")]
 		public string Name { get; set; }
 	}
 }

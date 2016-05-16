@@ -20,17 +20,16 @@ namespace Tidrapport.Models
 		[Key]
 		public int Id { get; set; }
 
-        [Display(Name = "Vecka")]
+        [Display(Name = "År-Vecka")]
         public string YearWeek { get; set; }
         
 		[DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:YY-MM-DD}", 
-			           ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Datum")]
 		public DateTime Date { get; set; }
         
-        [Display(Name="Antal Timmar")]
-		public double NumberOfHours { get; set; }
+        [Display(Name="Antal timmar")]
+		public decimal NumberOfHours { get; set; }
 		
         public Status Status{ get; set; }
 

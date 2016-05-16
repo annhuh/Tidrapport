@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-    public class HolidayBalance
+    public class HolidayBalancePeriod
     {
         [Key]
         public int Id { get; set; }
