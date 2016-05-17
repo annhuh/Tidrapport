@@ -1,0 +1,52 @@
+﻿@model Tidrapport.Models.HolidayBalancePeriod
+
+<div>
+    <h4>HolidayBalancePeriod</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.SSN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.SSN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValidFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValidFrom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValidTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValidTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PayedHolidayBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayedHolidayBalance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnPayedHolidayBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnPayedHolidayBalance)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

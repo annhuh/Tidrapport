@@ -1,37 +1,65 @@
 ﻿@model IEnumerable<Tidrapport.Models.Customer>
 
 @{
-    ViewBag.Title = "Kund";
+    ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Kund</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@*<p>
+    @Html.ActionLink("Skapa ny kund", "Create")
+</p>*@
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.OrgRegNo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            <span>
+                <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Skapa ny kund
+                </a>
+            </span>
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.OrgRegNo)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerId }) |
+            @Html.DisplayFor(modelItem => item.OrgRegNo)
+        </td>
+        <td>
+            <span>
+                <a href="@Url.Action("Edit", new { id = item.CustomerId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-edit"></span> Editera
+                </a>
+            </span>
+            @*<span>
+        <a href="@Url.Action("Details", new { id = item.CustomerId })" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-expand"></span> Detaljer
+        </a>
+        </span>*@
+            <span>
+                <a href="@Url.Action("Delete", new { id = item.CustomerId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Tabort
+                </a>
+            </span>
+            <span>
+                <a href="@Url.Action("Index", "Projects", new { id = item.CustomerId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-folder-open"></span> Projekt
+                </a>
+            </span>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.CustomerId }) |
             @Html.ActionLink("Details", "Details", new { id=item.CustomerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerId })
+            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerId }) |
+            @Html.ActionLink("Projekt", "Index", "Projects", new { id = item.CustomerId }, null)*@
         </td>
     </tr>
 }
