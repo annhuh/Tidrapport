@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -28,7 +29,7 @@ namespace Tidrapport.Models
 
         [Required]
         [Display(Name = "Timmar/vecka")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
         public Decimal NormalWeekHours { get; set; }
 
         [Required]
@@ -88,8 +89,4 @@ namespace Tidrapport.Models
         [ForeignKey("CompanyId")]
         public virtual Company Company { get; set; }
 	}
-
-    public class Class1
-    {
-    }
 }
