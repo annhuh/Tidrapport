@@ -38,9 +38,9 @@ namespace Tidrapport.Models
 
         public System.Data.Entity.DbSet<Tidrapport.Models.Activity> Activities { get; set; }
 
-        public System.Data.Entity.DbSet<Tidrapport.Models.NationalHolidayBalance> NationalHolidayBalances { get; set; }
+        public System.Data.Entity.DbSet<Tidrapport.Models.NationalHolidayBalancePeriod> NationalHolidayBalancePeriods { get; set; }
 
-        public System.Data.Entity.DbSet<Tidrapport.Models.HolidayBalance> HolidayBalances { get; set; }
+        public System.Data.Entity.DbSet<Tidrapport.Models.HolidayBalancePeriod> HolidayBalancePeriods { get; set; }
 
         public System.Data.Entity.DbSet<Tidrapport.Models.ProjectEmployee> ProjectEmployees { get; set; }
 
