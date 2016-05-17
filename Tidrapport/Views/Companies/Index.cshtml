@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Tidrapport.Models.Company>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Företag</h2>
+
+@*<p>
+    @Html.ActionLink("Skapa nytt företag", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgRegNo)
+        </th>
+ 
+        <th>
+            <span>
+                <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Skapa nytt företag
+                </a>
+            </span>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrgRegNo)
+        </td>
+
+        <td>
+            <span>
+                <a href="@Url.Action("Edit", new { id = item.CompanyId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-edit"></span> Editera
+                </a>
+            </span>
+            @*<span>
+            <a href="@Url.Action("Details", new { id = item.CompanyId })" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-expand"></span> Detaljer
+            </a>
+            </span>*@
+            <span>
+                <a href="@Url.Action("Delete", new { id = item.CompanyId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Tabort
+                </a>
+            </span>
+            <span> </span>
+            <span>
+                <a href="@Url.Action("Index", "Employees", new { id = item.CompanyId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Anställda
+                </a>
+            </span>
+            <span> </span>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.CompanyId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CompanyId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CompanyId }) |
+            @Html.ActionLink("Projekt", "Index", "Projects", new { id = item.CompanyId }, null)*@
+        </td>
+    </tr>
+}
+
+</table>

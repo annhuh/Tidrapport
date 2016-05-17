@@ -39,12 +39,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Global">
+      <HintPath>..\packages\Global.1.0\lib\Global.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Http">
+      <HintPath>..\packages\Global.1.0\lib\Microsoft.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Http.Extensions">
+      <HintPath>..\packages\Global.1.0\lib\Microsoft.Http.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -186,18 +195,23 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="ViewModels\AllEmployeeDetails.cs" />
+    <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
-    <Compile Include="Controllers\HolidayBalancesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\NationalHolidayBalancesController.cs" />
+    <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\ProjectEmployeesController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TimeReportsController.cs" />
     <Compile Include="Controllers\TimeReportTemplatesController.cs" />
+    <Compile Include="Dal\ITimeReportRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Content Include="Migrations\Backup\Backup.txt" />
+    <None Include="Migrations\Backup\Configuration.cs.bcp" />
     <Compile Include="Migrations\201605031316013_Initial.cs" />
     <Compile Include="Migrations\201605031316013_Initial.Designer.cs">
       <DependentUpon>201605031316013_Initial.cs</DependentUpon>
@@ -205,10 +219,17 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
-    <Compile Include="Models\NationalHolidayBalance.cs" />
+    <Compile Include="Models\OvertimeBalancePeriod.cs" />
+    <Compile Include="ViewModels\AddEmployeesToProjetc_VM.cs" />
+    <Compile Include="ViewModels\CreateProjcet_VM.cs" />
+    <Compile Include="ViewModels\CreateEmployee_VM.cs" />
+    <Compile Include="Models\NationalHolidayBalancePeriod.cs" />
     <Compile Include="Models\ProjectEmployee.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\HolidayBalance.cs" />
+    <Compile Include="Models\HolidayBalancePeriod.cs">
+      <SubType>
+      </SubType>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -217,11 +238,8 @@
     <Compile Include="Models\TimeReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Content Include="Views\Employees\Create.cshtml" />
-    <Content Include="Views\Employees\Delete.cshtml" />
-    <Content Include="Views\Employees\Details.cshtml" />
-    <Content Include="Views\Employees\Edit.cshtml" />
-    <Content Include="Views\Employees\Index.cshtml" />
+    <Compile Include="ViewModels\DeleteFromIdentity_VM.cs" />
+    <Compile Include="ViewModels\EconomicalTimeReportDetailed_VM.cs" />
     <Content Include="Views\TimeReports\Create.cshtml" />
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />
@@ -232,6 +250,16 @@
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Activities\ProjectActivities.cshtml" />
+    <Content Include="Views\Employees\EmployeeOvertimeBalancePeriod_partial.cshtml" />
+    <Content Include="Views\Employees\HolidayBalancePeriod_partial.cshtml" />
+    <Content Include="Views\Employees\NationaHolidayBalancePeriod_partial.cshtml" />
+    <Content Include="Views\Employees\AllDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -240,7 +268,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <None Include="Migrations\Seed.backup" />
+    <None Include="Migrations\Backup\Seed.backup" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -300,30 +328,39 @@
     <Content Include="Views\Activities\Details.cshtml" />
     <Content Include="Views\Activities\Edit.cshtml" />
     <Content Include="Views\Activities\Index.cshtml" />
-    <Content Include="Views\NationalHolidayBalances\Create.cshtml" />
-    <Content Include="Views\NationalHolidayBalances\Delete.cshtml" />
-    <Content Include="Views\NationalHolidayBalances\Details.cshtml" />
-    <Content Include="Views\NationalHolidayBalances\Edit.cshtml" />
-    <Content Include="Views\NationalHolidayBalances\Index.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Create.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Details.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Edit.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Index.cshtml" />
-    <Content Include="Views\HolidayBalances\Create.cshtml" />
-    <Content Include="Views\HolidayBalances\Delete.cshtml" />
-    <Content Include="Views\HolidayBalances\Details.cshtml" />
-    <Content Include="Views\HolidayBalances\Edit.cshtml" />
-    <Content Include="Views\HolidayBalances\Index.cshtml" />
     <Content Include="Views\ProjectEmployees\Create.cshtml" />
     <Content Include="Views\ProjectEmployees\Delete.cshtml" />
     <Content Include="Views\ProjectEmployees\Details.cshtml" />
     <Content Include="Views\ProjectEmployees\Edit.cshtml" />
     <Content Include="Views\ProjectEmployees\Index.cshtml" />
+    <Content Include="Views\Companies\Create.cshtml" />
+    <Content Include="Views\Companies\Delete.cshtml" />
+    <Content Include="Views\Companies\Details.cshtml" />
+    <Content Include="Views\Companies\Edit.cshtml" />
+    <Content Include="Views\Companies\Index.cshtml" />
+    <Content Include="Views\TimeReportTemplates\Create.cshtml" />
+    <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
+    <Content Include="Views\TimeReportTemplates\Details.cshtml" />
+    <Content Include="Views\TimeReportTemplates\Edit.cshtml" />
+    <Content Include="Views\TimeReportTemplates\Index.cshtml" />
+    <Content Include="Views\HolidayBalancePeriods\Create.cshtml" />
+    <Content Include="Views\HolidayBalancePeriods\Delete.cshtml" />
+    <Content Include="Views\HolidayBalancePeriods\Details.cshtml" />
+    <Content Include="Views\HolidayBalancePeriods\Edit.cshtml" />
+    <Content Include="Views\HolidayBalancePeriods\Index.cshtml" />
+    <Content Include="Views\NationalHolidayBalancePeriods\Create.cshtml" />
+    <Content Include="Views\NationalHolidayBalancePeriods\Delete.cshtml" />
+    <Content Include="Views\NationalHolidayBalancePeriods\Details.cshtml" />
+    <Content Include="Views\NationalHolidayBalancePeriods\Edit.cshtml" />
+    <Content Include="Views\NationalHolidayBalancePeriods\Index.cshtml" />
+    <Content Include="Views\OvertimeBalancePeriods\Create.cshtml" />
+    <Content Include="Views\OvertimeBalancePeriods\Delete.cshtml" />
+    <Content Include="Views\OvertimeBalancePeriods\Details.cshtml" />
+    <Content Include="Views\OvertimeBalancePeriods\Edit.cshtml" />
+    <Content Include="Views\OvertimeBalancePeriods\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Dal\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
