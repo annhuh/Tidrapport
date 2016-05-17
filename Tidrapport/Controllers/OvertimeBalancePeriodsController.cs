@@ -10,128 +10,112 @@ using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
-    public class ProjectsController : Controller
+    public class OvertimeBalancePeriodsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
-        public ActionResult Index(int? id)
+        // GET: OvertimeBalancePeriods
+        public ActionResult Index()
         {
-            ViewBag.CustomerId = id;
-            var projects = db.Projects.Include(p => p.Customer);
-            
-            if (id != null)
-            {
-                projects = from project in projects
-                           where project.CustomerId == id
-                           orderby project.Name
-                           select project;
-                     
-                return View(projects.ToList());
-            }
-            else {
-                projects = from project in projects
-                           orderby project.Customer.Name, project.Name
-                           select project;
-                return View(projects.ToList());
-            }
+            var overtimeBalancePeriods = db.OvertimeBalancePeriods.Include(o => o.Employee);
+            return View(overtimeBalancePeriods.ToList());
         }
 
-        // GET: Projects/Details/5
+        // GET: OvertimeBalancePeriods/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            OvertimeBalancePeriod overtimeBalancePeriod = db.OvertimeBalancePeriods.Find(id);
+            if (overtimeBalancePeriod == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(overtimeBalancePeriod);
         }
 
-        // GET: Projects/Create
+        // GET: OvertimeBalancePeriods/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo");
+            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: OvertimeBalancePeriods/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProjectId,Number,Name,StartDate,EndDate,IsTemplate,CustomerId")] Project project)
+        public ActionResult Create([Bind(Include = "Id,ValidFrom,ValidTo,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,EmployeeId")] OvertimeBalancePeriod overtimeBalancePeriod)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.OvertimeBalancePeriods.Add(overtimeBalancePeriod);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", overtimeBalancePeriod.EmployeeId);
+            return View(overtimeBalancePeriod);
         }
 
-        // GET: Projects/Edit/5
+        // GET: OvertimeBalancePeriods/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            OvertimeBalancePeriod overtimeBalancePeriod = db.OvertimeBalancePeriods.Find(id);
+            if (overtimeBalancePeriod == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", overtimeBalancePeriod.EmployeeId);
+            return View(overtimeBalancePeriod);
         }
 
-        // POST: Projects/Edit/5
+        // POST: OvertimeBalancePeriods/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProjectId,Number,Name,StartDate,EndDate,IsTemplate,CustomerId")] Project project)
+        public ActionResult Edit([Bind(Include = "Id,ValidFrom,ValidTo,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,EmployeeId")] OvertimeBalancePeriod overtimeBalancePeriod)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(overtimeBalancePeriod).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", overtimeBalancePeriod.EmployeeId);
+            return View(overtimeBalancePeriod);
         }
 
-        // GET: Projects/Delete/5
+        // GET: OvertimeBalancePeriods/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            OvertimeBalancePeriod overtimeBalancePeriod = db.OvertimeBalancePeriods.Find(id);
+            if (overtimeBalancePeriod == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(overtimeBalancePeriod);
         }
 
-        // POST: Projects/Delete/5
+        // POST: OvertimeBalancePeriods/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            OvertimeBalancePeriod overtimeBalancePeriod = db.OvertimeBalancePeriods.Find(id);
+            db.OvertimeBalancePeriods.Remove(overtimeBalancePeriod);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -15,21 +14,21 @@ namespace Tidrapport.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: TimeReportTemplates
-        public async Task<ActionResult> Index()
+        // GET: TimeReportTemplates1
+        public ActionResult Index()
         {
             var timeReportTemplates = db.TimeReportTemplates.Include(t => t.Activity).Include(t => t.Employee);
-            return View(await timeReportTemplates.ToListAsync());
+            return View(timeReportTemplates.ToList());
         }
 
-        // GET: TimeReportTemplates/Details/5
-        public async Task<ActionResult> Details(int? id)
+        // GET: TimeReportTemplates1/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReportTemplate timeReportTemplate = await db.TimeReportTemplates.FindAsync(id);
+            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
             if (timeReportTemplate == null)
             {
                 return HttpNotFound();
@@ -37,7 +36,7 @@ namespace Tidrapport.Controllers
             return View(timeReportTemplate);
         }
 
-        // GET: TimeReportTemplates/Create
+        // GET: TimeReportTemplates1/Create
         public ActionResult Create()
         {
             ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
@@ -45,17 +44,17 @@ namespace Tidrapport.Controllers
             return View();
         }
 
-        // POST: TimeReportTemplates/Create
+        // POST: TimeReportTemplates1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,DayOfWeek,NumberOfHours,EmployeeId,ActivityId")] TimeReportTemplate timeReportTemplate)
+        public ActionResult Create([Bind(Include = "Id,DayOfWeek,NumberOfHours,EmployeeId,ActivityId")] TimeReportTemplate timeReportTemplate)
         {
             if (ModelState.IsValid)
             {
                 db.TimeReportTemplates.Add(timeReportTemplate);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -64,14 +63,14 @@ namespace Tidrapport.Controllers
             return View(timeReportTemplate);
         }
 
-        // GET: TimeReportTemplates/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        // GET: TimeReportTemplates1/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReportTemplate timeReportTemplate = await db.TimeReportTemplates.FindAsync(id);
+            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
             if (timeReportTemplate == null)
             {
                 return HttpNotFound();
@@ -81,17 +80,17 @@ namespace Tidrapport.Controllers
             return View(timeReportTemplate);
         }
 
-        // POST: TimeReportTemplates/Edit/5
+        // POST: TimeReportTemplates1/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,DayOfWeek,NumberOfHours,EmployeeId,ActivityId")] TimeReportTemplate timeReportTemplate)
+        public ActionResult Edit([Bind(Include = "Id,DayOfWeek,NumberOfHours,EmployeeId,ActivityId")] TimeReportTemplate timeReportTemplate)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(timeReportTemplate).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReportTemplate.ActivityId);
@@ -99,14 +98,14 @@ namespace Tidrapport.Controllers
             return View(timeReportTemplate);
         }
 
-        // GET: TimeReportTemplates/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        // GET: TimeReportTemplates1/Delete/5
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReportTemplate timeReportTemplate = await db.TimeReportTemplates.FindAsync(id);
+            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
             if (timeReportTemplate == null)
             {
                 return HttpNotFound();
@@ -114,14 +113,14 @@ namespace Tidrapport.Controllers
             return View(timeReportTemplate);
         }
 
-        // POST: TimeReportTemplates/Delete/5
+        // POST: TimeReportTemplates1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            TimeReportTemplate timeReportTemplate = await db.TimeReportTemplates.FindAsync(id);
+            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
             db.TimeReportTemplates.Remove(timeReportTemplate);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

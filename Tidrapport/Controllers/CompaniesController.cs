@@ -10,128 +10,107 @@ using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
-    public class ProjectsController : Controller
+    public class CompaniesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
-        public ActionResult Index(int? id)
+        // GET: Companies
+        public ActionResult Index()
         {
-            ViewBag.CustomerId = id;
-            var projects = db.Projects.Include(p => p.Customer);
-            
-            if (id != null)
-            {
-                projects = from project in projects
-                           where project.CustomerId == id
-                           orderby project.Name
-                           select project;
-                     
-                return View(projects.ToList());
-            }
-            else {
-                projects = from project in projects
-                           orderby project.Customer.Name, project.Name
-                           select project;
-                return View(projects.ToList());
-            }
+            return View(db.Companies.ToList());
         }
 
-        // GET: Projects/Details/5
+        // GET: Companies/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Company company = db.Companies.Find(id);
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(company);
         }
 
-        // GET: Projects/Create
+        // GET: Companies/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: Companies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProjectId,Number,Name,StartDate,EndDate,IsTemplate,CustomerId")] Project project)
+        public ActionResult Create([Bind(Include = "CompanyId,OrgRegNo,Name")] Company company)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.Companies.Add(company);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            return View(company);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Companies/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Company company = db.Companies.Find(id);
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            return View(company);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Companies/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProjectId,Number,Name,StartDate,EndDate,IsTemplate,CustomerId")] Project project)
+        public ActionResult Edit([Bind(Include = "CompanyId,OrgRegNo,Name")] Company company)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(company).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
-            return View(project);
+            return View(company);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Companies/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Company company = db.Companies.Find(id);
+            if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(company);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Companies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            Company company = db.Companies.Find(id);
+            db.Companies.Remove(company);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
