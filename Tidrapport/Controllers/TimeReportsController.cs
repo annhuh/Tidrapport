@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -16,20 +15,20 @@ namespace Tidrapport.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TimeReports
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             var timeReports = db.TimeReports.Include(t => t.Activity).Include(t => t.Employee);
-            return View(await timeReports.ToListAsync());
+            return View(timeReports.ToList());
         }
 
         // GET: TimeReports/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = await db.TimeReports.FindAsync(id);
+            TimeReport timeReport = db.TimeReports.Find(id);
             if (timeReport == null)
             {
                 return HttpNotFound();
@@ -50,12 +49,12 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
+        public ActionResult Create([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
         {
             if (ModelState.IsValid)
             {
                 db.TimeReports.Add(timeReport);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,13 +64,13 @@ namespace Tidrapport.Controllers
         }
 
         // GET: TimeReports/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = await db.TimeReports.FindAsync(id);
+            TimeReport timeReport = db.TimeReports.Find(id);
             if (timeReport == null)
             {
                 return HttpNotFound();
@@ -86,12 +85,12 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
+        public ActionResult Edit([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(timeReport).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReport.ActivityId);
@@ -100,13 +99,13 @@ namespace Tidrapport.Controllers
         }
 
         // GET: TimeReports/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = await db.TimeReports.FindAsync(id);
+            TimeReport timeReport = db.TimeReports.Find(id);
             if (timeReport == null)
             {
                 return HttpNotFound();
@@ -117,11 +116,11 @@ namespace Tidrapport.Controllers
         // POST: TimeReports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            TimeReport timeReport = await db.TimeReports.FindAsync(id);
+            TimeReport timeReport = db.TimeReports.Find(id);
             db.TimeReports.Remove(timeReport);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

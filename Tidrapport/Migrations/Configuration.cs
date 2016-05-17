@@ -40,9 +40,9 @@ namespace Tidrapport.Migrations
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
 
-                var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin" };
-                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekonomi" };
-                var k1 = new ApplicationUser { Email = "annhuh@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh" };
+                var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin@mail.com" };
+                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekonomi@mail.com" };
+                var k1 = new ApplicationUser { Email = "annhuh@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh@mail.com" };
 
                 userManager.Create(a1, "Pass#1");
                 userManager.Create(e1, "Pass#1");
@@ -85,12 +85,12 @@ namespace Tidrapport.Migrations
             if (!context.Projects.Any())
             {
                 var projects = new System.Collections.Generic.List<Project>
-                {
-                    new Project { Name = "Frånvaro", CustomerId = 1 },
+                        {
+                        new Project { Name = "Frånvaro", CustomerId = 1 },
                     new Project { Name = "MALL - YYY AB", CustomerId = 1, StartDate = new DateTime(2012, 1, 1), IsTemplate = true},
-                    new Project { Name = "Project 2", StartDate = new DateTime(2016, 5, 15), CustomerId = 2 },
-                    new Project { Name = "Project 3", StartDate = new DateTime(2016, 5, 20), EndDate = new DateTime(2016, 10, 15), CustomerId = 2 },
-                };
+                        new Project { Name = "Project 2", StartDate = new DateTime(2016, 5, 15), CustomerId = 2 },
+                        new Project { Name = "Project 3", StartDate = new DateTime(2016, 5, 20), EndDate = new DateTime(2016, 10, 15), CustomerId = 2 },
+                        };
 
                 projects.ForEach(project => context.Projects.AddOrUpdate(project));
 
@@ -106,7 +106,7 @@ namespace Tidrapport.Migrations
             if (!context.Activities.Any())
             {
                 var activities = new System.Collections.Generic.List<Activity>
-                {
+                            {
                     // internal project activities
                     new Activity { Name = "Ledig utan påverkan", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 1 },
                     new Activity { Name = "Uttag Mertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime1, ProjectId = 1 },
@@ -135,7 +135,7 @@ namespace Tidrapport.Migrations
                     new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 4 },
                     new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 4 },
                              
-                };
+                            };
 
                 activities.ForEach(activity => context.Activities.AddOrUpdate(activity));
 
@@ -184,8 +184,8 @@ namespace Tidrapport.Migrations
                         ZipCode = "11111", City = "Astad", Country  = "Alabanien", 
                         FlexBalance = 0.0M, 
                         OverTimeBalance1 = 0.0M, 
-                        OverTimeBalance2 = 0.0M, 
-                        OverTimeBalance3 = 0.0M, 
+                        OverTimeBalance2 = 1.25M, 
+                        OverTimeBalance3 = 2.5M, 
                         SavedHolidays = 1, 
                         CompanyId = 1 },
                     new Employee { 
@@ -202,8 +202,8 @@ namespace Tidrapport.Migrations
                         Country  = "Belgien", 
                         FlexBalance = 2.0M, 
                         OverTimeBalance1 = 0.0M, 
-                        OverTimeBalance2 = 0.0M, 
-                        OverTimeBalance3 = 0.0M, 
+                        OverTimeBalance2 = 2.75M, 
+                        OverTimeBalance3 = 3.5M, 
                         SavedHolidays = 2, 
                         CompanyId = 1  
                     },                     
@@ -221,8 +221,8 @@ namespace Tidrapport.Migrations
                         Country  = "Cypern", 
                         FlexBalance = 33.0M, 
                         OverTimeBalance1 = 0.0M, 
-                        OverTimeBalance2 = 0.0M, 
-                        OverTimeBalance3 = 0.0M, 
+                        OverTimeBalance2 = 0.5M, 
+                        OverTimeBalance3 = 1.0M, 
                         SavedHolidays = 3, 
                         CompanyId = 2  
                     }

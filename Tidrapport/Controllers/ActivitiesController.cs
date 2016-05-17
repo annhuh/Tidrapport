@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -16,20 +15,39 @@ namespace Tidrapport.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             var activities = db.Activities.Include(a => a.Project);
-            return View(await activities.ToListAsync());
+   
+            return View(activities.ToList());
+        }
+
+        // GET: Activities
+        public ActionResult ProjectActivities(int? cid, int? pid)
+        {
+            var activities = db.Activities.Include(a => a.Project);
+
+            ViewBag.CustomerId = cid;
+            
+            //Session["CustomerId"] = null;
+            //ViewBag.ProjectId = projectId;
+
+            var projectActivities = from activity in activities
+                                    where activity.ProjectId == pid
+                                    orderby activity.Name
+                                    select activity;
+             
+            return View(projectActivities.ToList());
         }
 
         // GET: Activities/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = await db.Activities.FindAsync(id);
+            Activity activity = db.Activities.Find(id);
             if (activity == null)
             {
                 return HttpNotFound();
@@ -49,12 +67,12 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,IsActive,ProjectId,BalanceEffect")] Activity activity)
+        public ActionResult Create([Bind(Include = "Id,Name,IsActive,ProjectId,BalanceEffect")] Activity activity)
         {
             if (ModelState.IsValid)
             {
                 db.Activities.Add(activity);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -63,13 +81,13 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Activities/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = await db.Activities.FindAsync(id);
+            Activity activity = db.Activities.Find(id);
             if (activity == null)
             {
                 return HttpNotFound();
@@ -83,12 +101,12 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,IsActive,ProjectId,BalanceEffect")] Activity activity)
+        public ActionResult Edit([Bind(Include = "Id,Name,IsActive,ProjectId,BalanceEffect")] Activity activity)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(activity).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", activity.ProjectId);
@@ -96,13 +114,13 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Activities/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = await db.Activities.FindAsync(id);
+            Activity activity = db.Activities.Find(id);
             if (activity == null)
             {
                 return HttpNotFound();
@@ -113,11 +131,11 @@ namespace Tidrapport.Controllers
         // POST: Activities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            Activity activity = await db.Activities.FindAsync(id);
+            Activity activity = db.Activities.Find(id);
             db.Activities.Remove(activity);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

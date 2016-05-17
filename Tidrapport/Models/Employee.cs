@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,25 @@ namespace Tidrapport.Models
 
         [Display(Name="Personnr")]
 		public string SSN { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Anställd från")]
+        public DateTime? EmployedFrom { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Anställd till")]
+        public DateTime? EmployedTo { get; set; }
+
+        [Required]
+        [Display(Name = "Timmar/vecka")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
+        public Decimal NormalWeekHours { get; set; }
+
+        [Required]
+        [Display(Name = "Semester/år")]
+        public int NumberOfHolidaysPerYear { get; set; }
 		
         [Required]
         [Display(Name = "Förnamn")]
@@ -38,15 +58,24 @@ namespace Tidrapport.Models
         
         [Required]
         [Display(Name = "Flex saldo")]
-        public double FlexBalance { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
+        public Decimal FlexBalance { get; set; }
         
         [Required]
-        [Display(Name = "Övertid 1")]
-        public double OverTime1 { get; set; }
+        [Display(Name = "Mertid")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
+        public Decimal OverTimeBalance1 { get; set; }
         
         [Required]
-        [Display(Name = "Övertid 2")]
-        public double OverTime2 { get; set; }
+        [Display(Name = "Enkel övertid")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
+        public Decimal OverTimeBalance2 { get; set; }
+        
+        [Required]
+
+        [Display(Name = "Kval övertid")]
+        [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:n2}")]
+        public Decimal OverTimeBalance3 { get; set; }
         
         [Required]
         [Display(Name = "Sparad semester")]
@@ -54,5 +83,10 @@ namespace Tidrapport.Models
         
         [Display(Name = "Namn")]
 		public string FullName { get { return LastName + ", " + FirstName;	} }
+
+        public int CompanyId { get; set; }
+
+        [ForeignKey("CompanyId")]
+        public virtual Company Company { get; set; }
 	}
 }

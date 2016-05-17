@@ -12,10 +12,11 @@ namespace Tidrapport.Models
 		[Key]
 		public int Id { get; set; }
 
+        [Display(Name = "Veckodag")]
 		public DayOfWeek DayOfWeek { get; set; }
 
         [Display(Name = "Antal timmar")]
-		public double NumberOfHours { get; set; }
+		public decimal NumberOfHours { get; set; }
 
         [Required]
         public int EmployeeId { get; set; }

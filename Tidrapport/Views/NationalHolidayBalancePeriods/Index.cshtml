@@ -1,51 +1,51 @@
-﻿@model IEnumerable<Tidrapport.Models.Activity>
+﻿@model IEnumerable<Tidrapport.Models.NationalHolidayBalancePeriod>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Aktivitet</h2>
+<h2>Nationaldagssaldo</h2>
 
 @*<p>
-    @Html.ActionLink("Skapa ny aktivitet", "Create")
+    @Html.ActionLink("Skapa nytt nationaldagssaldo", "Create")
 </p>*@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Project.Number)
+            @Html.DisplayNameFor(model => model.Employee.SSN)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.ValidFrom)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.ValidTo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BalanceEffect)
+            @Html.DisplayNameFor(model => model.Balance)
         </th>
         <th>
             <span>
                 <a href="@Url.Action("Create")" class="btn btn-default btn-">
                     <span class="glyphicon glyphicon-plus-sign"></span>
-                    Skapa ny aktivitet
+                    Skapa nytt saldo för nationaldagen
                 </a>
             </span>
-</th>
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Project.Number)
+            @Html.DisplayFor(modelItem => item.Employee.SSN)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.ValidFrom)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
+            @Html.DisplayFor(modelItem => item.ValidTo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BalanceEffect)
+            @Html.DisplayFor(modelItem => item.Balance)
         </td>
         <td>
             <span>
@@ -54,9 +54,9 @@
                 </a>
             </span>
             @*<span>
-            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-expand"></span> Detaljer
-            </a>
+        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-expand"></span> Detaljer
+        </a>
         </span>*@
             <span>
                 <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-default btn-sm">

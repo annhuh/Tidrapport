@@ -1,4 +1,4 @@
-﻿@model Tidrapport.Models.NationalHolidayBalance
+﻿@model Tidrapport.Models.HolidayBalancePeriod
 
 @{
     ViewBag.Title = "Edit";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>NationalHolidayBalance</h4>
+        <h4>HolidayBalancePeriod</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -34,10 +34,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Balance, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PayedHolidayBalance, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Balance, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Balance, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PayedHolidayBalance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PayedHolidayBalance, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnPayedHolidayBalance, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UnPayedHolidayBalance, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UnPayedHolidayBalance, "", new { @class = "text-danger" })
             </div>
         </div>
 
