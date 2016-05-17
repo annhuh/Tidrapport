@@ -55,6 +55,10 @@
     <Reference Include="Microsoft.Http.Extensions">
       <HintPath>..\packages\Global.1.0\lib\Microsoft.Http.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -136,9 +140,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -194,8 +195,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\HolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
+    <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
@@ -240,6 +244,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\DeleteFromIdentity_VM.cs" />
     <Compile Include="ViewModels\EconomicalTimeReportDetailed_VM.cs" />
+    <Content Include="Pictures\Clock.jpg" />
+    <Content Include="Pictures\Clock2.jpg" />
     <Content Include="Views\TimeReports\Create.cshtml" />
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />
