@@ -26,7 +26,7 @@ namespace Tidrapport.Models
 		[Key]
 		public int Id { get; set; }
 
-		[Display(Name = "Namn")]
+		[Display(Name = "Aktivitet")]
 		public string Name { get; set; }
         
         [Display(Name = "Aktiv")]
