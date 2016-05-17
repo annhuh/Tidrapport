@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Tidrapport.Models.NationalHolidayBalancePeriod>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Nationaldagssaldo</h2>
+
+@*<p>
+    @Html.ActionLink("Skapa nytt nationaldagssaldo", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.SSN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValidFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValidTo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        <th>
+            <span>
+                <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Skapa nytt saldo för nationaldagen
+                </a>
+            </span>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.SSN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValidFrom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValidTo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Balance)
+        </td>
+        <td>
+            <span>
+                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-edit"></span> Editera
+                </a>
+            </span>
+            @*<span>
+        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-expand"></span> Detaljer
+        </a>
+        </span>*@
+            <span>
+                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Tabort
+                </a>
+            </span>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+        </td>
+    </tr>
+}
+
+</table>
