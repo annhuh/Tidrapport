@@ -150,8 +150,13 @@
 }
 
 </table>
-<span>
+@*<span>
     <a href="@Url.Action("Index", "Companies")" class="btn btn-default btn-sm">
         <span class="glyphicon glyphicon-backward"></span> Tillbaka
     </a>
-</span>
+</span>*@
+<div>
+    <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
+    </a>
+</div>

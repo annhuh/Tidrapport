@@ -32,9 +32,14 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
+        @*<div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
-        </div>
+        </div>*@
+        <div>
+        <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
+        </a>
+    </div>
     }
 </div>

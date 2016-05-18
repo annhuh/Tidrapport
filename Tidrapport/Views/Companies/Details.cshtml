@@ -30,5 +30,10 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CompanyId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Back to List", "Index")*@
+    <div>
+        <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
+        </a>
+    </div>
 </p>
