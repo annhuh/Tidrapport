@@ -201,6 +201,7 @@
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Models\Company.cs" />
+    <None Include="ViewModels\EmployeeViewModel.cs.OLD" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\CalendarTimeReportEvent.cs" />
     <Content Include="Migrations\Backup\Backup.txt" />
     <None Include="Migrations\Backup\Configuration.cs.bcp" />
     <Compile Include="Migrations\201605031316013_Initial.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="ViewModels\EconomicalTimeReportDetailed_VM.cs" />
     <Content Include="Pictures\Clock.jpg" />
     <Content Include="Pictures\Clock2.jpg" />
+    <Content Include="Scripts\datepicker.js" />
     <Content Include="Views\TimeReports\Create.cshtml" />
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />

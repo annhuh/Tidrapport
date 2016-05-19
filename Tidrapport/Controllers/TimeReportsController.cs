@@ -39,6 +39,22 @@ namespace Tidrapport.Controllers
         // GET: TimeReports/Create
         public ActionResult Create()
         {
+            //// who is the user
+            ////-------------------
+            //System.Security.Principal.IIdentity id;
+            
+            
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    id = int.Parse(User.Identity);
+            //    User.
+            //}
+
+            //// select projects and activities which I am connected to
+            ////--------------------------------------------------------
+
+            //db.Activities.Select()
+
             ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
             ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
             return View();

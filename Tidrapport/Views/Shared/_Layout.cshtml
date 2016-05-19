@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="sv-se">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - NTAB Tidredovisning</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,12 +23,36 @@
                 <ul class="nav navbar-nav">
                     @*<li>@Html.ActionLink("Home", "Index", null, htmlAttributes: new { @class = "<your class>", @style = "font:<your font>" })</li>*@
                     @*<li>@Html.ActionLink("Hem", "Index", "Home")</li>*@
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li>@Html.ActionLink("Företag", "Index", "Companies")</li>
+                        <li>@Html.ActionLink("Anställd", "Index", "Employees")</li>
+                        <li>@Html.ActionLink("Tidrapport", "Index", "TimeReports")</li>
+                        <li>@Html.ActionLink("Kund", "Index", "Customers")</li>
+                        <li>@Html.ActionLink("Projekt", "Index", "Projects")</li>
+   
+                    }
+                    
+                    @if (User.IsInRole("anställd"))
+                    {
+                        <li>@Html.ActionLink("Min detaljer", "Index", "Employees")</li>
+                        <li>@Html.ActionLink("Mina tidrapporter", "Index", "TimeReports")</li>
+                        <li>@Html.ActionLink("Mina projekt", "Index", "Projects")</li>
+                    }
+                    
+                    @if (User.IsInRole("ekonomi"))
+                    {
+                        <li>@Html.ActionLink("Ekonomi", "Index", "Ekonomy")</li>
+                    } 
+                    
+                    @*<li>@Html.ActionLink("Administration", "Index", "Administrates")</li>
                     <li>@Html.ActionLink("Företag", "Index", "Companies")</li>
                     <li>@Html.ActionLink("Anställd", "Index", "Employees")</li>
                     <li>@Html.ActionLink("Tidrapport", "Index", "TimeReports")</li>
                     <li>@Html.ActionLink("Kund", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Projekt", "Index", "Projects")</li>
-                    <li>@Html.ActionLink("Rapport", "Index", "Rapport")</li>
+                    <li>@Html.ActionLink("Ekonomi", "Index", "Ekonomy")</li>*@               
+
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
