@@ -37,8 +37,8 @@ namespace Tidrapport.Migrations
 
                 // add users
                 // ---------
-                var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new UserManager<ApplicationUser>(userStore);
+                var userStore = new CustomUserStore(context);
+                var userManager = new UserManager<ApplicationUser, int>(userStore);
 
                 var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin@mail.com" };
                 var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekonomi@mail.com" };
