@@ -30,6 +30,7 @@ namespace Tidrapport.Migrations
                         Name = c.String(maxLength: 256),
                         StartDate = c.DateTime(),
                         EndDate = c.DateTime(),
+                        IsTemplate = c.Boolean(nullable: false),
                         CustomerId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ProjectId)
@@ -41,10 +42,20 @@ namespace Tidrapport.Migrations
                 c => new
                     {
                         CustomerId = c.Int(nullable: false, identity: true),
-                        OrgRegNo = c.String(),
-                        Name = c.String(nullable: false, maxLength: 128),
+                        OrgRegNo = c.String(nullable: false, maxLength: 13),
+                        Name = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.CustomerId);
+            
+            CreateTable(
+                "dbo.Companies",
+                c => new
+                    {
+                        CompanyId = c.Int(nullable: false, identity: true),
+                        OrgRegNo = c.String(nullable: false, maxLength: 13),
+                        Name = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.CompanyId);
             
             CreateTable(
                 "dbo.Employees",
@@ -52,21 +63,29 @@ namespace Tidrapport.Migrations
                     {
                         EmployeeId = c.Int(nullable: false),
                         SSN = c.String(),
+                        EmployedFrom = c.DateTime(),
+                        EmployedTo = c.DateTime(),
+                        NormalWeekHours = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        NumberOfHolidaysPerYear = c.Int(nullable: false),
                         FirstName = c.String(nullable: false),
                         LastName = c.String(nullable: false),
                         Address = c.String(),
                         ZipCode = c.String(),
                         City = c.String(),
                         Country = c.String(),
-                        FlexBalance = c.Double(nullable: false),
-                        OverTime1 = c.Double(nullable: false),
-                        OverTime2 = c.Double(nullable: false),
+                        FlexBalance = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OverTimeBalance1 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OverTimeBalance2 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OverTimeBalance3 = c.Decimal(nullable: false, precision: 18, scale: 2),
                         SavedHolidays = c.Int(nullable: false),
+                        CompanyId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.EmployeeId);
+                .PrimaryKey(t => t.EmployeeId)
+                .ForeignKey("dbo.Companies", t => t.CompanyId, cascadeDelete: true)
+                .Index(t => t.CompanyId);
             
             CreateTable(
-                "dbo.HolidayBalances",
+                "dbo.HolidayBalancePeriods",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -81,13 +100,29 @@ namespace Tidrapport.Migrations
                 .Index(t => t.EmployeeId);
             
             CreateTable(
-                "dbo.NationalHolidayBalances",
+                "dbo.NationalHolidayBalancePeriods",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         ValidFrom = c.DateTime(nullable: false),
                         ValidTo = c.DateTime(nullable: false),
-                        Balance = c.Double(nullable: false),
+                        Balance = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        EmployeeId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Employees", t => t.EmployeeId, cascadeDelete: true)
+                .Index(t => t.EmployeeId);
+            
+            CreateTable(
+                "dbo.OvertimeBalancePeriods",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        ValidFrom = c.DateTime(nullable: false),
+                        ValidTo = c.DateTime(nullable: false),
+                        OverTimeBalance1 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OverTimeBalance2 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        OverTimeBalance3 = c.Decimal(nullable: false, precision: 18, scale: 2),
                         EmployeeId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -112,7 +147,7 @@ namespace Tidrapport.Migrations
                 "dbo.AspNetRoles",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
@@ -122,8 +157,8 @@ namespace Tidrapport.Migrations
                 "dbo.AspNetUserRoles",
                 c => new
                     {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
+                        UserId = c.Int(nullable: false),
+                        RoleId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
@@ -138,7 +173,7 @@ namespace Tidrapport.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         YearWeek = c.String(),
                         Date = c.DateTime(nullable: false),
-                        NumberOfHours = c.Double(nullable: false),
+                        NumberOfHours = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Status = c.Int(nullable: false),
                         SubmittedBy = c.String(),
                         SubmittedTimeStamp = c.DateTime(),
@@ -159,7 +194,7 @@ namespace Tidrapport.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         DayOfWeek = c.Int(nullable: false),
-                        NumberOfHours = c.Double(nullable: false),
+                        NumberOfHours = c.Decimal(nullable: false, precision: 18, scale: 2),
                         EmployeeId = c.Int(nullable: false),
                         ActivityId = c.Int(nullable: false),
                     })
@@ -173,7 +208,7 @@ namespace Tidrapport.Migrations
                 "dbo.AspNetUsers",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
+                        Id = c.Int(nullable: false, identity: true),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -194,7 +229,7 @@ namespace Tidrapport.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        UserId = c.String(nullable: false, maxLength: 128),
+                        UserId = c.Int(nullable: false),
                         ClaimType = c.String(),
                         ClaimValue = c.String(),
                     })
@@ -208,7 +243,7 @@ namespace Tidrapport.Migrations
                     {
                         LoginProvider = c.String(nullable: false, maxLength: 128),
                         ProviderKey = c.String(nullable: false, maxLength: 128),
-                        UserId = c.String(nullable: false, maxLength: 128),
+                        UserId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
@@ -228,8 +263,10 @@ namespace Tidrapport.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.ProjectEmployees", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.ProjectEmployees", "EmployeeId", "dbo.Employees");
-            DropForeignKey("dbo.NationalHolidayBalances", "EmployeeId", "dbo.Employees");
-            DropForeignKey("dbo.HolidayBalances", "EmployeeId", "dbo.Employees");
+            DropForeignKey("dbo.OvertimeBalancePeriods", "EmployeeId", "dbo.Employees");
+            DropForeignKey("dbo.NationalHolidayBalancePeriods", "EmployeeId", "dbo.Employees");
+            DropForeignKey("dbo.HolidayBalancePeriods", "EmployeeId", "dbo.Employees");
+            DropForeignKey("dbo.Employees", "CompanyId", "dbo.Companies");
             DropForeignKey("dbo.Activities", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.Projects", "CustomerId", "dbo.Customers");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -244,8 +281,10 @@ namespace Tidrapport.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.ProjectEmployees", new[] { "ProjectId" });
             DropIndex("dbo.ProjectEmployees", new[] { "EmployeeId" });
-            DropIndex("dbo.NationalHolidayBalances", new[] { "EmployeeId" });
-            DropIndex("dbo.HolidayBalances", new[] { "EmployeeId" });
+            DropIndex("dbo.OvertimeBalancePeriods", new[] { "EmployeeId" });
+            DropIndex("dbo.NationalHolidayBalancePeriods", new[] { "EmployeeId" });
+            DropIndex("dbo.HolidayBalancePeriods", new[] { "EmployeeId" });
+            DropIndex("dbo.Employees", new[] { "CompanyId" });
             DropIndex("dbo.Projects", new[] { "CustomerId" });
             DropIndex("dbo.Activities", new[] { "ProjectId" });
             DropTable("dbo.AspNetUserLogins");
@@ -256,9 +295,11 @@ namespace Tidrapport.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.ProjectEmployees");
-            DropTable("dbo.NationalHolidayBalances");
-            DropTable("dbo.HolidayBalances");
+            DropTable("dbo.OvertimeBalancePeriods");
+            DropTable("dbo.NationalHolidayBalancePeriods");
+            DropTable("dbo.HolidayBalancePeriods");
             DropTable("dbo.Employees");
+            DropTable("dbo.Companies");
             DropTable("dbo.Customers");
             DropTable("dbo.Projects");
             DropTable("dbo.Activities");
