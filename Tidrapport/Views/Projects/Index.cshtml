@@ -4,7 +4,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Projekt</h2>
+<h2>Lista Projekt</h2>
+
+<h4>Företag: @ViewBag.CompanyName</h4>
 
 @*<p>
     @Html.ActionLink("Skapa nytt projekt", "Create")
@@ -32,10 +34,20 @@
         </th>
         <th>
             <span>
-                <a href="@Url.Action("Create")" class="btn btn-default btn-">
-                    <span class="glyphicon glyphicon-plus-sign"></span>
-                    Skapa nytt projekt
-                </a>
+                @if (ViewBag.CustomerId == null)
+                { 
+                    <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        Skapa nytt projekt
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Create", new { id = ViewBag.CustomerId})" class="btn btn-default btn-">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        Skapa nytt projekt
+                    </a>
+                }
             </span>
         </th>
     </tr>
@@ -80,6 +92,11 @@
             <span>
                 <a href="@Url.Action("ProjectActivities", "Activities", new { cid = item.CustomerId, pid = item.ProjectId })" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-folder-open"></span> Projekt akiviteter
+                </a>
+            </span>
+            <span>
+                <a href="@Url.Action("Index", "ProjectEmployees", new { id = item.ProjectId })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-user"></span> Anställda
                 </a>
             </span>
   

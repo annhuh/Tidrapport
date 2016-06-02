@@ -4,11 +4,13 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Tabort</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Obeservera! <br />
+    När du bekräftar detta så raderas inte uppgifterna om den anställde, <br />
+    utan bara rollen som den har. </h3>
 <div>
-    <h4>Employee</h4>
+    <h4>Anställd</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -152,11 +154,12 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        @*<div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>*@
+        <div class="form-actions no-color">
+            <input type="submit" value="Bekräfta" class="btn btn-default" />
+            @*@Html.ActionLink("Back to List", "Index")*@
+        </div>
         <div>
+            <p></p>
             <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
             </a>

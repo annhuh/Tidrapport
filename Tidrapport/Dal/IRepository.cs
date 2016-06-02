@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tidrapport.Dal
 {
-    interface ITimeReportRepository
+    interface IRepository
     {
     }
 }

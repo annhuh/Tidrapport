@@ -53,9 +53,21 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Projects/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo");
+            if (id != null)
+            {
+                var customers = db.Customers;
+                var theCustomer = from customer in customers
+                                  where customer.CustomerId == id
+                                  select customer;
+                ViewBag.CustomerId = new SelectList(theCustomer, "CustomerId", "Name");
+            }
+            else
+            {
+                ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name");
+            }
+            
             return View();
         }
 
@@ -70,10 +82,10 @@ namespace Tidrapport.Controllers
             {
                 db.Projects.Add(project);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = project.CustomerId });
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
             return View(project);
         }
 
@@ -89,7 +101,7 @@ namespace Tidrapport.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
             return View(project);
         }
 
@@ -106,7 +118,7 @@ namespace Tidrapport.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "OrgRegNo", project.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
             return View(project);
         }
 

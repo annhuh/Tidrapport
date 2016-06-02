@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Tidrapport.Models;
+using Tidrapport.ViewModels;
 
 namespace Tidrapport.Controllers
 {
@@ -19,6 +21,75 @@ namespace Tidrapport.Controllers
         {
             var timeReports = db.TimeReports.Include(t => t.Activity).Include(t => t.Employee);
             return View(timeReports.ToList());
+        }
+
+        // GET: TimeReports
+        public ActionResult myTimeReports()
+        {
+            var id = User.Identity.GetUserId();
+
+            int employeeId = int.Parse(id);
+
+            var myTimeReports = db.TimeReports
+                .Where(e => e.EmployeeId == employeeId)
+                .Include(t => t.Activity)
+                .Include(t => t.Employee);
+
+            var myTimeReportList = myTimeReports.ToList();
+
+            //IEnumerable<IGrouping<string, TimeReport_VM>> myTimeReportGroups = myTimeReportList.GroupBy(row => new
+            //{
+            //       row.YearWeek,
+            //       row.Id,
+            //       row.Date,
+            //       row.NumberOfHours,
+            //       row.Status,
+            //       row.ActivityId,
+            //       row.Activity.Name,
+            //       row.Employee.EmployeeId
+            //   })
+            //    .Select(group => new TimeReport_VM
+            //    {
+            //        YearWeek = group.Key.YearWeek,
+            //        Id = group.Key.Id,
+            //        Date = group.Key.Date,
+            //        NumberOfHours = group.Key.NumberOfHours,
+            //        Status = group.Key.Status,
+            //        ActivityId = group.Key.ActivityId,
+            //        ActivityName = group.Key.Name,
+            //        EmployeeId = group.Key.EmployeeId
+            //    });
+
+
+
+            var timeReportsGrouped = db.TimeReports
+                .Where(t => t.EmployeeId == employeeId)
+                .Include(t => t.Activity)
+                .Include(t => t.Employee)
+                //.GroupBy(row => new { row.YearWeek })
+                .GroupBy(row => new
+                {
+                    row.YearWeek,
+                    row.Id,
+                    row.Date,
+                    row.NumberOfHours,
+                    row.Status,
+                    row.ActivityId,
+                    row.Activity.Name,
+                    row.Employee.EmployeeId
+                })
+                .Select(group => new TimeReport_VM {
+                    YearWeek =  group.Key.YearWeek,
+                    Id = group.Key.Id,
+                    Date = group.Key.Date,
+                    NumberOfHours = group.Key.NumberOfHours,
+                    Status = group.Key.Status,
+                    ActivityId = group.Key.ActivityId,
+                    ActivityName = group.Key.Name,
+                    EmployeeId = group.Key.EmployeeId
+                });
+
+            return View(timeReportsGrouped);
         }
 
         // GET: TimeReports/Details/5

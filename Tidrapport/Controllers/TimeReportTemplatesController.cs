@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -18,6 +19,20 @@ namespace Tidrapport.Controllers
         public ActionResult Index()
         {
             var timeReportTemplates = db.TimeReportTemplates.Include(t => t.Activity).Include(t => t.Employee);
+            return View(timeReportTemplates.ToList());
+        }
+
+        // GET: TimeReportTemplates1
+        public ActionResult myTemplate()
+        {
+            var id = User.Identity.GetUserId();
+
+            int employeeId = int.Parse(id);
+
+            var myProjects = db.ProjectEmployees.Where(pe => pe.EmployeeId == employeeId);
+
+            var timeReportTemplates = db.TimeReportTemplates.Where(t => t.EmployeeId == employeeId).Include(t => t.Activity).Include(t => t.Employee);
+
             return View(timeReportTemplates.ToList());
         }
 

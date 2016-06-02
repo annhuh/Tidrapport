@@ -32,8 +32,8 @@ namespace Tidrapport.Migrations
                 var roleManager = new RoleManager<CustomRole, int>(new CustomRoleStore(context));
 
                 roleManager.Create(new CustomRole { Name = "admin" });
-                roleManager.Create(new CustomRole { Name = "ekonomi" });
                 roleManager.Create(new CustomRole { Name = "anställd" });
+                roleManager.Create(new CustomRole { Name = "ekonomi" });
 
                 // add users
                 // ---------
@@ -65,9 +65,11 @@ namespace Tidrapport.Migrations
             if (!context.Customers.Any())
             {
                 var customers = new System.Collections.Generic.List<Customer>
-                {
-                    new Customer { OrgRegNo = "000000-0000", Name = "Internal" },
-                };
+                    {
+                    new Customer { OrgRegNo = "11111111-1111", Name = "Internal" },
+                    new Customer { OrgRegNo = "16630202-2345", Name = "YYY AB" },
+                    new Customer { OrgRegNo = "16641212-1111", Name = "ZZZ AB" }
+                    };
 
                 customers.ForEach(customer => context.Customers.AddOrUpdate(customer));
 
@@ -83,11 +85,12 @@ namespace Tidrapport.Migrations
             if (!context.Projects.Any())
             {
                 var projects = new System.Collections.Generic.List<Project>
-                {
-                    new Project { Name = "Frånvaro", CustomerId = 1, StartDate = new DateTime(2016, 1, 1), IsTemplate = false },
-                    new Project { Name = "Internt arbete", CustomerId = 1, StartDate = new DateTime(2016, 1, 1), IsTemplate = false},
-                    new Project { Name = "MALL 1", CustomerId = 1, StartDate = new DateTime(2016, 1, 1), IsTemplate = true},
-                };
+                        {
+                        new Project { Name = "Frånvaro", CustomerId = 1 },
+                    new Project { Name = "MALL - YYY AB", CustomerId = 1, StartDate = new DateTime(2012, 1, 1), IsTemplate = true},
+                        new Project { Name = "Project 2", StartDate = new DateTime(2016, 5, 15), CustomerId = 2 },
+                        new Project { Name = "Project 3", StartDate = new DateTime(2016, 5, 20), EndDate = new DateTime(2016, 10, 15), CustomerId = 2 },
+                        };
 
                 projects.ForEach(project => context.Projects.AddOrUpdate(project));
 
@@ -103,8 +106,8 @@ namespace Tidrapport.Migrations
             if (!context.Activities.Any())
             {
                 var activities = new System.Collections.Generic.List<Activity>
-                {
-                    // internal absence activities
+                            {
+                    // internal project activities
                     new Activity { Name = "Ledig utan påverkan", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 1 },
                     new Activity { Name = "Uttag Mertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime1, ProjectId = 1 },
                     new Activity { Name = "Uttag Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime2, ProjectId = 1 },
@@ -113,19 +116,26 @@ namespace Tidrapport.Migrations
                     new Activity { Name = "Uttag Betald semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromPayedHolidays, ProjectId = 1 },
                     new Activity { Name = "Uttag Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.ReomveFromUnpayedHolidays, ProjectId = 1 },
 
-                    // internal work activities
+                   // Project template activities
                     new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime1, ProjectId = 2 },
                     new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 2 },
                     new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 2 },
-                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 2 },
-                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 2 },
-                        
-                    // Project template activities
+                    
+                    // external project activities
+                    new Activity { Name = "Activity 2", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
+                    new Activity { Name = "Activity 3", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
+                    new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime1, ProjectId = 3 },
                     new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 3 },
                     new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 3 },
-                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
-                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
-                };
+
+                    // external project activities
+                    new Activity { Name = "Activity 3", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 4 },
+                    new Activity { Name = "Activity 4", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 4 },
+                    new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime1, ProjectId = 4 },
+                    new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 4 },
+                    new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 4 },
+                             
+                            };
 
                 activities.ForEach(activity => context.Activities.AddOrUpdate(activity));
 
@@ -142,7 +152,9 @@ namespace Tidrapport.Migrations
             {
                 var companies = new System.Collections.Generic.List<Company>
                 {
-                    new Company {OrgRegNo = "111111-1111", Name = "Internt företag 1"},
+                    new Company {OrgRegNo = "16111111-1111", Name = "Company 1"},
+                    new Company {OrgRegNo = "16111111-2222", Name = "Company 2"},
+                    new Company {OrgRegNo = "16222222-3333", Name = "Company 3"}
                 };
 
                 companies.ForEach(company => context.Companies.AddOrUpdate(company));
@@ -161,9 +173,9 @@ namespace Tidrapport.Migrations
                 var employees = new System.Collections.Generic.List<Employee>                          
                 {                            
                     new Employee { 
-                        EmployeeId = 3, 
+                        EmployeeId = 1, 
                         SSN = "19700101-1111", 
-                        FirstName = "Test-Anna", 
+                        FirstName = "Anna", 
                         LastName = "Andersson", 
                         Address = "AGatan 1", 
                         EmployedFrom = new DateTime(2016, 1, 1), 
@@ -175,7 +187,44 @@ namespace Tidrapport.Migrations
                         OverTimeBalance2 = 1.25M, 
                         OverTimeBalance3 = 2.5M, 
                         SavedHolidays = 1, 
-                        CompanyId = 1 
+                        CompanyId = 1 },
+                    new Employee { 
+                        EmployeeId = 2, 
+                        SSN = "19700202-2222", 
+                        FirstName = "Björn", 
+                        LastName = "Björnsson", 
+                        Address = "BGatan 1", 
+                        EmployedFrom = new DateTime(2016, 1, 2), 
+                        NormalWeekHours = 40.0M, 
+                        NumberOfHolidaysPerYear = 28,  
+                        ZipCode = "22222", 
+                        City = "Bstad", 
+                        Country  = "Belgien", 
+                        FlexBalance = 2.0M, 
+                        OverTimeBalance1 = 0.0M, 
+                        OverTimeBalance2 = 2.75M, 
+                        OverTimeBalance3 = 3.5M, 
+                        SavedHolidays = 2, 
+                        CompanyId = 1  
+                    },                     
+                    new Employee { 
+                        EmployeeId = 3, 
+                        SSN = "19700303-3333", 
+                        FirstName = "Cilla", 
+                        LastName = "Carlsson", 
+                        Address = "CGatan 1", 
+                        EmployedFrom = new DateTime(2016, 1, 3), 
+                        NormalWeekHours = 40.0M, 
+                        NumberOfHolidaysPerYear = 30,
+                        ZipCode = "33333", 
+                        City = "Cstad", 
+                        Country  = "Cypern", 
+                        FlexBalance = 33.0M, 
+                        OverTimeBalance1 = 0.0M, 
+                        OverTimeBalance2 = 0.5M, 
+                        OverTimeBalance3 = 1.0M, 
+                        SavedHolidays = 3, 
+                        CompanyId = 2  
                     }
                 };
 
@@ -194,7 +243,9 @@ namespace Tidrapport.Migrations
             {
                 var holidayBalancePeriods = new System.Collections.Generic.List<HolidayBalancePeriod>
                 {
-                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 20, UnPayedHolidayBalance = 0, EmployeeId = 3 }
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 20, UnPayedHolidayBalance = 0, EmployeeId = 1 },
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 25, UnPayedHolidayBalance = 0, EmployeeId = 2 },
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 10, UnPayedHolidayBalance = 15, EmployeeId = 3 }   
                 };
 
                 holidayBalancePeriods.ForEach(holidayBalance => context.HolidayBalancePeriods.AddOrUpdate(holidayBalance));
@@ -212,7 +263,9 @@ namespace Tidrapport.Migrations
             {
                 var nationalHolidayBalancePeriods = new System.Collections.Generic.List<NationalHolidayBalancePeriod>
                 {
-                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 8.0M, EmployeeId = 3 }
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 8.0M, EmployeeId = 1 },
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 7.0M, EmployeeId = 2 },
+                    new NationalHolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), Balance = 6.0M, EmployeeId = 3 }
                 };
 
                 nationalHolidayBalancePeriods.ForEach(nationalHolidayBalancePeriod => context.NationalHolidayBalancePeriods.AddOrUpdate(nationalHolidayBalancePeriod));
@@ -230,7 +283,9 @@ namespace Tidrapport.Migrations
             {
                 var overtimeBalancePeriods = new System.Collections.Generic.List<OvertimeBalancePeriod>
                 {
-                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 8.0M, OverTimeBalance3 = 16.0M, EmployeeId = 3 }
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 2.0M, OverTimeBalance3 = 3.0M, EmployeeId = 1 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 4.0M, OverTimeBalance3 = 6.0M, EmployeeId = 2 },
+                    new OvertimeBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), OverTimeBalance1 = 0.0M, OverTimeBalance2 = 8.0M, OverTimeBalance3 = 16.0M, EmployeeId = 3 },
                 };
 
                 overtimeBalancePeriods.ForEach(overtimeBalancePeriod => context.OvertimeBalancePeriods.AddOrUpdate(overtimeBalancePeriod));
@@ -248,7 +303,12 @@ namespace Tidrapport.Migrations
             {
                 var projectEmployees = new System.Collections.Generic.List<ProjectEmployee>
                 {
-                    new ProjectEmployee { ProjectId = 1, EmployeeId = 3 },
+                    new ProjectEmployee { ProjectId = 1, EmployeeId = 1 },
+                    new ProjectEmployee { ProjectId = 1, EmployeeId = 2 },
+                    new ProjectEmployee { ProjectId = 1, EmployeeId = 3 }, 
+                    new ProjectEmployee { ProjectId = 2, EmployeeId = 2 }, 
+                    new ProjectEmployee { ProjectId = 3, EmployeeId = 3 } 
+
                 };
 
                 projectEmployees.ForEach(projectEmployee => context.ProjectEmployees.AddOrUpdate(projectEmployee));

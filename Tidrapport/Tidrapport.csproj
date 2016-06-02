@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +40,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Global">
       <HintPath>..\packages\Global.1.0\lib\Global.dll</HintPath>
     </Reference>
@@ -140,12 +149,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -193,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Binders\DecimalModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
@@ -200,9 +204,12 @@
     <Compile Include="Controllers\HolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
+    <Compile Include="Migrations\Configuration.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\Company.cs" />
-    <None Include="ViewModels\EmployeeViewModel.cs.OLD" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
+    <Compile Include="ViewModels\EmployeeRole.cs" />
     <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -211,24 +218,24 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TimeReportsController.cs" />
     <Compile Include="Controllers\TimeReportTemplatesController.cs" />
-    <Compile Include="Dal\ITimeReportRepository.cs" />
+    <Compile Include="Dal\IRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CalendarTimeReportEvent.cs" />
+    <Compile Include="ViewModels\Role_VM.cs" />
+    <Compile Include="ViewModels\TimeReport_VM.cs" />
     <Content Include="Migrations\Backup\Backup.txt" />
     <None Include="Migrations\Backup\Configuration.cs.bcp" />
     <Compile Include="Migrations\201605031316013_Initial.cs" />
     <Compile Include="Migrations\201605031316013_Initial.Designer.cs">
       <DependentUpon>201605031316013_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\OvertimeBalancePeriod.cs" />
-    <Compile Include="ViewModels\AddEmployeesToProjetc_VM.cs" />
     <Compile Include="ViewModels\CreateProjcet_VM.cs" />
-    <Compile Include="ViewModels\CreateEmployee_VM.cs" />
+    <Compile Include="ViewModels\RegisterEmployee_VM.cs" />
     <Compile Include="Models\NationalHolidayBalancePeriod.cs" />
     <Compile Include="Models\ProjectEmployee.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -249,6 +256,8 @@
     <Content Include="Pictures\Clock.jpg" />
     <Content Include="Pictures\Clock2.jpg" />
     <Content Include="Scripts\datepicker.js" />
+    <Content Include="Scripts\App\custom.validate.js" />
+    <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Views\TimeReports\Create.cshtml" />
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />
@@ -269,6 +278,13 @@
     <Content Include="Views\Employees\HolidayBalancePeriod_partial.cshtml" />
     <Content Include="Views\Employees\NationaHolidayBalancePeriod_partial.cshtml" />
     <Content Include="Views\Employees\AllDetails.cshtml" />
+    <Content Include="Views\Employees\RegisterEmployee.cshtml" />
+    <Content Include="Views\ProjectEmployees\Employees.cshtml" />
+    <Content Include="Views\ProjectEmployees\Projects.cshtml" />
+    <Content Include="Views\Employees\myProfile.cshtml" />
+    <Content Include="Views\TimeReportTemplates\myTemplate.cshtml" />
+    <Content Include="Views\ProjectEmployees\myProjects.cshtml" />
+    <Content Include="Views\TimeReports\myTimeReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -284,7 +300,6 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
@@ -292,7 +307,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

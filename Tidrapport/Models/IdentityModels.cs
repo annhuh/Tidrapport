@@ -69,6 +69,7 @@ namespace Tidrapport.Models
         public CustomUserStore(ApplicationDbContext context)
             : base(context)
         {
+
         }
     }
 

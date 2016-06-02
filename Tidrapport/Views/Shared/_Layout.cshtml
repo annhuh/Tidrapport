@@ -30,21 +30,23 @@
                         <li>@Html.ActionLink("Tidrapport", "Index", "TimeReports")</li>
                         <li>@Html.ActionLink("Kund", "Index", "Customers")</li>
                         <li>@Html.ActionLink("Projekt", "Index", "Projects")</li>
-   
+                        <li>@Html.ActionLink("Användare", "Index", "Users")</li>
                     }
                     
                     @if (User.IsInRole("anställd"))
                     {
-                        <li>@Html.ActionLink("Min detaljer", "Index", "Employees")</li>
-                        <li>@Html.ActionLink("Mina tidrapporter", "Index", "TimeReports")</li>
-                        <li>@Html.ActionLink("Mina projekt", "Index", "Projects")</li>
+                        <li>@Html.ActionLink("Min profil", "MyProfile", "Employees")</li>
+                        <li>@Html.ActionLink("Mina projekt", "MyProjects", "ProjectEmployees")</li>
+                        <li>@Html.ActionLink("Mina tidrapporter", "MyTimeReports", "TimeReports")</li>
+                        <li>@Html.ActionLink("Min mall", "MyTemplate", "TimeReportTemplates")</li>
                     }
                     
                     @if (User.IsInRole("ekonomi"))
                     {
-                        <li>@Html.ActionLink("Ekonomi", "Index", "Ekonomy")</li>
-                    } 
-                    
+                        <li>@Html.ActionLink("Faktura underlag", "InvoiceData", "TimeReports")</li>
+                        <li>@Html.ActionLink("Saldo kontrollen", "InvoiceData", "TimeReports")</li>
+                    }
+
                     @*<li>@Html.ActionLink("Administration", "Index", "Administrates")</li>
                     <li>@Html.ActionLink("Företag", "Index", "Companies")</li>
                     <li>@Html.ActionLink("Anställd", "Index", "Employees")</li>

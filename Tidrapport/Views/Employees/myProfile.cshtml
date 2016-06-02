@@ -1,16 +1,11 @@
 ﻿@model Tidrapport.Models.Employee
 
-@{
-    ViewBag.Title = "Details";
-}
-
-<h2>Detaljerad information</h2>
-
 <div>
-    <h4>Anställd</h4>
+    <h4>Mina uppgifter</h4>
     <hr />
-    <div class="row"></div>
-        <div class="col-md-12">
+    
+    <div class="row">
+        <div class="col-md-4">
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Company.Name)
@@ -19,11 +14,20 @@
                 <dd>
                     @Html.DisplayFor(model => model.Company.Name)
                 </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Company.OrgRegNo)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Company.OrgRegNo)
+                </dd>
             </dl>
         </div>
     </div>
+    
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.SSN)
@@ -76,13 +80,12 @@
                 <dt>
                     @Html.DisplayNameFor(model => model.Country)
                 </dt>
-
                 <dd>
                     @Html.DisplayFor(model => model.Country)
                 </dd>
-            </dl>
+             </dl>
         </div>
-
+ 
         <div class="col-md-4">
             <dl class="dl-horizontal">
                 <dt>
@@ -100,7 +103,8 @@
                 <dd>
                     @Html.DisplayFor(model => model.EmployedTo)
                 </dd>
-
+            </dl>
+            <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.NormalWeekHours)
                 </dt>
@@ -119,11 +123,6 @@
             </dl>
         </div>
         <div class="col-md-4">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.FlexBalance)
@@ -164,16 +163,8 @@
                 <dd>
                     @Html.DisplayFor(model => model.SavedHolidays)
                 </dd>
-            </dl>
-        </div>
-    </div>
 
-        <p>
-            @*@Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeId }) |*@
-            @*@Html.ActionLink("Back to List", "Index")*@
-            <div>
-                <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
-                </a>
-            </div>
-        </p>
+            </dl>
+         </div>
+    </div>
+</div>

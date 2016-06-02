@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Tidrapport.Models;
 
 namespace Tidrapport.ViewModels
 {
-    public class AddEmployeesToProjetc_VM
+    public class Role_VM
     {
-        
+        public int Id { get; set; }
+        public string Name {get; set; }
     }
 }

@@ -2,7 +2,8 @@
     ViewBag.Title = "Home Page";
 }
 
-@if (User.Identity.IsAuthenticated)
+@*@if (User.Identity.IsAuthenticated)*@
+@if (User.IsInRole("admin") || User.IsInRole("anställd") || User.IsInRole("ekonomi"))
 {
     <div class="jumbotron">
         <h1>Plats för stor gemensam kalender</h1>
