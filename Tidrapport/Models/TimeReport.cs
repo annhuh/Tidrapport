@@ -9,10 +9,10 @@ namespace Tidrapport.Models
 {
 	public enum Status
 	{
-		Draft = 1,
-		Submitted = 2,
-		Approved = 3, 
-        Returned = 4
+		Utkast = 1,
+		Inlämnad = 2,
+		Godkänd = 3, 
+        Returnerad = 4
 	}
 
 	public class TimeReport
