@@ -29,9 +29,6 @@ namespace Tidrapport.Controllers
 
             ViewBag.CustomerId = cid;
             
-            //Session["CustomerId"] = null;
-            //ViewBag.ProjectId = projectId;
-
             var projectActivities = from activity in activities
                                     where activity.ProjectId == pid
                                     orderby activity.Name

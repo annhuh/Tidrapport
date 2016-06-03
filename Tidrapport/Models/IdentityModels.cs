@@ -51,6 +51,10 @@ namespace Tidrapport.Models
         public System.Data.Entity.DbSet<Tidrapport.Models.Company> Companies { get; set; }
 
         public System.Data.Entity.DbSet<Tidrapport.Models.OvertimeBalancePeriod> OvertimeBalancePeriods { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.WorkHours> WorkHours { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.FlexDateBalance> FlexDateBalances { get; set; }
     }
 
     public class CustomUserRole : IdentityUserRole<int> { }

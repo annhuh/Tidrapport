@@ -48,6 +48,7 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Employees/myProfile
+        [Authorize(Roles = "anställd")]
         public ActionResult myProfile()
         {
             var id = User.Identity.GetUserId();
@@ -333,6 +334,20 @@ namespace Tidrapport.Controllers
             }
 
             return RedirectToAction("Index", new { id = companyId });
+        }
+
+        public ActionResult DownloadViewPdf()
+        {
+            var model = db.Employees;
+
+            return new Rotativa.ViewAsPdf("Index", model) { FileName = "TestViewAsPdf.pdf" };
+        }
+
+        public ActionResult GeneratePDF()
+        {
+            var model = db.Employees;
+            //get content
+            return View("Index", model);
         }
 
         protected override void Dispose(bool disposing)

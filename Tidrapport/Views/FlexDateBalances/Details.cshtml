@@ -1,0 +1,50 @@
+﻿@model Tidrapport.Models.FlexDateBalance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FlexDateBalance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.SSN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.SSN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NormalHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NormalHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportedHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportedHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Difference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Difference)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

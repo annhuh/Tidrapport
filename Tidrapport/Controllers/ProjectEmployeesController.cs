@@ -18,7 +18,10 @@ namespace Tidrapport.Controllers
         // GET: ProjectEmployees
         public ActionResult Index()
         {
-            var projectEmployees = db.ProjectEmployees.Include(p => p.Employee).Include(p => p.Project);
+            var projectEmployees = db.ProjectEmployees
+                .Include(p => p.Employee)
+                .Include(p => p.Project);
+
             projectEmployees = from ep in projectEmployees    
                                orderby ep.Employee.LastName, ep.Employee.FirstName, ep.Project.Name
                                select ep;
@@ -27,25 +30,32 @@ namespace Tidrapport.Controllers
          }
 
         // GET: Projects
+        [Authorize(Roles = "anställd")]
         public ActionResult myProjects()
         {
+            // identify the user
             var id = User.Identity.GetUserId();
-
             int employeeId = int.Parse(id);
+
             var employee = db.Employees.Find(employeeId);
 
-            var myProjects = db.ProjectEmployees.Where (pe => pe.EmployeeId == employeeId).Include(pe => pe.Employee).Include(pe => pe.Project);
+            var myProjects = db.ProjectEmployees
+                .Where (pe => pe.EmployeeId == employeeId)
+                .Include(pe => pe.Employee)
+                .Include(pe => pe.Project);
 
             ViewBag.EmployeeId = employeeId;
             ViewBag.Name = employee.FullName;
             
-                return View(myProjects.ToList());
+            return View(myProjects.ToList());
         }
 
         // GET: Employees (ProjectEmployees) for a project (id)
         public ActionResult Employees(int id)
         {
-            var projectEmployees = db.ProjectEmployees.Include(p => p.Employee).Include(p => p.Project);
+            var projectEmployees = db.ProjectEmployees
+                .Include(p => p.Employee)
+                .Include(p => p.Project);
 
             var project = db.Projects.Find(id);
 
@@ -96,7 +106,7 @@ namespace Tidrapport.Controllers
         // GET: ProjectEmployees/Create
         // connect an employee (id) to a project
         public ActionResult Create(int id)
-        {
+        { 
             int employeeId = id;
             Employee employee = db.Employees.Find(employeeId);
 

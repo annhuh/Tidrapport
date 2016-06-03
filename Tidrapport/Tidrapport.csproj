@@ -68,6 +68,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -201,13 +205,23 @@
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\FlexDateBalancesController.cs" />
     <Compile Include="Controllers\HolidayBalancePeriodsController.cs" />
+    <Compile Include="Controllers\InitWorkHoursCalendarController.cs" />
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
+    <Compile Include="Controllers\WorkHoursController.cs" />
+    <Compile Include="Migrations\201606031228173_Initial.cs" />
+    <Compile Include="Migrations\201606031228173_Initial.Designer.cs">
+      <DependentUpon>201606031228173_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\FlexDateBalance.cs" />
+    <Compile Include="Models\WorkHours.cs" />
+    <Compile Include="ViewModels\WorkHoursPeriod_VM.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <Compile Include="ViewModels\EmployeeRole.cs" />
     <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
@@ -226,11 +240,8 @@
     <Compile Include="ViewModels\Role_VM.cs" />
     <Compile Include="ViewModels\TimeReport_VM.cs" />
     <Content Include="Migrations\Backup\Backup.txt" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Migrations\Backup\Configuration.cs.bcp" />
-    <Compile Include="Migrations\201605031316013_Initial.cs" />
-    <Compile Include="Migrations\201605031316013_Initial.Designer.cs">
-      <DependentUpon>201605031316013_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\OvertimeBalancePeriod.cs" />
@@ -255,6 +266,7 @@
     <Compile Include="ViewModels\EconomicalTimeReportDetailed_VM.cs" />
     <Content Include="Pictures\Clock.jpg" />
     <Content Include="Pictures\Clock2.jpg" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\App\custom.validate.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -285,6 +297,18 @@
     <Content Include="Views\TimeReportTemplates\myTemplate.cshtml" />
     <Content Include="Views\ProjectEmployees\myProjects.cshtml" />
     <Content Include="Views\TimeReports\myTimeReports.cshtml" />
+    <Content Include="Views\WorkHours\Create.cshtml" />
+    <Content Include="Views\WorkHours\Delete.cshtml" />
+    <Content Include="Views\WorkHours\Details.cshtml" />
+    <Content Include="Views\WorkHours\Edit.cshtml" />
+    <Content Include="Views\WorkHours\Index.cshtml" />
+    <Content Include="Views\FlexDateBalances\Create.cshtml" />
+    <Content Include="Views\FlexDateBalances\Delete.cshtml" />
+    <Content Include="Views\FlexDateBalances\Details.cshtml" />
+    <Content Include="Views\FlexDateBalances\Edit.cshtml" />
+    <Content Include="Views\FlexDateBalances\Index.cshtml" />
+    <Content Include="Views\WorkHours\GenerateNewWorkHours.cshtml" />
+    <Content Include="Views\WorkHours\DeleteOldWorkHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -387,6 +411,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Initialize\" />
+    <Folder Include="Views\InitWorkHoursCalendar\" />
+    <Folder Include="Views\Init\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -396,8 +423,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605031316013_Initial.resx">
-      <DependentUpon>201605031316013_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606031228173_Initial.resx">
+      <DependentUpon>201606031228173_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

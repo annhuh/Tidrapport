@@ -1,0 +1,56 @@
+﻿@model Tidrapport.Models.FlexDateBalance
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>FlexDateBalance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.SSN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.SSN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NormalHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NormalHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportedHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportedHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Difference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Difference)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

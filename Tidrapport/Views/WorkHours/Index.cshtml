@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Tidrapport.Models.WorkHours>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hours)
+        </th>
+        <th>
+            <a href="@Url.Action("GenerateNewWorkHours")" class="btn btn-default btn-">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Skapa ny period
+            </a>
+            <a href="@Url.Action("DeleteOldWorkHours")" class="btn btn-default btn-">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+                Tabort period
+            </a>
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    if (((int)item.Date.DayOfWeek == 0) || ((int)item.Date.DayOfWeek == 6))
+    {
+        <tr class="weekend">
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hours)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-edit"></span> Editera
+                </a>
+            </td>
+        </tr>
+    }
+    else
+    {
+        if (@item.Hours.CompareTo(0) > 0)
+        { 
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span> Editera
+                    </a>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr class="free-day">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span> Editera
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+}
+
+</table>
