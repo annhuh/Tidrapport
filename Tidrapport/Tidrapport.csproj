@@ -207,13 +207,12 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\FlexDateBalancesController.cs" />
     <Compile Include="Controllers\HolidayBalancePeriodsController.cs" />
-    <Compile Include="Controllers\InitWorkHoursCalendarController.cs" />
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Controllers\WorkHoursController.cs" />
-    <Compile Include="Migrations\201606031228173_Initial.cs" />
-    <Compile Include="Migrations\201606031228173_Initial.Designer.cs">
-      <DependentUpon>201606031228173_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201606090926513_Initial.cs" />
+    <Compile Include="Migrations\201606090926513_Initial.Designer.cs">
+      <DependentUpon>201606090926513_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -221,6 +220,7 @@
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\FlexDateBalance.cs" />
     <Compile Include="Models\WorkHours.cs" />
+    <Compile Include="ViewModels\TimeReportDraft_VM.cs" />
     <Compile Include="ViewModels\WorkHoursPeriod_VM.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <Compile Include="ViewModels\EmployeeRole.cs" />
@@ -270,7 +270,6 @@
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\App\custom.validate.js" />
     <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Views\TimeReports\Create.cshtml" />
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />
     <Content Include="Views\TimeReports\Edit.cshtml" />
@@ -309,6 +308,7 @@
     <Content Include="Views\FlexDateBalances\Index.cshtml" />
     <Content Include="Views\WorkHours\GenerateNewWorkHours.cshtml" />
     <Content Include="Views\WorkHours\DeleteOldWorkHours.cshtml" />
+    <Content Include="Views\TimeReports\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -388,7 +388,7 @@
     <Content Include="Views\Companies\Details.cshtml" />
     <Content Include="Views\Companies\Edit.cshtml" />
     <Content Include="Views\Companies\Index.cshtml" />
-    <Content Include="Views\TimeReportTemplates\Create.cshtml" />
+    <None Include="Views\TimeReportTemplates\Create.cshtml" />
     <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
     <Content Include="Views\TimeReportTemplates\Details.cshtml" />
     <Content Include="Views\TimeReportTemplates\Edit.cshtml" />
@@ -423,8 +423,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606031228173_Initial.resx">
-      <DependentUpon>201606031228173_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606090926513_Initial.resx">
+      <DependentUpon>201606090926513_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

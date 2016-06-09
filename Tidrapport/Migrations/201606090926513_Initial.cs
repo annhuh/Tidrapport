@@ -185,7 +185,7 @@ namespace Tidrapport.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        YearWeek = c.String(),
+                        YearWeek = c.String(nullable: false),
                         Date = c.DateTime(nullable: false),
                         NumberOfHours = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Status = c.Int(nullable: false),

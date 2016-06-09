@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -12,12 +13,13 @@ using Tidrapport.ViewModels;
 
 namespace Tidrapport.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public class TimeReportsController : Controller
-    {
+    { 
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TimeReports
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             var timeReports = db.TimeReports.Include(t => t.Activity).Include(t => t.Employee);
@@ -79,24 +81,48 @@ namespace Tidrapport.Controllers
         // GET: TimeReports/Create
         public ActionResult Create()
         {
-            //// who is the user
-            ////-------------------
-            //System.Security.Principal.IIdentity id;
-            
-            
-            //if (User.Identity.IsAuthenticated)
+            // identify the user
+            var id = User.Identity.GetUserId();
+            int employeeId = int.Parse(id);
+
+            // select projects and activities the user is connected to
+            //--------------------------------------------------------
+            var projectemployees = from pe in db.ProjectEmployees
+                                   where pe.EmployeeId == employeeId
+                                   select new
+                                   {
+                                       EmployeeId = pe.EmployeeId,
+                                       ProjectId = pe.ProjectId
+                                   };
+
+            var projectActivities = db.Activities
+                .Include(a => a.Project)
+                .Where(a => projectemployees.Any(pe => pe.ProjectId == a.Project.ProjectId))
+                .Select(a => new
+                {
+                    ActivityId = a.Id.ToString(),
+                    ActivityName = a.Project.Name + " - " + a.Name,
+                    ProjectName = a.Project.Name
+                    //ProjectStartDate = a.Project.StartDate,
+                    //ProjectEndDate = a.Project.EndDate
+                });
+
+            //.GroupBy(row => new
             //{
-            //    id = int.Parse(User.Identity);
-            //    User.
-            //}
+            //    ActivityId =  row.Id,
+            //    ActivityName = row.Name,
+            //    ProjectName = row.Project.Name,
+            //    //Projectid = row.Project.ProjectId,
+            //    //ProjectNumber = row.Project.Number,
+            //    ProjectStartDate = row.Project.StartDate,
+            //    ProjectEndDate = row.Project.EndDate
+            //});
 
-            //// select projects and activities which I am connected to
-            ////--------------------------------------------------------
+            ViewBag.activitiesDD = new SelectList(projectActivities, "ActivityId", "ActivityName", 1);
+            ViewBag.EmployeeId = employeeId;
 
-            //db.Activities.Select()
+            //ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
 
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "Name");
             return View();
         }
 
@@ -105,17 +131,46 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
+        public ActionResult Create([Bind(Include = "FromDate, ToDate, NumberOfHours,EmployeeId,ActivityId")] TimeReportDraft_VM timeReport)
         {
-            if (ModelState.IsValid)
-            {
-                db.TimeReports.Add(timeReport);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            DateTime date = timeReport.FromDate;
+            DateTime endDate = timeReport.ToDate == null ? timeReport.FromDate : timeReport.ToDate;
+
+            while (date.CompareTo(endDate) <= 0)
+            { 
+                int weeknumber = WeekNumber(date);  
+
+                var _timereport = new TimeReport
+                {
+                    EmployeeId = timeReport.EmployeeId,
+                    ActivityId = timeReport.ActivityId,
+                    Date = date,
+                    YearWeek = date.Year.ToString() + "-" + weeknumber.ToString(),
+                    NumberOfHours = timeReport.NumberOfHours,
+                    Status = TRStatus.Utkast
+                };
+
+                if (ModelState.IsValid)
+                {
+                    db.TimeReports.Add(_timereport);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    // Do something
+                }
+
+                date = date.AddDays(1);
             }
 
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReport.ActivityId);
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
+            // OK 
+            if (User.IsInRole("anställd")) {
+                    return RedirectToAction("MyTimeReports");
+                } else { 
+                    return RedirectToAction("Index");
+                }
+
+            // Not OK
             return View(timeReport);
         }
 
@@ -188,5 +243,15 @@ namespace Tidrapport.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        private static int WeekNumber(DateTime datum)
+        {
+            return System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+            datum,
+            System.Globalization.CalendarWeekRule.FirstFourDayWeek,
+            DayOfWeek.Monday);
+        }
+
     }
 }

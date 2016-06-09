@@ -7,7 +7,7 @@
     ViewBag.Title = "Mina tidrapporter";
 }
 
-<h2>myTimeReports</h2>
+<h2>Mina tidrapporter</h2>
 
 @*<p>
  
@@ -15,12 +15,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-
-            </th>
-        @*<th>
+        <th>
                 @Html.DisplayNameFor(model => model.YearWeek)
-        </th>*@
+        </th>
         <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
@@ -48,9 +45,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ApprovedTimeStamp)
             </th>*@
-        @*<th>
-                @Html.ActionLink("Skapa ny", "Create")
-            </th>*@
+            <th>
+                <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Skapa ny tidrapport
+                </a>
+            </th>
         @*</tr>*@
     </thead>
     <tfoot>

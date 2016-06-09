@@ -11,6 +11,7 @@ using Tidrapport.ViewModels;
 
 namespace Tidrapport.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class WorkHoursController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

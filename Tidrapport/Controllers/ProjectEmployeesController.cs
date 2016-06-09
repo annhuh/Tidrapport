@@ -106,125 +106,43 @@ namespace Tidrapport.Controllers
         // GET: ProjectEmployees/Create
         // connect an employee (id) to a project
         public ActionResult Create(int id)
-        { 
+        {
+            var now = DateTime.Now;
+
             int employeeId = id;
             Employee employee = db.Employees.Find(employeeId);
 
             ViewBag.EmployeeName = employee.FullName;
-            ViewBag.EmployeeID = employee.EmployeeId;
+            ViewBag.EmployeeId = employee.EmployeeId;
 
-            //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
+            // get all selectable projects (not templates)
+            // -------------------------------------------
+            var notTemplateNorTerminatedProjects = from project in db.Projects
+                                                   where project.IsTemplate == false
+                                                   select new
+                                                   {
+                                                       ProjectId = project.ProjectId,
+                                                       Name = project.Name
+                                                   };
+
+            //&& DateTime. p.EndDate != null?p.EndDate.Value>=DateTime.Today:false);
+
+            // get all already assigned projects for the employee
+            // --------------------------------------------------
+            var assignedProjects = from projectEmployee in db.ProjectEmployees
+                                   where projectEmployee.EmployeeId == employeeId
+                                   select new
+                                   {
+                                       ProjectId = projectEmployee.ProjectId,
+                                       Name = ""
+                                   };
+
+            var selectableProjects = notTemplateNorTerminatedProjects
+                .Where(p => !assignedProjects.Any(pe => pe.ProjectId == p.ProjectId));
+                       
+            var theSelectList = selectableProjects;
             
-            var allProjects = db.Projects;
-            var allProjectEmployees = db.ProjectEmployees;
-            var now = DateTime.Now;
-
-            // all assignable projects
-            var notTemplateNorTerminatedProjects = from p in allProjects
-                                                   where !p.IsTemplate // && (p.EndDate < now)
-                                                   select p;
- 
-            var assignedProjects = from assignedProject in allProjectEmployees 
-                                   where assignedProject.EmployeeId == employeeId
-                                   select assignedProject;
-      
-            var alreadyAssignedProjects = from ep in notTemplateNorTerminatedProjects
-                                          join aap in assignedProjects
-                                          on ep.ProjectId equals aap.ProjectId
-                                          select new { 
-                                                    ProjectId = ep.ProjectId,
-                                                    ProjectName = ep.Name
-                                          };
-            
-            var theSelectList = notTemplateNorTerminatedProjects.ToList();
-            
-            theSelectList.Insert(0, new Project()
-                {
-                    Name = "Ange val",
-                    ProjectId = -1
-                });
-
-            //ViewBag.ProjectId = new SelectList(notTemplateNorTerminatedProjects, "ProjectId", "Name", alreadyAssignedProjects);
-            ViewBag.ProjectId = new SelectList(theSelectList, "ProjectId", "Name", alreadyAssignedProjects);
-           
-            //var projectsToExclude = from ep in notTemplateNorTerminatedProjects
-            //                        join pe in allProjectEmployees
-            //                        on ep.
-
-            //var projectEmployees = db.ProjectEmployees;
-            //projectEmployees = from projectEmployee in projectEmployees
-            //                   where projectEmployee.EmployeeId Equals 
-
-
-            //projects = from project in projects
-            //           where !project.IsTemplate && (project.EndDate == null || project.EndDate <  project.DateTime.Now) 
-            //           orderby project.Project.Name
-            //           select project;
-          
-            
-            //var projList = new SelectList(projects, "ProjectId", "Name");
-            //var selectList = new List (new SelectListItem
-            //{
-            //    Value = "-1",
-            //    Text = "Välj alternativ"
-            //});
-            
-            //ViewBag.ProjectId = new SelectList(db.Projects, "Project", "Name");
-
-
-            // start
-            //var selectList = new List<SelectListItem>();
-                  
-            //var allProjects = db.Projects;
-            //var allProjectEmployees = db.ProjectEmployees;
-
-            //selectList.Insert(0, new SelectListItem
-            //{
-            //    Value = "-1",
-            //    Text = "Välj alternativ"
-            //});
-
-            //if (id == null)
-            //{
-            //    foreach (var item in allProjects)
-            //    {
-            //        selectList.Add(new SelectListItem
-            //        {
-            //            Value = item.Id.ToString(),
-            //            Text = item.SSN //item.FirstName + " " + item.LastName
-            //        });
-            //    }
-            //}
-            //else
-            //{
-            //    bool isInCourse = false;
-
-            //    foreach (var sItem in Students)
-            //    {
-            //        // Check if student is already in course
-            //        foreach (var scItem in StudentCourses)
-            //        {
-            //            if (scItem.CourseId == id && scItem.StudentId == sItem.Id)
-            //            {
-            //                isInCourse = true;
-            //            }
-            //        }
-
-            //        if (isInCourse == false)
-            //        {
-            //            selectList.Add(new SelectListItem
-            //            {
-            //                Value = sItem.Id.ToString(),
-            //                Text = sItem.SSN //sItem.FirstName + " " + sItem.LastName
-            //            });
-            //        }
-
-            //        isInCourse = false;
-            //    }
-            //}
-
-            //return selectList;
-            /////// end 
+            ViewBag.ProjectId = new SelectList(theSelectList, "ProjectId", "Name");
 
             return View();
         }
@@ -234,7 +152,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
+        public ActionResult Create([Bind(Include = "EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
         {
             if (ModelState.IsValid)
             {

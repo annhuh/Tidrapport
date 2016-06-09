@@ -25,6 +25,8 @@ namespace Tidrapport.Controllers
         // GET: TimeReportTemplates1
         public ActionResult myTemplate()
         {
+            string dag = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0];
+
             var id = User.Identity.GetUserId();
 
             int employeeId = int.Parse(id);
@@ -54,8 +56,15 @@ namespace Tidrapport.Controllers
         // GET: TimeReportTemplates1/Create
         public ActionResult Create()
         {
+            // tips för att få rätt veckodag!!!
+            DayOfWeek day = DayOfWeek.Monday;
+            System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+            string dayOfWeekLocalized = cultureInfo.DateTimeFormat.DayNames[(int)day];
+
             ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
             ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
+            
+            
             return View();
         }
 

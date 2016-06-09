@@ -13,7 +13,7 @@ namespace Tidrapport.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201606031228173_Initial"; }
+            get { return "201606090926513_Initial"; }
         }
         
         string IMigrationMetadata.Source

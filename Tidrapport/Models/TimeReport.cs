@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-	public enum Status
+	public enum TRStatus
 	{
 		Utkast = 1,
 		Inlämnad = 2,
@@ -21,17 +21,21 @@ namespace Tidrapport.Models
 		public int Id { get; set; }
 
         [Display(Name = "År-Vecka")]
+        [Required]
         public string YearWeek { get; set; }
         
 		[DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Datum")]
+        [Required]
 		public DateTime Date { get; set; }
         
         [Display(Name="Antal timmar")]
-		public decimal NumberOfHours { get; set; }
-		
-        public Status Status{ get; set; }
+        [Required]
+        public decimal NumberOfHours { get; set; }
+
+        [Required]
+        public TRStatus Status{ get; set; }
 
         [Display(Name = "Inskickad av")]
         public string SubmittedBy { get; set; }
