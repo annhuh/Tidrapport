@@ -7,19 +7,7 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-    public enum BalanceEffect {
-        NoEffect = 0,
-        AddOnOvertime1 = 1, 
-        AddOnOvertime2 = 2, 
-        AddOnOvertime3 = 3,
-        RemoveFromOvertime1 = 4,
-        RemoveFromOvertime2 = 5,
-        RemoveFromOvertime3 = 6,
-        RemoveFromPayedHolidays = 7,
-        ReomveFromUnpayedHolidays = 8,
-        RemoveFromSavedHolidays = 9,
-        RemoveFromNationalHoliday = 10
-    }
+    
 
 	public class Activity
 	{

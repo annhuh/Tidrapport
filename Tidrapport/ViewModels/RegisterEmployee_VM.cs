@@ -65,12 +65,12 @@ namespace Tidrapport.ViewModels
         // Epmployee properties
         // -----------------------
 
-        [Display(Name = "Anställd från")]
+        [Display(Name = "Från")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Anställd from är obligatorisk")]
         public DateTime EmployedFrom { get; set; }
 
-        [Display(Name = "Anställd till")]
+        [Display(Name = "Till")]
         [DataType(DataType.Date)]
         public DateTime? EmployedTo { get; set; }
 
@@ -78,6 +78,16 @@ namespace Tidrapport.ViewModels
         [Display(Name = "Timmar/vecka")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
         public Decimal NormalWeekHours { get; set; }
+
+        [Display(Name = "Från")]
+        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Semesterperiod from är obligatorisk")]
+        public DateTime HolidayPeriodFrom { get; set; }
+
+        [Display(Name = "Till")]
+        [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Semesterperiod till är obligatorisk")]
+        public DateTime HolidayPeriodTo { get; set; }
 
         [Required]
         [Display(Name = "Semesterdagar")]
@@ -112,51 +122,51 @@ namespace Tidrapport.ViewModels
         [Display(Name = "Sparad semester")]
         [DefaultValue(0)]
         public int SavedHolidays { get; set; }
- 
+
         // -----------------------
         // Overtime Balance Period
         // -----------------------
-        //[Display(Name = "Giltig från")]
-        //public DateTime OvertimeBalanceValidFrom { get; set; }
+        [Display(Name = "Giltig från")]
+        public DateTime OvertimeBalanceValidFrom { get; set; }
 
-        //[Display(Name = "Giltig till")]
-        //public DateTime OvertimeBalanceValidTo { get; set; }
+        [Display(Name = "Giltig till")]
+        public DateTime OvertimeBalanceValidTo { get; set; }
 
-        //[Display(Name = "Mertid")]
-        //public decimal OvertimeBalance1 { get; set; }
+        [Display(Name = "Mertid")]
+        public decimal OvertimeBalance1 { get; set; }
 
-        //[Display(Name = "Enkel övertid")]
-        //public decimal OvertimeBalance2 { get; set; }
+        [Display(Name = "Enkel övertid")]
+        public decimal OvertimeBalance2 { get; set; }
 
-        //[Display(Name = "Kval övertid")]
-        //public decimal OvertimeBalance3 { get; set; }
-
-        // -----------------------
-        // Holiday Balance
-        // -----------------------
-        //[Display(Name = "Giltig från")]
-        //public DateTime HolidayBalanceValidFrom { get; set; }
-
-        //[Display(Name = "Giltig till")]
-        //public DateTime HolidayBalanceValidTo { get; set; }
-        
-        //[Display(Name = "Betalda semesterdagar")]
-        //public int PayedHolidayBalance { get; set; }
-        
-        //[Display(Name = "Obetalda semesterdagar")]
-        //public int UnPayedHolidayBalance { get; set; }
+        [Display(Name = "Kval övertid")]
+        public decimal OvertimeBalance3 { get; set; }
 
         // -----------------------
-        // National Holiday Balance
+        // Holiday Balance Period
         // -----------------------
+        [Display(Name = "Från")]
+        public DateTime HolidayBalanceValidFrom { get; set; }
 
-        //[Display(Name = "Giltig från")]
-        //public DateTime NationalHolidayBalanceValidFrom { get; set; }
+        [Display(Name = "Till")]
+        public DateTime HolidayBalanceValidTo { get; set; }
 
-        //[Display(Name = "Giltig till")]
-        //public DateTime NationalHolidayBalanceValidTo { get; set; }
+        [Display(Name = "Betalda semesterdagar")]
+        public int PayedHolidayBalance { get; set; }
 
-        //[Display(Name = "Saldo")]
-        //public decimal Balance { get; set; }
-	}
+        [Display(Name = "Obetalda semesterdagar")]
+        public int UnPayedHolidayBalance { get; set; }
+
+        // -------------------------------
+        // National Holiday Balance Period
+        // -------------------------------
+
+        [Display(Name = "Från")]
+        public DateTime NationalHolidayBalanceValidFrom { get; set; }
+
+        [Display(Name = "Till")]
+        public DateTime NationalHolidayBalanceValidTo { get; set; }
+
+        [Display(Name = "Saldo")]
+        public decimal Balance { get; set; }
+    }
 }

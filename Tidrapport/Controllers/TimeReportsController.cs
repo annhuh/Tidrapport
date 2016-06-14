@@ -134,30 +134,66 @@ namespace Tidrapport.Controllers
         public ActionResult Create([Bind(Include = "FromDate, ToDate, NumberOfHours,EmployeeId,ActivityId")] TimeReportDraft_VM timeReport)
         {
             DateTime date = timeReport.FromDate;
-            DateTime endDate = timeReport.ToDate == null ? timeReport.FromDate : timeReport.ToDate;
+            DateTime endDate = (timeReport.ToDate == null) ? timeReport.FromDate : (DateTime)timeReport.ToDate;
+            bool period = (timeReport.ToDate == null) ? false : true;
 
             while (date.CompareTo(endDate) <= 0)
-            { 
+            {
+                var _workHours = db.WorkHours
+                        .Where(wh => wh.Date == date)
+                        .FirstOrDefault();
+
+                var _activity = db.Activities.Find(timeReport.ActivityId);
+
                 int weeknumber = WeekNumber(date);  
 
-                var _timereport = new TimeReport
-                {
-                    EmployeeId = timeReport.EmployeeId,
-                    ActivityId = timeReport.ActivityId,
-                    Date = date,
-                    YearWeek = date.Year.ToString() + "-" + weeknumber.ToString(),
-                    NumberOfHours = timeReport.NumberOfHours,
-                    Status = TRStatus.Utkast
-                };
+                if (_workHours.Hours > 0)
+                { 
+                    var _timereport = new TimeReport
+                    {
+                        EmployeeId = timeReport.EmployeeId,
+                        ActivityId = timeReport.ActivityId,
+                        Date = date,
+                        YearWeek = date.Year.ToString() + "-" + weeknumber.ToString(),
+                        NumberOfHours = timeReport.NumberOfHours,
+                        Status = TRStatus.Utkast
+                    };
 
-                if (ModelState.IsValid)
-                {
-                    db.TimeReports.Add(_timereport);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    // Do something
+                    switch (_activity.BalanceEffect)
+                    {                   
+                        case BalanceEffect.PlusPåÖvertid1:
+                            break;
+                        case BalanceEffect.PlusPåÖvertid2:
+                            break;
+                        case BalanceEffect.PlusPåÖvertid3:
+                            break;
+                        case BalanceEffect.MinusPåÖvertid1:
+                            break;
+                        case BalanceEffect.MinusPåÖvertid2:
+                            break;
+                        case BalanceEffect.MinusPåÖvertid3:
+                            break;
+                        case BalanceEffect.MinusPåNationaldagSaldo:
+                            break;
+                        case BalanceEffect.UttagBetaldSemesterdag:
+                            break;
+                        case BalanceEffect.UttagObetaldSemesterdag:
+                            break;
+                        case BalanceEffect.UttagSparadSemesterdag:
+                            break;
+                        default: // no effect
+                            break;
+                    }
+                       
+                    if (ModelState.IsValid)
+                    {
+                        db.TimeReports.Add(_timereport);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        // Do something
+                    }
                 }
 
                 date = date.AddDays(1);
@@ -166,9 +202,7 @@ namespace Tidrapport.Controllers
             // OK 
             if (User.IsInRole("anställd")) {
                     return RedirectToAction("MyTimeReports");
-                } else { 
-                    return RedirectToAction("Index");
-                }
+            } 
 
             // Not OK
             return View(timeReport);

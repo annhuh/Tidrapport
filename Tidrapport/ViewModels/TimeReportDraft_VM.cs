@@ -21,7 +21,7 @@ namespace Tidrapport.ViewModels
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Till")]
-        public DateTime ToDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
         [Display(Name = "Antal timmar")]
         [Required]

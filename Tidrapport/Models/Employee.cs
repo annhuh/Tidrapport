@@ -17,6 +17,26 @@ namespace Tidrapport.Models
         [Display(Name="Personnr")]
 		public string SSN { get; set; }
 
+        [Required]
+        [Display(Name = "Förnamn")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Efternamn")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Gatuadress")]
+        public string Address { get; set; }
+
+        [Display(Name = "Postnummer")]
+        public string ZipCode { get; set; }
+
+        [Display(Name = "Stad")]
+        public string City { get; set; }
+
+        [Display(Name = "Land")]
+        public string Country { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Anställd från")]
@@ -33,29 +53,18 @@ namespace Tidrapport.Models
         public Decimal NormalWeekHours { get; set; }
 
         [Required]
+        [Display(Name = "Semesterperiod från")]
+        public DateTime HoldayPeriodFrom { get; set; }
+
+        [Required]
+        [Display(Name = "Semesterperiod till")]
+        public DateTime HolidayPeriodTo { get; set; }
+
+        [Required]
         [Display(Name = "Semester/år")]
         public int NumberOfHolidaysPerYear { get; set; }
 		
-        [Required]
-        [Display(Name = "Förnamn")]
-		public string FirstName { get; set; }
-		
-        [Required]
-        [Display(Name = "Efternamn")]
-		public string LastName { get; set; }
-        
-        [Display(Name = "Gatuadress")]
-		public string Address { get; set; }
-        
-        [Display(Name = "Postnummer")]
-		public string ZipCode { get; set; }
-        
-        [Display(Name = "Stad")]
-		public string City { get; set; }
-        
-        [Display(Name = "Land")]
-		public string Country { get; set; }
-        
+ 
         [Required]
         [Display(Name = "Flex saldo")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]

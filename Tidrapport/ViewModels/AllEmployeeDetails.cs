@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,31 +10,37 @@ namespace Tidrapport.ViewModels
 {
     public class AllEmployeeDetails
     {
-        [Key]
-        public int EmployeeId { get; set; }
-
         [Display(Name = "Personnr")]
         public string SSN { get; set; }
 
-        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Anställd från")]
         public DateTime? EmployedFrom { get; set; }
 
-        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Anställd till")]
         public DateTime? EmployedTo { get; set; }
 
-        [Required]
         [Display(Name = "Timmar/vecka")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
         public Decimal NormalWeekHours { get; set; }
 
-        [Required]
+        [Display(Name = "Semersterperiod från")]
+        public int HolidayPeriodFrom { get; set; }
+
+        [Display(Name = "Semesterperiod till")]
+        public int HolidayPeriodTo { get; set; }
+
         [Display(Name = "Semester/år")]
         public int NumberOfHolidaysPerYear { get; set; }
 
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Roll")]
+        public IdentityRole Role { get; set; }
         [Required]
         [Display(Name = "Förnamn")]
         public string FirstName { get; set; }

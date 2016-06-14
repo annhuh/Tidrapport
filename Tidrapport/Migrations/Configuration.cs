@@ -105,26 +105,26 @@ namespace Tidrapport.Migrations
                 var activities = new System.Collections.Generic.List<Activity>
                 {
                     // internal absence activities
-                    new Activity { Name = "Ledig utan påverkan", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 1 },
-                    new Activity { Name = "Uttag Mertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime1, ProjectId = 1 },
-                    new Activity { Name = "Uttag Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime2, ProjectId = 1 },
-                    new Activity { Name = "Uttag Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime3, ProjectId = 1 },
-                    new Activity { Name = "Uttag Sparad semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromSavedHolidays, ProjectId = 1 },
-                    new Activity { Name = "Uttag Betald semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromPayedHolidays, ProjectId = 1 },
-                    new Activity { Name = "Uttag Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.ReomveFromUnpayedHolidays, ProjectId = 1 },
+                    new Activity { Name = "Ledig utan påverkan", IsActive = true, BalanceEffect = BalanceEffect.Ingen, ProjectId = 1 },
+                    new Activity { Name = "Uttag Mertid", IsActive = true, BalanceEffect = BalanceEffect.MinusPåÖvertid1, ProjectId = 1 },
+                    new Activity { Name = "Uttag Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.MinusPåÖvertid2, ProjectId = 1 },
+                    new Activity { Name = "Uttag Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.MinusPåÖvertid3, ProjectId = 1 },
+                    new Activity { Name = "Uttag Sparad semester", IsActive = true, BalanceEffect = BalanceEffect.UttagSparadSemesterdag, ProjectId = 1 },
+                    new Activity { Name = "Uttag Betald semester", IsActive = true, BalanceEffect = BalanceEffect.UttagSparadSemesterdag, ProjectId = 1 },
+                    new Activity { Name = "Uttag Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.UttagObetaldSemesterdag, ProjectId = 1 },
 
                     // internal work activities
-                    new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime1, ProjectId = 2 },
-                    new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 2 },
-                    new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 2 },
-                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 2 },
-                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 2 },
+                    new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.PlusPåÖvertid1, ProjectId = 2 },
+                    new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.PlusPåÖvertid2, ProjectId = 2 },
+                    new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.PlusPåÖvertid3, ProjectId = 2 },
+                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.Ingen, ProjectId = 2 },
+                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.Ingen, ProjectId = 2 },
                         
                     // Project template activities
-                    new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime2, ProjectId = 3 },
-                    new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime3, ProjectId = 3 },
-                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
-                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 3 },
+                    new Activity { Name = "Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.PlusPåÖvertid2, ProjectId = 3 },
+                    new Activity { Name = "Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.PlusPåÖvertid3, ProjectId = 3 },
+                    new Activity { Name = "Restid inom arbetstid", IsActive = true, BalanceEffect = BalanceEffect.Ingen, ProjectId = 3 },
+                    new Activity { Name = "Restid utanför arbetstid", IsActive = true, BalanceEffect = BalanceEffect.Ingen, ProjectId = 3 },
                 };
 
                 activities.ForEach(activity => context.Activities.AddOrUpdate(activity));
@@ -167,7 +167,9 @@ namespace Tidrapport.Migrations
                         LastName = "Andersson", 
                         Address = "AGatan 1", 
                         EmployedFrom = new DateTime(2016, 1, 1), 
-                        NormalWeekHours = 40.0M, 
+                        NormalWeekHours = 40.0M,
+                        HoldayPeriodFrom = new DateTime(2016, 1, 1),
+                        HolidayPeriodTo = new DateTime(2016, 12, 31), 
                         NumberOfHolidaysPerYear = 25,
                         ZipCode = "11111", City = "Astad", Country  = "Alabanien", 
                         FlexBalance = 0.0M, 

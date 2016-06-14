@@ -7,13 +7,7 @@ using System.Web;
 
 namespace Tidrapport.Models
 {
-	public enum TRStatus
-	{
-		Utkast = 1,
-		Inlämnad = 2,
-		Godkänd = 3, 
-        Returnerad = 4
-	}
+
 
 	public class TimeReport
 	{
@@ -58,5 +52,37 @@ namespace Tidrapport.Models
 
         [ForeignKey("ActivityId")]
         public virtual Activity Activity { get; set; }
-	}
+
+        [Display(Name = "Närvaro")]
+        public decimal Presence { get; set; }
+
+        [Display(Name = "Frånvaro")]
+        public decimal Absence { get; set; }
+
+        [Display(Name = "Summa")]
+        public decimal Summary { get; set; }
+
+        [Display(Name = "Mertid")]
+        public decimal OvertimeBalance1 { get; set; }
+
+        [Display(Name = "Enkel övertid")]
+        public decimal OvertimeBalance2 { get; set; }
+
+        [Display(Name = "´Kvalificerad övertid")]
+        public decimal OvertimeBalance3 { get; set; }
+
+        [Display(Name = "Flex")]
+        public decimal Flex { get; set; }
+
+        [Display(Name = "Komp mertid")]
+        public decimal Comp1 { get; set; }
+
+        [Display(Name = "Komp enkel övertid")]
+        public decimal Comp2 { get; set; }
+
+        [Display(Name = "Komp kvalificerad övertid")]
+        public decimal Comp3 { get; set; }
+
+
+    }
 }

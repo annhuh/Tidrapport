@@ -18,27 +18,63 @@ namespace Tidrapport.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Employees
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, string sortOrder)
         {
+            var companyId = id;
             var employees = db.Employees.Include(e => e.Company);
 
-            if (id != null)
+            if (companyId != null)
             {
                 employees = from employee in employees
-                            where employee.CompanyId == id
+                            where employee.CompanyId == companyId
                             orderby employee.LastName, employee.FirstName
                             select employee;
 
-                ViewBag.CompanyId = id;
-                ViewBag.CompanyName = db.Companies.Find(id).Name;
+                ViewBag.CompanyId = companyId;
+                ViewBag.CompanyName = db.Companies.Find(companyId).Name;
 
                 return View(employees.ToList());
             }
             else
             {
-                employees = from employee in employees
-                            orderby employee.LastName, employee.FirstName
-                            select employee;
+                // set the values of sort links in the view
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+                ViewBag.SSNSortParm = sortOrder == "SSN" ? "ssn_desc" : "SSN";
+                ViewBag.CompanySortParm = sortOrder == "Company" ? "Company_desc" : "Company";
+
+                switch (sortOrder)
+                {
+                    case "company_asc":
+                        employees = employees
+                            .OrderBy(s => s.Company.Name)
+                            .ThenBy(s => s.LastName)
+                            .ThenBy(s => s.FirstName);
+                        break;
+                    case "company_desc":
+                        employees = employees
+                            .OrderByDescending(s => s.Company.Name)
+                            .ThenByDescending(s => s.LastName)
+                            .ThenByDescending(s => s.FirstName); ;
+                        break;
+                    case "SSN":
+                        employees = employees
+                            .OrderBy(s => s.SSN);
+                        break;
+                    case "ssn_desc":
+                        employees = employees
+                            .OrderByDescending(s => s.SSN);
+                        break;
+                    case "name_desc":
+                        employees = employees
+                            .OrderByDescending(s => s.LastName)
+                            .ThenByDescending(s => s.FirstName);
+                        break;
+                    default: // name_asc
+                        employees = employees
+                            .OrderBy(s => s.LastName)
+                            .ThenBy(s => s.FirstName);
+                        break;
+                }
 
                 ViewBag.CompanyId = null;
                 ViewBag.CompanyName = "*";
@@ -63,6 +99,22 @@ namespace Tidrapport.Controllers
             }
 
             return View(myDetails); 
+        }
+
+        // GET: Employees/Details/5
+        public ActionResult AllEmployeeDetails(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Employee employee = db.Employees.Find(id);
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(employee);
         }
 
         // GET: Employees/Details/5
@@ -173,7 +225,7 @@ namespace Tidrapport.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RegisterEmployee(
-            [Bind(Include = "CompanyId,Email,Password,SSN,FirstName,LastName,Address,ZipCode,City,Country,EmployedFrom,EmployedTo,NormalWeekHours,NumberOfHolidaysPerYear,FlexBalance,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,SavedHolidays")] RegisterEmployee_VM employee)
+            [Bind(Include = "CompanyId,Email,Password,SSN,FirstName,LastName,Address,ZipCode,City,Country,EmployedFrom,EmployedTo,NormalWeekHours,HolidayPeriodFrom,HolidayPeriodTo,NumberOfHolidaysPerYear,FlexBalance,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,SavedHolidays")] RegisterEmployee_VM employee)
         {
  
             if (ModelState.IsValid)
@@ -185,12 +237,12 @@ namespace Tidrapport.Controllers
 
                 var employeeUser = new ApplicationUser { UserName = employee.Email };
 
-                userManager.Create(employeeUser, employee.Password);
-                
-                var testvalue = employeeUser.Id;
+                userManager.Create(employeeUser, employee.Password);            
 
                 userManager.AddToRole(employeeUser.Id, "anställd");
 
+                // register the user in Employee
+                //----------------------------------------
                 var newEmployee = new Employee {
                         EmployeeId = employeeUser.Id, 
                         SSN = employee.SSN, 
@@ -200,6 +252,8 @@ namespace Tidrapport.Controllers
                         EmployedFrom = employee.EmployedFrom, 
                         EmployedTo = employee.EmployedTo,
                         NormalWeekHours = employee.NormalWeekHours, 
+                        HoldayPeriodFrom = employee.HolidayPeriodFrom,
+                        HolidayPeriodTo = employee.HolidayPeriodTo,
                         NumberOfHolidaysPerYear = employee.NumberOfHolidaysPerYear,
                         ZipCode = employee.ZipCode, 
                         City = employee.City, 
@@ -259,7 +313,7 @@ namespace Tidrapport.Controllers
  
                 db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("AllEmployeeDetails");
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "OrgRegNo", employee.CompanyId);

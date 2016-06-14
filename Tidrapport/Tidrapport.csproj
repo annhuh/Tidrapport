@@ -205,21 +205,17 @@
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\FlexDateBalancesController.cs" />
     <Compile Include="Controllers\HolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Controllers\WorkHoursController.cs" />
-    <Compile Include="Migrations\201606090926513_Initial.cs" />
-    <Compile Include="Migrations\201606090926513_Initial.Designer.cs">
-      <DependentUpon>201606090926513_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\FlexDateBalance.cs" />
+    <Compile Include="Models\Enumerators.cs" />
     <Compile Include="Models\WorkHours.cs" />
+    <Compile Include="ViewModels\EmoloyeeLoginInfo_VM.cs" />
     <Compile Include="ViewModels\TimeReportDraft_VM.cs" />
     <Compile Include="ViewModels\WorkHoursPeriod_VM.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
@@ -296,9 +292,6 @@
     <Content Include="Views\TimeReportTemplates\myTemplate.cshtml" />
     <Content Include="Views\ProjectEmployees\myProjects.cshtml" />
     <Content Include="Views\TimeReports\myTimeReports.cshtml" />
-    <Content Include="Views\WorkHours\Create.cshtml" />
-    <Content Include="Views\WorkHours\Delete.cshtml" />
-    <Content Include="Views\WorkHours\Details.cshtml" />
     <Content Include="Views\WorkHours\Edit.cshtml" />
     <Content Include="Views\WorkHours\Index.cshtml" />
     <Content Include="Views\FlexDateBalances\Create.cshtml" />
@@ -421,11 +414,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606090926513_Initial.resx">
-      <DependentUpon>201606090926513_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
