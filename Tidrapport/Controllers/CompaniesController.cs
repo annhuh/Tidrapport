@@ -6,18 +6,31 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
     public class CompaniesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+        private IRepository repository;
+
+        public CompaniesController()
+        {
+            repository = new TimeReportRepository();
+        }
+
+        public CompaniesController ( IRepository rep )
+        {
+            repository = rep;
+        }
+
 
         // GET: Companies
         public ActionResult Index()
         {
-            return View(db.Companies.ToList());
+            return View(repository.GetAllCompanies());
         }
 
         // GET: Companies/Details/5
@@ -27,7 +40,7 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+            Company company = repository.GetCompany((int)id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -50,8 +63,8 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Companies.Add(company);
-                db.SaveChanges();
+                repository.AddCompany(company);
+                
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +78,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+
+            Company company = repository.GetCompany((int)id);
+
             if (company == null)
             {
                 return HttpNotFound();
@@ -82,8 +97,8 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(company).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateCompany(company);
+                
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -96,7 +111,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+
+            Company company = repository.GetCompany((int)id);
+
             if (company == null)
             {
                 return HttpNotFound();
@@ -109,9 +126,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Company company = db.Companies.Find(id);
-            db.Companies.Remove(company);
-            db.SaveChanges();
+            repository.DeleteCompany(id);
+          
             return RedirectToAction("Index");
         }
 
@@ -119,7 +135,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

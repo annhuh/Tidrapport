@@ -22,8 +22,59 @@ namespace Tidrapport.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
-            var timeReports = db.TimeReports.Include(t => t.Activity).Include(t => t.Employee);
-            return View(timeReports.ToList());
+            var timeReportsGrouped = db.TimeReports
+               .GroupBy(row => new
+             {
+                 row.YearWeek,
+                 row.Id,
+                 row.Date,
+                 row.Status,
+                 row.SubmittedTime,
+                 row.SubmittedBy,
+                 row.ApprovedTime,
+                 row.ApprovedBy,
+                 row.Presence,
+                 row.Absence,
+                 row.Summary,
+                 row.Flex,
+                 row.Overtime1,
+                 row.Overtime2,
+                 row.Overtime3,
+                 row.Comp1,
+                 row.Comp2,
+                 row.Comp3,
+                 row.Employee.LastName,
+                 row.Employee.FirstName,
+                 row.EmployeeId
+             })
+             .Select(group => new TimeReport_VM
+             {
+                 YearWeek = group.Key.YearWeek,
+                 Id = group.Key.Id,
+                 Date = group.Key.Date,
+                 Status = group.Key.Status,
+                 SubmittedTime = group.Key.SubmittedTime,
+                 SubmittedBy = group.Key.SubmittedBy,
+                 ApprovedTime = group.Key.ApprovedTime,
+                 ApprovedBy = group.Key.ApprovedBy,
+                 Presence = group.Key.Presence,
+                 Absence = group.Key.Absence,
+                 Summary = group.Key.Summary,
+                 Flex = group.Key.Flex,
+                 Overtime1 = group.Key.Overtime1,
+                 Overtime2 = group.Key.Overtime2,
+                 Overtime3 = group.Key.Overtime2,
+                 Comp1 = group.Key.Comp1,
+                 Comp2 = group.Key.Comp2,
+                 Comp3 = group.Key.Comp3,
+                 LastName = group.Key.LastName,
+                 FirstName = group.Key.FirstName,
+                 EmployeeId = group.Key.EmployeeId
+             })
+             .OrderByDescending(t => t.YearWeek)
+             .ThenByDescending(t => t.Date);
+
+            return View(timeReportsGrouped);
         }
 
         // GET: TimeReports
@@ -36,29 +87,56 @@ namespace Tidrapport.Controllers
 
             var timeReportsGrouped = db.TimeReports
                 .Where(t => t.EmployeeId == employeeId)
-                .Include(t => t.Activity)
-                .Include(t => t.Employee)
                 .GroupBy(row => new
                 {
                     row.YearWeek,
                     row.Id,
                     row.Date,
-                    row.NumberOfHours,
                     row.Status,
-                    row.ActivityId,
-                    row.Activity.Name,
-                    row.Employee.EmployeeId
+                    row.SubmittedTime,
+                    row.SubmittedBy,
+                    row.ApprovedTime,
+                    row.ApprovedBy,
+                    row.Presence,
+                    row.Absence,
+                    row.Summary,
+                    row.Flex,
+                    row.Overtime1,
+                    row.Overtime2,
+                    row.Overtime3,
+                    row.Comp1,
+                    row.Comp2,
+                    row.Comp3,
+                    row.Employee.LastName,
+                    row.Employee.FirstName,
+                    row.EmployeeId
                 })
-                .Select(group => new TimeReport_VM {
-                    YearWeek =  group.Key.YearWeek,
+                .Select(group => new TimeReport_VM
+                {
+                    YearWeek = group.Key.YearWeek,
                     Id = group.Key.Id,
                     Date = group.Key.Date,
-                    NumberOfHours = group.Key.NumberOfHours,
                     Status = group.Key.Status,
-                    ActivityId = group.Key.ActivityId,
-                    ActivityName = group.Key.Name,
+                    SubmittedTime = group.Key.SubmittedTime,
+                    SubmittedBy = group.Key.SubmittedBy,
+                    ApprovedTime = group.Key.ApprovedTime,
+                    ApprovedBy = group.Key.ApprovedBy,
+                    Presence = group.Key.Presence,
+                    Absence = group.Key.Absence,
+                    Summary = group.Key.Summary,
+                    Flex = group.Key.Flex,
+                    Overtime1 = group.Key.Overtime1,
+                    Overtime2 = group.Key.Overtime2,
+                    Overtime3 = group.Key.Overtime2,
+                    Comp1 = group.Key.Comp1,
+                    Comp2 = group.Key.Comp2,
+                    Comp3 = group.Key.Comp3,
+                    LastName = group.Key.LastName,
+                    FirstName = group.Key.FirstName,
                     EmployeeId = group.Key.EmployeeId
-                });
+                })
+                .OrderByDescending(t => t.YearWeek)
+                .ThenByDescending(t => t.Date);
 
             return View(timeReportsGrouped);
         }
@@ -75,53 +153,187 @@ namespace Tidrapport.Controllers
             {
                 return HttpNotFound();
             }
-            return View(timeReport);
+
+            var timeReprortIncludingRows = new TimeReportIncludingRows_VM()
+            {
+                YearWeek = timeReport.YearWeek,
+                Id = timeReport.Id,
+                Date = timeReport.Date,
+                Status = timeReport.Status,
+                SubmittedTime = timeReport.SubmittedTime,
+                SubmittedBy = timeReport.SubmittedBy,
+                ApprovedTime = timeReport.ApprovedTime,
+                ApprovedBy = timeReport.ApprovedBy,
+                Presence = timeReport.Presence,
+                Absence = timeReport.Absence,
+                Summary = timeReport.Summary,
+                Flex = timeReport.Flex,
+                Overtime1 = timeReport.Overtime1,
+                Overtime2 = timeReport.Overtime2,
+                Overtime3 = timeReport.Overtime2,
+                Comp1 = timeReport.Comp1,
+                Comp2 = timeReport.Comp2,
+                Comp3 = timeReport.Comp3,
+                LastName = timeReport.Employee.LastName,
+                FirstName = timeReport.Employee.FirstName,
+                EmployeeId = timeReport.EmployeeId
+            };
+
+            var activitiyRows = db.TimeReportRows
+                .Where(trr => trr.TimeReportId == timeReport.Id)
+                .OrderBy(trr => trr.Activity.Project.Name)
+                .ThenBy(trr =>trr.Activity.Name);
+
+            timeReprortIncludingRows.Rows = activitiyRows;
+
+            return View(timeReprortIncludingRows);
         }
 
         // GET: TimeReports/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            WorkHours date = db.WorkHours.Find(id);
+
+            if (date == null)
+            { 
+                return View("Inga tillgängliga objekt i WorkHours, kontakta admin");
+            }
+
             // identify the user
-            var id = User.Identity.GetUserId();
-            int employeeId = int.Parse(id);
+            var uid = User.Identity.GetUserId();
+            int employeeId = int.Parse(uid);
 
-            // select projects and activities the user is connected to
-            //--------------------------------------------------------
-            var projectemployees = from pe in db.ProjectEmployees
-                                   where pe.EmployeeId == employeeId
-                                   select new
-                                   {
-                                       EmployeeId = pe.EmployeeId,
-                                       ProjectId = pe.ProjectId
-                                   };
+            // check if timereport already exists
+            var timeReportCheck = db.TimeReports
+                                 .Where(tr => tr.EmployeeId == employeeId && tr.Date == date.Date);
 
-            var projectActivities = db.Activities
-                .Include(a => a.Project)
-                .Where(a => projectemployees.Any(pe => pe.ProjectId == a.Project.ProjectId))
-                .Select(a => new
-                {
-                    ActivityId = a.Id.ToString(),
-                    ActivityName = a.Project.Name + " - " + a.Name,
-                    ProjectName = a.Project.Name
-                    //ProjectStartDate = a.Project.StartDate,
-                    //ProjectEndDate = a.Project.EndDate
-                });
+            int weeknumber = WeekNumber(date.Date);
 
-            //.GroupBy(row => new
-            //{
-            //    ActivityId =  row.Id,
-            //    ActivityName = row.Name,
-            //    ProjectName = row.Project.Name,
-            //    //Projectid = row.Project.ProjectId,
-            //    //ProjectNumber = row.Project.Number,
-            //    ProjectStartDate = row.Project.StartDate,
-            //    ProjectEndDate = row.Project.EndDate
-            //});
+            if (timeReportCheck == null)
+            {
+                var timereport = new TimeReport
+                { 
+                    Date = date.Date,
+                    YearWeek = date.Date.Year.ToString() + "-" + weeknumber.ToString(),
+                    Status = TRStatus.Utkast,
+                    SubmittedTime = null,
+                    SubmittedBy = null,
+                    ApprovedTime = null,
+                    ApprovedBy = null,
+                    Presence = 0,
+                    Absence = 0,
+                    Summary = 0,
+                    Flex = 0,
+                    Overtime1 = 0,
+                    Overtime2 = 0,
+                    Overtime3 = 0,
+                    Comp1 = 0,
+                    Comp2 = 0,
+                    Comp3 = 0,
+                    EmployeeId = employeeId,
+                };
 
-            ViewBag.activitiesDD = new SelectList(projectActivities, "ActivityId", "ActivityName", 1);
-            ViewBag.EmployeeId = employeeId;
+                 ViewBag.TimeReport = timereport;
 
-            //ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
+                var new_timereport = db.TimeReports.Add(timereport);
+                db.SaveChanges();
+
+                ViewBag.TimeReport = new_timereport;
+
+                return View (new_timereport);
+            }
+            else
+            {
+                return View(timeReportCheck);
+            }
+        }
+
+        //// POST: TimeReports/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "ActivityId,Hours,Note, TimeREportId")] TimeReportDraft_VM timeReport)
+        //{
+        //    DateTime date = timeReport.FromDate;
+        //    DateTime endDate = (timeReport.ToDate == null) ? timeReport.FromDate : (DateTime)timeReport.ToDate;
+        //    bool period = (timeReport.ToDate == null) ? false : true;
+
+        //    while (date.CompareTo(endDate) <= 0)
+        //    {
+        //        var _workHours = db.WorkHours
+        //                .Where(wh => wh.Date == date)
+        //                .FirstOrDefault();
+
+        //        var _activity = db.Activities.Find(timeReport.ActivityId);
+
+        //        int weeknumber = WeekNumber(date);
+
+        //        if (_workHours.Hours > 0)
+        //        {
+        //            var _timereport = new TimeReport
+        //            {
+        //                EmployeeId = timeReport.EmployeeId,
+        //                Date = date,
+        //                YearWeek = date.Year.ToString() + "-" + weeknumber.ToString(),
+        //                Status = TRStatus.Utkast,
+        //                Presence = 0,
+        //                Absence = 0,
+        //                Summary = 0,
+        //            };
+
+        //            switch (_activity.BalanceEffect)
+        //            {                   
+        //                case BalanceEffect.PlusPåÖvertid1:
+        //                    break;
+        //                case BalanceEffect.PlusPåÖvertid2:
+        //                    break;
+        //                case BalanceEffect.PlusPåÖvertid3:
+        //                    break;
+        //                case BalanceEffect.MinusPåÖvertid1:
+        //                    break;
+        //                case BalanceEffect.MinusPåÖvertid2:
+        //                    break;
+        //                case BalanceEffect.MinusPåÖvertid3:
+        //                    break;
+        //                case BalanceEffect.MinusPåNationaldagSaldo:
+        //                    break;
+        //                case BalanceEffect.UttagBetaldSemesterdag:
+        //                    break;
+        //                case BalanceEffect.UttagObetaldSemesterdag:
+        //                    break;
+        //                case BalanceEffect.UttagSparadSemesterdag:
+        //                    break;
+        //                default: // no effect
+        //                    break;
+        //            }
+                       
+        //            if (ModelState.IsValid)
+        //            {
+        //                db.TimeReports.Add(_timereport);
+        //                db.SaveChanges();
+        //            }
+        //            else
+        //            {
+        //                // Do something
+        //            }
+        //        } // if
+
+        //        date = date.AddDays(1);
+        //    } // while
+
+        //    // OK 
+        //    if (User.IsInRole("anställd")) {
+        //            return RedirectToAction("MyTimeReports");
+        //    } 
+
+        //    // Not OK
+        //    return View(timeReport);
+        //}
+
+        // GET: TimeReports/Create
+        public ActionResult AddRow()
+        {
 
             return View();
         }
@@ -131,81 +343,48 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FromDate, ToDate, NumberOfHours,EmployeeId,ActivityId")] TimeReportDraft_VM timeReport)
+        public ActionResult AddRow([Bind(Include = "ActivityId,Hours,Note,InvoiceTimeStamp, InvoiceBy")] TimeReportRow timeReportRow)
         {
-            DateTime date = timeReport.FromDate;
-            DateTime endDate = (timeReport.ToDate == null) ? timeReport.FromDate : (DateTime)timeReport.ToDate;
-            bool period = (timeReport.ToDate == null) ? false : true;
-
-            while (date.CompareTo(endDate) <= 0)
+            var _activity = db.Activities.Find(timeReportRow.ActivityId);
+            
+            switch (_activity.BalanceEffect)
             {
-                var _workHours = db.WorkHours
-                        .Where(wh => wh.Date == date)
-                        .FirstOrDefault();
-
-                var _activity = db.Activities.Find(timeReport.ActivityId);
-
-                int weeknumber = WeekNumber(date);  
-
-                if (_workHours.Hours > 0)
-                { 
-                    var _timereport = new TimeReport
-                    {
-                        EmployeeId = timeReport.EmployeeId,
-                        ActivityId = timeReport.ActivityId,
-                        Date = date,
-                        YearWeek = date.Year.ToString() + "-" + weeknumber.ToString(),
-                        NumberOfHours = timeReport.NumberOfHours,
-                        Status = TRStatus.Utkast
-                    };
-
-                    switch (_activity.BalanceEffect)
-                    {                   
-                        case BalanceEffect.PlusPåÖvertid1:
-                            break;
-                        case BalanceEffect.PlusPåÖvertid2:
-                            break;
-                        case BalanceEffect.PlusPåÖvertid3:
-                            break;
-                        case BalanceEffect.MinusPåÖvertid1:
-                            break;
-                        case BalanceEffect.MinusPåÖvertid2:
-                            break;
-                        case BalanceEffect.MinusPåÖvertid3:
-                            break;
-                        case BalanceEffect.MinusPåNationaldagSaldo:
-                            break;
-                        case BalanceEffect.UttagBetaldSemesterdag:
-                            break;
-                        case BalanceEffect.UttagObetaldSemesterdag:
-                            break;
-                        case BalanceEffect.UttagSparadSemesterdag:
-                            break;
-                        default: // no effect
-                            break;
-                    }
-                       
-                    if (ModelState.IsValid)
-                    {
-                        db.TimeReports.Add(_timereport);
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        // Do something
-                    }
-                }
-
-                date = date.AddDays(1);
+                case BalanceEffect.PlusPåÖvertid1:
+                    break;
+                case BalanceEffect.PlusPåÖvertid2:
+                    break;
+                case BalanceEffect.PlusPåÖvertid3:
+                    break;
+                case BalanceEffect.MinusPåÖvertid1:
+                    break;
+                case BalanceEffect.MinusPåÖvertid2:
+                    break;
+                case BalanceEffect.MinusPåÖvertid3:
+                    break;
+                case BalanceEffect.MinusPåNationaldagSaldo:
+                    break;
+                case BalanceEffect.UttagBetaldSemesterdag:
+                    break;
+                case BalanceEffect.UttagObetaldSemesterdag:
+                    break;
+                case BalanceEffect.UttagSparadSemesterdag:
+                    break;
+                default: // no effect
+                    break;
             }
 
-            // OK 
-            if (User.IsInRole("anställd")) {
-                    return RedirectToAction("MyTimeReports");
-            } 
-
+            if (ModelState.IsValid)
+            {
+                //db.TimeReportRows.Add(timeReportRow);
+                //db.SaveChanges();
+            }
+            else
+            {
+                // Do something
+            }
+ 
             // Not OK
-            return View(timeReport);
+            return View(timeReportRow);
         }
 
         // GET: TimeReports/Edit/5
@@ -220,7 +399,6 @@ namespace Tidrapport.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReport.ActivityId);
             ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
             return View(timeReport);
         }
@@ -230,7 +408,7 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,YearWeek,Date,NumberOfHours,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId,ActivityId")] TimeReport timeReport)
+        public ActionResult Edit([Bind(Include = "Id,YearWeek,Date,Status,SubmittedBy,SubmittedTimeStamp,ApprovedBy,ApprovedTimeStamp,EmployeeId")] TimeReport timeReport)
         {
             if (ModelState.IsValid)
             {
@@ -238,7 +416,6 @@ namespace Tidrapport.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReport.ActivityId);
             ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
             return View(timeReport);
         }
@@ -287,5 +464,5 @@ namespace Tidrapport.Controllers
             DayOfWeek.Monday);
         }
 
-    }
-}
+    }// class
+ }// namespace

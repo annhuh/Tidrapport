@@ -1,114 +1,161 @@
-﻿@model IEnumerable<Tidrapport.Models.TimeReport>
+﻿@model IEnumerable<Tidrapport.ViewModels.TimeReport_VM>
 
 @{
-    ViewBag.Title = "Tidrapport";
+    ViewBag.Title = "Tidrapporter";
 }
 
-<h2>Tidrapport</h2>
+<h2>Lista</h2>
 
 @*<p>
-    @Html.ActionLink("Skapa ny tidrapport", "Create")
+    @Html.ActionLink("Create New", "Create")
 </p>*@
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity.Name)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Employee.SSN)
-        </th>*@
-        @*<th>
-            @Html.DisplayNameFor(model => model.YearWeek)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumberOfHours)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.SubmittedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubmittedTimeStamp)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApprovedTimeStamp)
-        </th>*@
-        <th>
-            <span>
-                <a href="@Url.Action("Create")" class="btn btn-default btn-">
-                    <span class="glyphicon glyphicon-plus-sign"></span>
-                    Skapa ny tidrapport
-                </a>
-            </span>
-        </th>
-    </tr>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.YearWeek)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.SubmittedBy)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.SubmittedTime)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.ApprovedBy)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Presence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Absence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Summary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flex)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Overtime1)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Overtime2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Overtime3)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Comp1)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Comp2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comp3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+    <tfoot>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activity.Name)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Employee.SSN)
-        </td>*@
-        @*<td>
-            @Html.DisplayFor(modelItem => item.YearWeek)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumberOfHours)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.SubmittedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubmittedTimeStamp)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovedTimeStamp)
-        </td>*@
-        <td>
-            <span>
-                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-edit"></span> Editera
-                </a>
-            </span>
-            @*<span>
-        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-expand"></span> Detaljer
-        </a>
-        </span>*@
-            <span>
-                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-trash"></span> Tabort
-                </a>
-            </span>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-        </td>
-    </tr>
-}
+    </tfoot>
+    <tbody>
+    @foreach (var group in Model.GroupBy(row => row.YearWeek))
+    {
+        <tr><th colspan="12">@group.Key</th></tr>
+
+        foreach (var item in group)
+        {
+
+            <tr>
+                <td></td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.YearWeek)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.EmployeeId)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.SubmittedBy)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmittedTime)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ApprovedBy)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovedTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Presence)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Absence)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Summary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Flex)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Overtime1)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Overtime2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Overtime3)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Comp1)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comp2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comp3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                    @Html.ActionLink("Se mer...", "Details", new { id = item.Id }) @*|*@
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
 
 </table>
-<div>
-    <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
-        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
-    </a>
-</div>

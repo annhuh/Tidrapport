@@ -1,18 +1,17 @@
-﻿@model Tidrapport.ViewModels.InitWorkHoursPeriod_VM
+﻿@model Tidrapport.ViewModels.WorkHoursPeriod_VM
 
 @{
-    ViewBag.Title = "GenerateNewWorkHours";
+    ViewBag.Title = "Skapa arbetsperiod med normalarbetstid";
 }
 
-<h2>GenerateNewWorkHours</h2>
-
+<h2>Generara ny period med normalarbetstid</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>InitWorkHoursPeriod_VM</h4>
+        @*<h4>WorkHoursPeriod_VM</h4>*@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -41,14 +40,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Bekräfta" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Tillbaka till listan", "Index")
 </div>
 
 @section Scripts {

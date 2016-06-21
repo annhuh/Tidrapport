@@ -149,19 +149,20 @@
                 <fieldset>
   
                     <div class="form-group">
-                        @Html.LabelFor(model => model.HolidayPeriodFrom, htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.LabelFor(model => model.HolidayPeriod, htmlAttributes: new { @class = "control-label col-md-4" })
+     
                         <div class="col-md-4">
-                            @Html.EditorFor(model => model.HolidayPeriodFrom, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.HolidayPeriodFrom, "", new { @class = "text-danger" })
+                            @foreach (var period in ViewBag.HolidayPeriod)
+                            {
+                                <p>  </p>
+                                @Html.RadioButtonFor(m => m.HolidayPeriod, (string)period @*, new { id = roleId , @class = "form-control" }*@)
+                                @Html.LabelFor(m => m.HolidayPeriod, (string)period @*new { @for = roleId,*@ @*@class = "col-md-2 control-label" }*@)
+                            }
+                            @*@Html.EditorFor(model => model.HolidayPeriod, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @Html.ValidationMessageFor(model => model.HolidayPeriod, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.HolidayPeriodTo, htmlAttributes: new { @class = "control-label col-md-4" })
-                        <div class="col-md-4">
-                            @Html.EditorFor(model => model.HolidayPeriodTo, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.HolidayPeriodTo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+ 
                     <div class="form-group">
                         @Html.LabelFor(model => model.NumberOfHolidaysPerYear, htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-4">

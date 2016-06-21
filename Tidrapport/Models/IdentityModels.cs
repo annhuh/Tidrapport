@@ -53,6 +53,12 @@ namespace Tidrapport.Models
         public System.Data.Entity.DbSet<Tidrapport.Models.OvertimeBalancePeriod> OvertimeBalancePeriods { get; set; }
 
         public System.Data.Entity.DbSet<Tidrapport.Models.WorkHours> WorkHours { get; set; }
+
+        public System.Data.Entity.DbSet<Tidrapport.Models.TimeReportRow> TimeReportRows { get; set; }
+
+        //public System.Data.Entity.DbSet<Tidrapport.ViewModels.TimeReportIncludingRows_VM> TimeReportIncludingRows_VM { get; set; }
+
+        //public System.Data.Entity.DbSet<Tidrapport.ViewModels.TimeReport_VM> TimeReport_VM { get; set; }
     }
 
     public class CustomUserRole : IdentityUserRole<int> { }

@@ -1,40 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using Tidrapport.Models;
 
-namespace Tidrapport.Models
+namespace Tidrapport.ViewModels
 {
-	public class TimeReport
-	{
-		[Key]
-		public int Id { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Datum")]
-        [Required]
-        public DateTime Date { get; set; }
+    public class TimeReportIncludingRows_VM
+    {
+        public int Id { get; set; }
 
         [Display(Name = "Vecka")]
-        [Required]
         public string YearWeek { get; set; }
-        
-        [Required]
-        public TRStatus Status{ get; set; }
+
+        [Display(Name = "Datum")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime Date { get; set; }
+
+        public int EmployeeId { get; set; }
+
+        [Display(Name = "EfternamNamn")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Förnamn")]
+        public string FirstName { get; set; }
 
         [Display(Name = "Inskickad av")]
         public string SubmittedBy { get; set; }
 
-        [Display(Name = "Inskickad tid")]
+        [Display(Name = "Inskickad")]
         public DateTime? SubmittedTime { get; set; }
 
         [Display(Name = "Godkänd av")]
         public string ApprovedBy { get; set; }
 
-        [Display(Name = "Godkänd tid")]       
+        [Display(Name = "Godkänd")]
         public DateTime? ApprovedTime { get; set; }
 
         [Display(Name = "Närvaro")]
@@ -49,28 +50,27 @@ namespace Tidrapport.Models
         [Display(Name = "Flex")]
         public decimal Flex { get; set; }
 
-        [Display(Name = "Mertid")]
+        [Display(Name = "ÖTid1")]
         public decimal Overtime1 { get; set; }
 
-        [Display(Name = "Enkel övertid")]
+        [Display(Name = "ÖTid2")]
         public decimal Overtime2 { get; set; }
 
-        [Display(Name = "Kvalificerad övertid")]
+        [Display(Name = "ÖTid3")]
         public decimal Overtime3 { get; set; }
 
-        [Display(Name = "Komp mertid")]
+        [Display(Name = "Komp1")]
         public decimal Comp1 { get; set; }
 
-        [Display(Name = "Komp enkel övertid")]
+        [Display(Name = "Komp2")]
         public decimal Comp2 { get; set; }
 
-        [Display(Name = "Komp kvalificerad övertid")]
+        [Display(Name = "Komp3")]
         public decimal Comp3 { get; set; }
 
-        public int EmployeeId { get; set; }
+        [Display(Name = "Status")]
+        public Tidrapport.Models.TRStatus Status { get; set; }
 
-        [ForeignKey("EmployeeId")]
-        public virtual Employee Employee { get; set; }
-
+        public IEnumerable<TimeReportRow> Rows { get; set; }  
     }
 }

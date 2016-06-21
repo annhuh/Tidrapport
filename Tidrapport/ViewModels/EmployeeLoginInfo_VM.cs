@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Tidrapport.ViewModels
 {
-    public class EmoloyeeLoginInfo_VM
+    public class EmployeeLoginInfo_VM
     {
         [Display(Name = "Förnamn")]
         public string FirstName { get; set; }

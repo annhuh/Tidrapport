@@ -209,14 +209,21 @@
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Controllers\WorkHoursController.cs" />
+    <Compile Include="Dal\TimeReportRepository.cs" />
+    <Compile Include="Migrations\201606161635089_Initial.cs" />
+    <Compile Include="Migrations\201606161635089_Initial.Designer.cs">
+      <DependentUpon>201606161635089_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Enumerators.cs" />
+    <Compile Include="Models\TimeReportRow.cs" />
     <Compile Include="Models\WorkHours.cs" />
-    <Compile Include="ViewModels\EmoloyeeLoginInfo_VM.cs" />
+    <Compile Include="ViewModels\EmployeeLoginInfo_VM.cs" />
     <Compile Include="ViewModels\TimeReportDraft_VM.cs" />
+    <Compile Include="ViewModels\TimeReportIncludingRows_VM.cs" />
     <Compile Include="ViewModels\WorkHoursPeriod_VM.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <Compile Include="ViewModels\EmployeeRole.cs" />
@@ -266,10 +273,6 @@
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\App\custom.validate.js" />
     <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Views\TimeReports\Delete.cshtml" />
-    <Content Include="Views\TimeReports\Details.cshtml" />
-    <Content Include="Views\TimeReports\Edit.cshtml" />
-    <Content Include="Views\TimeReports\Index.cshtml" />
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Delete.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
@@ -381,6 +384,11 @@
     <Content Include="Views\Companies\Details.cshtml" />
     <Content Include="Views\Companies\Edit.cshtml" />
     <Content Include="Views\Companies\Index.cshtml" />
+    <Content Include="Views\TimeReports\AddRow.cshtml" />
+    <Content Include="Views\TimeReports\Edit.cshtml" />
+    <Content Include="Views\TimeReports\Delete.cshtml" />
+    <Content Include="Views\TimeReports\Index.cshtml" />
+    <Content Include="Views\TimeReports\Details.cshtml" />
     <None Include="Views\TimeReportTemplates\Create.cshtml" />
     <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
     <Content Include="Views\TimeReportTemplates\Details.cshtml" />
@@ -414,6 +422,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606161635089_Initial.resx">
+      <DependentUpon>201606161635089_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -6,18 +6,31 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
     public class CustomersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+
+        private IRepository repository;
+
+        public CustomersController()
+        {
+            repository = new TimeReportRepository();
+        }
+
+        public CustomersController(IRepository rep)
+        {
+            repository = rep;
+        }
 
         // GET: Customers
         public ActionResult Index()
         {
-            return View(db.Customers.ToList());
+            return View(repository.GetAllCustomers());
         }
 
         // GET: Customers/Details/5
@@ -27,7 +40,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+
+            Customer customer = repository.GetCustomer((int)id);
+
             if (customer == null)
             {
                 return HttpNotFound();
@@ -50,8 +65,8 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Customers.Add(customer);
-                db.SaveChanges();
+                repository.AddCustomer(customer);
+
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +80,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+
+            Customer customer = repository.GetCustomer((int)id);
+
             if (customer == null)
             {
                 return HttpNotFound();
@@ -82,10 +99,11 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(customer).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateCustomer(customer);
+
                 return RedirectToAction("Index");
             }
+
             return View(customer);
         }
 
@@ -96,7 +114,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+
+            Customer customer = repository.GetCustomer((int)id);
+
             if (customer == null)
             {
                 return HttpNotFound();
@@ -109,9 +129,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            db.Customers.Remove(customer);
-            db.SaveChanges();
+            repository.DeleteCustomer(id);
+
             return RedirectToAction("Index");
         }
 
@@ -119,7 +138,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -7,17 +7,30 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Tidrapport.Models;
+using Tidrapport.Dal;
 
 namespace Tidrapport.Controllers
 {
     public class ActivitiesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+        private IRepository repository;
+
+        public ActivitiesController ()
+        {
+            repository = new TimeReportRepository();
+        }
+
+        public ActivitiesController (IRepository rep)
+        {
+            repository = rep;
+        }
+
 
         // GET: Activities
         public ActionResult Index()
         {
-            var activities = db.Activities.Include(a => a.Project);
+            var activities = repository.GetAllActivities();
    
             return View(activities.ToList());
         }
@@ -25,7 +38,7 @@ namespace Tidrapport.Controllers
         // GET: Activities
         public ActionResult ProjectActivities(int? cid, int? pid)
         {
-            var activities = db.Activities.Include(a => a.Project);
+            var activities = repository.GetAllActivities();
 
             ViewBag.CustomerId = cid;
             
@@ -44,7 +57,7 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+            Activity activity = repository.GetActivity((int)id);
             if (activity == null)
             {
                 return HttpNotFound();
@@ -55,7 +68,7 @@ namespace Tidrapport.Controllers
         // GET: Activities/Create
         public ActionResult Create()
         {
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number");
+            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number");
             return View();
         }
 
@@ -68,12 +81,11 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Activities.Add(activity);
-                db.SaveChanges();
+                repository.AddActivity(activity);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", activity.ProjectId);
+            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
             return View(activity);
         }
 
@@ -84,12 +96,13 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+            Activity activity = repository.GetActivity((int)id);
+
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", activity.ProjectId);
+            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
             return View(activity);
         }
 
@@ -102,11 +115,11 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(activity).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateActivity(activity);
+                
                 return RedirectToAction("Index");
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", activity.ProjectId);
+            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
             return View(activity);
         }
 
@@ -117,7 +130,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Activity activity = db.Activities.Find(id);
+
+            Activity activity = repository.GetActivity((int)id);
+
             if (activity == null)
             {
                 return HttpNotFound();
@@ -130,9 +145,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Activity activity = db.Activities.Find(id);
-            db.Activities.Remove(activity);
-            db.SaveChanges();
+            repository.DeleteActivity(id);
+
             return RedirectToAction("Index");
         }
 
@@ -140,7 +154,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //repository.Dispose();
             }
             base.Dispose(disposing);
         }

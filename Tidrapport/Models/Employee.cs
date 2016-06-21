@@ -40,7 +40,7 @@ namespace Tidrapport.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Anställd från")]
-        public DateTime? EmployedFrom { get; set; }
+        public DateTime EmployedFrom { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -53,12 +53,8 @@ namespace Tidrapport.Models
         public Decimal NormalWeekHours { get; set; }
 
         [Required]
-        [Display(Name = "Semesterperiod från")]
-        public DateTime HoldayPeriodFrom { get; set; }
-
-        [Required]
-        [Display(Name = "Semesterperiod till")]
-        public DateTime HolidayPeriodTo { get; set; }
+        [Display(Name = "Semesterperiod")]
+        public HolidayPeriod HolidayPeriod { get; set; }
 
         [Required]
         [Display(Name = "Semester/år")]

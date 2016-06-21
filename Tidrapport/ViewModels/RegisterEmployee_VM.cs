@@ -79,15 +79,10 @@ namespace Tidrapport.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n2}")]
         public Decimal NormalWeekHours { get; set; }
 
-        [Display(Name = "Från")]
+        [Display(Name = "Semesterperiod")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Semesterperiod from är obligatorisk")]
-        public DateTime HolidayPeriodFrom { get; set; }
-
-        [Display(Name = "Till")]
-        [DataType(DataType.Date)]
-        [Required(ErrorMessage = "Semesterperiod till är obligatorisk")]
-        public DateTime HolidayPeriodTo { get; set; }
+        public HolidayPeriod HolidayPeriod { get; set; }
 
         [Required]
         [Display(Name = "Semesterdagar")]

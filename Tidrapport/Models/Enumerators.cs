@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -26,5 +27,13 @@ namespace Tidrapport.Models
         Inlämnad = 2,
         Godkänd = 3,
         Returnerad = 4
+    }
+
+    public enum HolidayPeriod
+    {
+        [Display(Name = "1 Januari - 31 December")]
+        Januari = 1,
+        [Display(Name = "1 April - 31 Mars")]
+        April = 2
     }
 }

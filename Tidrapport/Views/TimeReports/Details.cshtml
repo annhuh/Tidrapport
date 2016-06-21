@@ -1,4 +1,4 @@
-﻿@model Tidrapport.Models.TimeReport
+﻿@model Tidrapport.ViewModels.TimeReportIncludingRows_VM
 
 @{
     ViewBag.Title = "Details";
@@ -7,97 +7,202 @@
 <h2>Details</h2>
 
 <div>
-    <h4>TimeReport</h4>
+    @*<h4>TimeReportIncludingRows_VM</h4>*@
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Activity.Name)
-        </dt>
+    <h4>Tidrapport</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.YearWeek)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.EmployeeId)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.SubmittedBy)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmittedTime)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.ApprovedBy)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.ApprovedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Presence)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Absence)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Summary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Flex)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Overtime1)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Overtime2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Overtime3)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Comp1)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Comp2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comp3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
 
-        <dd>
-            @Html.DisplayFor(model => model.Activity.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.SSN)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee.SSN)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.YearWeek)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.YearWeek)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfHours)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfHours)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SubmittedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SubmittedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SubmittedTimeStamp)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SubmittedTimeStamp)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ApprovedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ApprovedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ApprovedTimeStamp)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ApprovedTimeStamp)
-        </dd>
-
-    </dl>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.YearWeek)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Date)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => model.EmployeeId)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(model => model.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.FirstName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => model.SubmittedBy)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(model => model.SubmittedTime)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => model.ApprovedBy)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(model => model.ApprovedTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Presence)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Absence)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Summary)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Flex)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => model.Overtime1)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(model => model.Overtime2)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Overtime3)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Comp1)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(model => model.Comp2)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Comp3)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Status)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h4>Inrapporterad tid</h4>
+        <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Projekt
+                </th>
+                <th>
+                    Aktivitet
+                </th>
+                <th>
+                    Timmar
+                </th>
+                <th>
+                    Notering
+                </th>
+            </tr>
+            
+        </thead>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>     
+        <tbody>
+        @if (Model.Rows != null)
+        {
+            foreach (var row in Model.Rows)
+            { 
+            <tr>
+                <td>
+                    @row.Activity.Project.Name
+                </td>
+                <td>
+                    @row.Activity.Name
+                </td>               
+                <td>
+                    @row.Hours
+                </td>
+                <td>
+                    @row.Note
+                </td>
+            </tr>
+            }
+        }
+        </tbody>
+    </table>
 </div>
-<p>
+
+@*<p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @*@Html.ActionLink("Back to List", "Index")*@
-</p>
-<div>
-    <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
-        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
-    </a>
-</div>
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

@@ -12,27 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Activity.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Activity.Name)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Employee.SSN)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Employee.SSN)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.YearWeek)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.YearWeek)
         </dd>
 
         <dt>
@@ -44,11 +28,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NumberOfHours)
+            @Html.DisplayNameFor(model => model.YearWeek)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.NumberOfHours)
+            @Html.DisplayFor(model => model.YearWeek)
         </dd>
 
         <dt>
@@ -68,11 +52,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SubmittedTimeStamp)
+            @Html.DisplayNameFor(model => model.SubmittedTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SubmittedTimeStamp)
+            @Html.DisplayFor(model => model.SubmittedTime)
         </dd>
 
         <dt>
@@ -84,11 +68,91 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ApprovedTimeStamp)
+            @Html.DisplayNameFor(model => model.ApprovedTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ApprovedTimeStamp)
+            @Html.DisplayFor(model => model.ApprovedTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Presence)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Presence)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Absence)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Absence)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Flex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Flex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Overtime1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Overtime1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Overtime2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Overtime2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Overtime3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Overtime3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comp1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comp1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comp2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comp2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comp3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comp3)
         </dd>
 
     </dl>
@@ -98,12 +162,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @*@Html.ActionLink("Back to List", "Index")*@
-            <div>
-                <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
-                </a>
-            </div>
+            @Html.ActionLink("Back to List", "Index")
         </div>
     }
 </div>

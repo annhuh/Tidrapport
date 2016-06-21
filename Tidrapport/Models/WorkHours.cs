@@ -12,9 +12,11 @@ namespace Tidrapport.Models
         [Key]
         public int Id { get; set; }
 
+        [Display(Name = "Datum")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
-       
+
+        [Display(Name = "Timmar")]
         public decimal Hours { get; set; }
     }
 }
