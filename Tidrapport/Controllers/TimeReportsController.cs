@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 using Tidrapport.ViewModels;
 
@@ -15,64 +16,79 @@ namespace Tidrapport.Controllers
 {
     [Authorize]
     public class TimeReportsController : Controller
-    { 
-        private ApplicationDbContext db = new ApplicationDbContext();
+    {
+        //private ApplicationDbContext db = new ApplicationDbContext();
+
+        private IRepository repository;
+
+        public TimeReportsController()
+        {
+            repository = new Repository();
+        }
+
+        public TimeReportsController(IRepository rep)
+        {
+            repository = rep;
+        }
 
         // GET: TimeReports
         [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
-            var timeReportsGrouped = db.TimeReports
-               .GroupBy(row => new
-             {
-                 row.YearWeek,
-                 row.Id,
-                 row.Date,
-                 row.Status,
-                 row.SubmittedTime,
-                 row.SubmittedBy,
-                 row.ApprovedTime,
-                 row.ApprovedBy,
-                 row.Presence,
-                 row.Absence,
-                 row.Summary,
-                 row.Flex,
-                 row.Overtime1,
-                 row.Overtime2,
-                 row.Overtime3,
-                 row.Comp1,
-                 row.Comp2,
-                 row.Comp3,
-                 row.Employee.LastName,
-                 row.Employee.FirstName,
-                 row.EmployeeId
-             })
-             .Select(group => new TimeReport_VM
-             {
-                 YearWeek = group.Key.YearWeek,
-                 Id = group.Key.Id,
-                 Date = group.Key.Date,
-                 Status = group.Key.Status,
-                 SubmittedTime = group.Key.SubmittedTime,
-                 SubmittedBy = group.Key.SubmittedBy,
-                 ApprovedTime = group.Key.ApprovedTime,
-                 ApprovedBy = group.Key.ApprovedBy,
-                 Presence = group.Key.Presence,
-                 Absence = group.Key.Absence,
-                 Summary = group.Key.Summary,
-                 Flex = group.Key.Flex,
-                 Overtime1 = group.Key.Overtime1,
-                 Overtime2 = group.Key.Overtime2,
-                 Overtime3 = group.Key.Overtime2,
-                 Comp1 = group.Key.Comp1,
-                 Comp2 = group.Key.Comp2,
-                 Comp3 = group.Key.Comp3,
-                 LastName = group.Key.LastName,
-                 FirstName = group.Key.FirstName,
-                 EmployeeId = group.Key.EmployeeId
-             })
-             .OrderByDescending(t => t.YearWeek)
-             .ThenByDescending(t => t.Date);
+            var timeReports = repository.GetAllTimeReports(null);
+
+            var timeReportsGrouped = timeReports
+                                        .GroupBy(row => new
+                                        {
+                                            row.YearWeek,
+                                            row.Id,
+                                            row.Date,
+                                            row.Status,
+                                            row.SubmittedTime,
+                                            row.SubmittedBy,
+                                            row.ApprovedTime,
+                                            row.ApprovedBy,
+                                            row.Presence,
+                                            row.Absence,
+                                            row.Summary,
+                                            row.Flex,
+                                            row.Overtime1,
+                                            row.Overtime2,
+                                            row.Overtime3,
+                                            row.Comp1,
+                                            row.Comp2,
+                                            row.Comp3,
+                                            row.Employee.LastName,
+                                            row.Employee.FirstName,
+                                            row.EmployeeId
+                                        })
+                                        .Select(group => new TimeReport_VM
+                                        {
+                                            YearWeek = group.Key.YearWeek,
+                                            Id = group.Key.Id,
+                                            Date = group.Key.Date,
+                                            Status = group.Key.Status,
+                                            SubmittedTime = group.Key.SubmittedTime,
+                                            SubmittedBy = group.Key.SubmittedBy,
+                                            ApprovedTime = group.Key.ApprovedTime,
+                                            ApprovedBy = group.Key.ApprovedBy,
+                                            Presence = group.Key.Presence,
+                                            Absence = group.Key.Absence,
+                                            Summary = group.Key.Summary,
+                                            Flex = group.Key.Flex,
+                                            Overtime1 = group.Key.Overtime1,
+                                            Overtime2 = group.Key.Overtime2,
+                                            Overtime3 = group.Key.Overtime2,
+                                            Comp1 = group.Key.Comp1,
+                                            Comp2 = group.Key.Comp2,
+                                            Comp3 = group.Key.Comp3,
+                                            LastName = group.Key.LastName,
+                                            FirstName = group.Key.FirstName,
+                                            EmployeeId = group.Key.EmployeeId
+                                        })
+                                         .OrderByDescending(t => t.YearWeek)
+                                         .ThenByDescending(t => t.Date);
+
 
             return View(timeReportsGrouped);
         }
@@ -85,58 +101,60 @@ namespace Tidrapport.Controllers
             var id = User.Identity.GetUserId();
             int employeeId = int.Parse(id);
 
-            var timeReportsGrouped = db.TimeReports
-                .Where(t => t.EmployeeId == employeeId)
-                .GroupBy(row => new
-                {
-                    row.YearWeek,
-                    row.Id,
-                    row.Date,
-                    row.Status,
-                    row.SubmittedTime,
-                    row.SubmittedBy,
-                    row.ApprovedTime,
-                    row.ApprovedBy,
-                    row.Presence,
-                    row.Absence,
-                    row.Summary,
-                    row.Flex,
-                    row.Overtime1,
-                    row.Overtime2,
-                    row.Overtime3,
-                    row.Comp1,
-                    row.Comp2,
-                    row.Comp3,
-                    row.Employee.LastName,
-                    row.Employee.FirstName,
-                    row.EmployeeId
-                })
-                .Select(group => new TimeReport_VM
-                {
-                    YearWeek = group.Key.YearWeek,
-                    Id = group.Key.Id,
-                    Date = group.Key.Date,
-                    Status = group.Key.Status,
-                    SubmittedTime = group.Key.SubmittedTime,
-                    SubmittedBy = group.Key.SubmittedBy,
-                    ApprovedTime = group.Key.ApprovedTime,
-                    ApprovedBy = group.Key.ApprovedBy,
-                    Presence = group.Key.Presence,
-                    Absence = group.Key.Absence,
-                    Summary = group.Key.Summary,
-                    Flex = group.Key.Flex,
-                    Overtime1 = group.Key.Overtime1,
-                    Overtime2 = group.Key.Overtime2,
-                    Overtime3 = group.Key.Overtime2,
-                    Comp1 = group.Key.Comp1,
-                    Comp2 = group.Key.Comp2,
-                    Comp3 = group.Key.Comp3,
-                    LastName = group.Key.LastName,
-                    FirstName = group.Key.FirstName,
-                    EmployeeId = group.Key.EmployeeId
-                })
-                .OrderByDescending(t => t.YearWeek)
-                .ThenByDescending(t => t.Date);
+            var timeReports = repository.GetAllTimeReports(employeeId);
+
+            var timeReportsGrouped = timeReports
+                                        .GroupBy(row => new
+                                        {
+                                            row.YearWeek,
+                                            row.Id,
+                                            row.Date,
+                                            row.Status,
+                                            row.SubmittedTime,
+                                            row.SubmittedBy,
+                                            row.ApprovedTime,
+                                            row.ApprovedBy,
+                                            row.Presence,
+                                            row.Absence,
+                                            row.Summary,
+                                            row.Flex,
+                                            row.Overtime1,
+                                            row.Overtime2,
+                                            row.Overtime3,
+                                            row.Comp1,
+                                            row.Comp2,
+                                            row.Comp3,
+                                            row.Employee.LastName,
+                                            row.Employee.FirstName,
+                                            row.EmployeeId
+                                        })
+                                        .Select(group => new TimeReport_VM
+                                        {
+                                            YearWeek = group.Key.YearWeek,
+                                            Id = group.Key.Id,
+                                            Date = group.Key.Date,
+                                            Status = group.Key.Status,
+                                            SubmittedTime = group.Key.SubmittedTime,
+                                            SubmittedBy = group.Key.SubmittedBy,
+                                            ApprovedTime = group.Key.ApprovedTime,
+                                            ApprovedBy = group.Key.ApprovedBy,
+                                            Presence = group.Key.Presence,
+                                            Absence = group.Key.Absence,
+                                            Summary = group.Key.Summary,
+                                            Flex = group.Key.Flex,
+                                            Overtime1 = group.Key.Overtime1,
+                                            Overtime2 = group.Key.Overtime2,
+                                            Overtime3 = group.Key.Overtime2,
+                                            Comp1 = group.Key.Comp1,
+                                            Comp2 = group.Key.Comp2,
+                                            Comp3 = group.Key.Comp3,
+                                            LastName = group.Key.LastName,
+                                            FirstName = group.Key.FirstName,
+                                            EmployeeId = group.Key.EmployeeId
+                                        })
+                                         .OrderByDescending(t => t.YearWeek)
+                                         .ThenByDescending(t => t.Date);
+
 
             return View(timeReportsGrouped);
         }
@@ -148,7 +166,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = db.TimeReports.Find(id);
+
+            TimeReport timeReport = repository.GetTimeReport((int)id);
+
             if (timeReport == null)
             {
                 return HttpNotFound();
@@ -179,10 +199,7 @@ namespace Tidrapport.Controllers
                 EmployeeId = timeReport.EmployeeId
             };
 
-            var activitiyRows = db.TimeReportRows
-                .Where(trr => trr.TimeReportId == timeReport.Id)
-                .OrderBy(trr => trr.Activity.Project.Name)
-                .ThenBy(trr =>trr.Activity.Name);
+            var activitiyRows = repository.GetTimeReportRowsForTimeReport(timeReport.Id);
 
             timeReprortIncludingRows.Rows = activitiyRows;
 
@@ -190,31 +207,33 @@ namespace Tidrapport.Controllers
         }
 
         // GET: TimeReports/Create
-        public ActionResult Create(int id)
+        public ActionResult Create()
         {
-            WorkHours date = db.WorkHours.Find(id);
+            // identify the user
+            var id = User.Identity.GetUserId();
+            int employeeId = int.Parse(id);
 
-            if (date == null)
-            { 
+            // find last created TimeReport
+            DateTime latestTimeReportDate = repository.GetLatestTimeReportDate(employeeId);
+
+            WorkHours workhours = repository.GetWorkHours(latestTimeReportDate);
+
+            if (workhours == null)
+            {
                 return View("Inga tillgängliga objekt i WorkHours, kontakta admin");
             }
 
-            // identify the user
-            var uid = User.Identity.GetUserId();
-            int employeeId = int.Parse(uid);
-
             // check if timereport already exists
-            var timeReportCheck = db.TimeReports
-                                 .Where(tr => tr.EmployeeId == employeeId && tr.Date == date.Date);
+            var timeReportCheck = repository.GetTimeReport(employeeId, workhours.Date);
 
-            int weeknumber = WeekNumber(date.Date);
+            int weeknumber = WeekNumber(workhours.Date);
 
             if (timeReportCheck == null)
             {
                 var timereport = new TimeReport
                 { 
-                    Date = date.Date,
-                    YearWeek = date.Date.Year.ToString() + "-" + weeknumber.ToString(),
+                    Date = workhours.Date,
+                    YearWeek = workhours.Date.Year.ToString() + "-" + weeknumber.ToString(),
                     Status = TRStatus.Utkast,
                     SubmittedTime = null,
                     SubmittedBy = null,
@@ -233,10 +252,9 @@ namespace Tidrapport.Controllers
                     EmployeeId = employeeId,
                 };
 
-                 ViewBag.TimeReport = timereport;
+                 
 
-                var new_timereport = db.TimeReports.Add(timereport);
-                db.SaveChanges();
+                var new_timereport = repository.AddTimeReport(timereport);
 
                 ViewBag.TimeReport = new_timereport;
 
@@ -345,7 +363,10 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddRow([Bind(Include = "ActivityId,Hours,Note,InvoiceTimeStamp, InvoiceBy")] TimeReportRow timeReportRow)
         {
-            var _activity = db.Activities.Find(timeReportRow.ActivityId);
+
+            // behöver ett id på huvudrapporten så jag kan ändra saldona ;-)
+
+            var _activity = repository.GetActivity(timeReportRow.ActivityId);
             
             switch (_activity.BalanceEffect)
             {
@@ -394,12 +415,14 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = db.TimeReports.Find(id);
+
+            TimeReport timeReport = repository.GetTimeReport((int)id);
+
             if (timeReport == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
+            //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
             return View(timeReport);
         }
 
@@ -412,11 +435,10 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(timeReport).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateTimeReport(timeReport);
                 return RedirectToAction("Index");
             }
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
+            //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReport.EmployeeId);
             return View(timeReport);
         }
 
@@ -427,7 +449,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReport timeReport = db.TimeReports.Find(id);
+
+            TimeReport timeReport = repository.GetTimeReport((int)id);
+
             if (timeReport == null)
             {
                 return HttpNotFound();
@@ -440,9 +464,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TimeReport timeReport = db.TimeReports.Find(id);
-            db.TimeReports.Remove(timeReport);
-            db.SaveChanges();
+            repository.DeleteTimeReportAndTimeReportRows(id);
+ 
             return RedirectToAction("Index");
         }
 
@@ -450,7 +473,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

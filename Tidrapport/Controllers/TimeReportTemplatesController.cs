@@ -7,22 +7,28 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
+    [Authorize(Roles = "anställd")]
     public class TimeReportTemplatesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+        private IRepository repository;
 
-        // GET: TimeReportTemplates1
-        public ActionResult Index()
+        public TimeReportTemplatesController()
         {
-            var timeReportTemplates = db.TimeReportTemplates.Include(t => t.Activity).Include(t => t.Employee);
-            return View(timeReportTemplates.ToList());
+            repository = new Repository();
         }
 
-        // GET: TimeReportTemplates1
+        public TimeReportTemplatesController(IRepository rep)
+        {
+            repository = rep;
+        }
+
+        // GET: TimeReportTemplates
         public ActionResult myTemplate()
         {
             string dag = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0];
@@ -31,29 +37,15 @@ namespace Tidrapport.Controllers
 
             int employeeId = int.Parse(id);
 
-            var myProjects = db.ProjectEmployees.Where(pe => pe.EmployeeId == employeeId);
+            var myProjects = repository.GetProjectsForEmployee(employeeId);
 
-            var timeReportTemplates = db.TimeReportTemplates.Where(t => t.EmployeeId == employeeId).Include(t => t.Activity).Include(t => t.Employee);
+            var timeReportTemplates = repository.GetTimeReportTemplatesForEmployee(employeeId);
 
             return View(timeReportTemplates.ToList());
         }
 
-        // GET: TimeReportTemplates1/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
-            if (timeReportTemplate == null)
-            {
-                return HttpNotFound();
-            }
-            return View(timeReportTemplate);
-        }
 
-        // GET: TimeReportTemplates1/Create
+        // GET: TimeReportTemplates/Create
         public ActionResult Create()
         {
             // tips för att få rätt veckodag!!!
@@ -61,9 +53,14 @@ namespace Tidrapport.Controllers
             System.Globalization.CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
             string dayOfWeekLocalized = cultureInfo.DateTimeFormat.DayNames[(int)day];
 
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
-            
+            var id = User.Identity.GetUserId();
+
+            int employeeId = int.Parse(id);
+
+            var projects = repository.GetProjectsAndActivitiesForEmployee(employeeId);
+
+            ViewBag.ActivityId = new SelectList(projects, "Id", "Name");
+            ViewBag.EmployeeId = employeeId;            
             
             return View();
         }
@@ -77,48 +74,15 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.TimeReportTemplates.Add(timeReportTemplate);
-                db.SaveChanges();
+                repository.AddTimeReportTemplate (timeReportTemplate);
+               
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReportTemplate.ActivityId);
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReportTemplate.EmployeeId);
-            return View(timeReportTemplate);
-        }
+            var activityList = repository.GetProjectsAndActivitiesForEmployee(timeReportTemplate.EmployeeId);
 
-        // GET: TimeReportTemplates1/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
-            if (timeReportTemplate == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReportTemplate.ActivityId);
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReportTemplate.EmployeeId);
-            return View(timeReportTemplate);
-        }
-
-        // POST: TimeReportTemplates1/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,DayOfWeek,NumberOfHours,EmployeeId,ActivityId")] TimeReportTemplate timeReportTemplate)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(timeReportTemplate).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", timeReportTemplate.ActivityId);
-            ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", timeReportTemplate.EmployeeId);
+            ViewBag.ActivityId = new SelectList(activityList, "Id", "Name", timeReportTemplate.ActivityId);
+            ViewBag.EmployeeId = timeReportTemplate.EmployeeId;
             return View(timeReportTemplate);
         }
 
@@ -129,7 +93,7 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
+            TimeReportTemplate timeReportTemplate = repository.GetTimeReportTemplate((int)id);
             if (timeReportTemplate == null)
             {
                 return HttpNotFound();
@@ -142,9 +106,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TimeReportTemplate timeReportTemplate = db.TimeReportTemplates.Find(id);
-            db.TimeReportTemplates.Remove(timeReportTemplate);
-            db.SaveChanges();
+            repository.DeleteTimeReportTemplate(id);
+            
             return RedirectToAction("Index");
         }
 
@@ -152,7 +115,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

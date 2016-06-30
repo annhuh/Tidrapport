@@ -62,7 +62,7 @@ namespace Tidrapport.ViewModels
         public string Country { get; set; }
 
         // -----------------------
-        // Epmployee properties
+        // Epmployment properties
         // -----------------------
 
         [Display(Name = "Från")]
@@ -80,9 +80,8 @@ namespace Tidrapport.ViewModels
         public Decimal NormalWeekHours { get; set; }
 
         [Display(Name = "Semesterperiod")]
-        [DataType(DataType.Date)]
-        [Required(ErrorMessage = "Semesterperiod from är obligatorisk")]
-        public HolidayPeriod HolidayPeriod { get; set; }
+        //[Required(ErrorMessage = "Semesterperiod är obligatorisk")]
+        public HolidayPeriod Period { get; set; }
 
         [Required]
         [Display(Name = "Semesterdagar")]
@@ -121,47 +120,47 @@ namespace Tidrapport.ViewModels
         // -----------------------
         // Overtime Balance Period
         // -----------------------
-        [Display(Name = "Giltig från")]
-        public DateTime OvertimeBalanceValidFrom { get; set; }
+        //[Display(Name = "Giltig från")]
+        //public DateTime OvertimeBalanceValidFrom { get; set; }
 
-        [Display(Name = "Giltig till")]
-        public DateTime OvertimeBalanceValidTo { get; set; }
+        //[Display(Name = "Giltig till")]
+        //public DateTime OvertimeBalanceValidTo { get; set; }
 
-        [Display(Name = "Mertid")]
-        public decimal OvertimeBalance1 { get; set; }
+        //[Display(Name = "Mertid")]
+        //public decimal OvertimeBalance1 { get; set; }
 
-        [Display(Name = "Enkel övertid")]
-        public decimal OvertimeBalance2 { get; set; }
+        //[Display(Name = "Enkel övertid")]
+        //public decimal OvertimeBalance2 { get; set; }
 
-        [Display(Name = "Kval övertid")]
-        public decimal OvertimeBalance3 { get; set; }
+        //[Display(Name = "Kval övertid")]
+        //public decimal OvertimeBalance3 { get; set; }
 
         // -----------------------
         // Holiday Balance Period
         // -----------------------
-        [Display(Name = "Från")]
-        public DateTime HolidayBalanceValidFrom { get; set; }
+        //[Display(Name = "Från")]
+        //public DateTime HolidayBalanceValidFrom { get; set; }
 
-        [Display(Name = "Till")]
-        public DateTime HolidayBalanceValidTo { get; set; }
+        //[Display(Name = "Till")]
+        //public DateTime HolidayBalanceValidTo { get; set; }
 
-        [Display(Name = "Betalda semesterdagar")]
-        public int PayedHolidayBalance { get; set; }
+        //[Display(Name = "Betalda semesterdagar")]
+        //public int PayedHolidayBalance { get; set; }
 
-        [Display(Name = "Obetalda semesterdagar")]
-        public int UnPayedHolidayBalance { get; set; }
+        //[Display(Name = "Obetalda semesterdagar")]
+        //public int UnPayedHolidayBalance { get; set; }
 
         // -------------------------------
         // National Holiday Balance Period
         // -------------------------------
 
-        [Display(Name = "Från")]
-        public DateTime NationalHolidayBalanceValidFrom { get; set; }
+        //[Display(Name = "Från")]
+        //public DateTime NationalHolidayBalanceValidFrom { get; set; }
 
-        [Display(Name = "Till")]
-        public DateTime NationalHolidayBalanceValidTo { get; set; }
+        //[Display(Name = "Till")]
+        //public DateTime NationalHolidayBalanceValidTo { get; set; }
 
-        [Display(Name = "Saldo")]
-        public decimal Balance { get; set; }
+        //[Display(Name = "Saldo")]
+        //public decimal Balance { get; set; }
     }
 }

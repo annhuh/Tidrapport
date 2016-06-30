@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Tidrapport.Models.HolidayBalancePeriod>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Semesterperiod";
 }
 
-<h2>Semester</h2>
+<h2>Semesterperiod</h2>
 
 @*<p>
     @Html.ActionLink("Skapa ny semesterperiod", "Create")
@@ -12,8 +12,15 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Employee.SSN)
+            @Html.DisplayNameFor(model => model.Employee.LastName)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.EmployedFrom)
+        </th>
+        <th>|</th>
         <th>
             @Html.DisplayNameFor(model => model.ValidFrom)
         </th>
@@ -26,21 +33,28 @@
         <th>
             @Html.DisplayNameFor(model => model.UnPayedHolidayBalance)
         </th>
-        <th>
+        @*<th>
             <span>
                 <a href="@Url.Action("Create")" class="btn btn-default btn-">
                     <span class="glyphicon glyphicon-plus-sign"></span>
-                    Skapa nytt projekt
+                    Skapa ny semesterperiod
                 </a>
             </span>
-        </th>
+        </th>*@
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Employee.SSN)
+            @Html.DisplayFor(modelItem => item.Employee.LastName)
         </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.EmployedFrom)
+        </td>
+        <td>|</td>
         <td>
             @Html.DisplayFor(modelItem => item.ValidFrom)
         </td>

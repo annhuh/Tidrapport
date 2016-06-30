@@ -15,6 +15,8 @@ namespace Tidrapport.Dal
 
         List<Activity> GetAllActivities();
 
+        List<Activity> GetProjectsAndActivitiesForEmployee(int employeeId);
+
         Activity GetActivity(int id);
 
         void AddActivity(Activity activity);
@@ -71,58 +73,125 @@ namespace Tidrapport.Dal
         // HolidayBalancePeriod
         // ----------
 
-        List<HolidayBalancePeriod> GetAlHolidayBalancePeriods();
-        
+        List<HolidayBalancePeriod> GetAllHolidayBalancePeriods();
+
+        HolidayBalancePeriod GetHolidayBalancePeriod(int id);
+
+        void DeleteHolidayBalancePeriod(int id);
+
         // ----------
         // NationalHolidayBalancePeriod
         // ----------
 
-        List<NationalHolidayBalancePeriod> GetAlNationalHolidayBalancePeriods();
+        List<NationalHolidayBalancePeriod> GetAllNationalHolidayBalancePeriods();
+
+        NationalHolidayBalancePeriod GetNationalHolidayBalancePeriod(int id);
+
+        void DeleteNationalHolidayBalancePeriod(int id);
+
+        // ----------
+        // OvertimeBalancePeriod
+        // ----------
+
+        List<OvertimeBalancePeriod> GetAllOvertimeBalancePeriods();
+
+        OvertimeBalancePeriod GetOvertimeBalancePeriod(int id);
+
+        void DeleteOvertimeBalancePeriod(int id);
 
         // ----------
         // Project
         // ----------
 
         List<Project> GetAllProjects();
-        
+
+        List<Project> GetAllProjectsForCustomer(int customerId);
+
+        Project GetProject(int id);
+
+        Project AddProject(Project project);
+
+        void UpdateProject(Project project);
+
+        void DeleteProject(int id);
+
         // ----------
         // ProjectEmployee
         // ----------
 
         List<ProjectEmployee> GetAllProjectEmployees();
 
+        List<ProjectEmployee> GetProjectsForEmployee(int employeeId);
+
+        List<ProjectEmployee> GetEmployeesForProject(int projectId);
+
+        ProjectEmployee GetProjectEmployee(int id);
+
+        void AddProjectEmployee(ProjectEmployee projectEmployee);
+
+        void DeleteProjectEmployee(int id);
+
         // ----------
         // TimeReport
         // ----------
 
-        List<TimeReport> GetAllTimeReports();
+        TimeReport GetTimeReport ( int id );
+
+        List<TimeReport> GetAllTimeReports ( int? employeeId );
+
+        TimeReport GetTimeReport(int employeeId, DateTime date);
+
+        DateTime GetLatestTimeReportDate ( int employeeId );
+
+        TimeReport AddTimeReport(TimeReport tr);
+
+        void UpdateTimeReport(TimeReport tr);
+
+        void DeleteTimeReportAndTimeReportRows(int id);
 
         // ----------
         // TimeReportRow
         // ----------
 
-        List<TimeReportRow> GetAlTimeReportRows();
+        //List<TimeReportRow> GetAllTimeReportRows();
+
+        List<TimeReportRow> GetTimeReportRowsForTimeReport(int id);
 
         // ----------
         // TimeReportTemplate
         // ----------
 
-        List<TimeReportTemplate> GetAlTimeReportTemplates();
+        List<TimeReportTemplate> GetAllTimeReportTemplates();
 
-        // ----------
-        // OvertimeBalancePeriod
-        // ----------
+        TimeReportTemplate GetTimeReportTemplate(int id);
 
-        List<OvertimeBalancePeriod> GetAlOvertimeBalancePeriods();
+        List<TimeReportTemplate> GetTimeReportTemplatesForEmployee(int employeeId);
+
+        void AddTimeReportTemplate(TimeReportTemplate timeReportTemplate);
+
+        void DeleteTimeReportTemplate(int id);
 
         // ----------
         // User and Role
         // ----------
+
         int AddUserAndSetRole(string userName, string password, string role);
 
-        void ClearUserName(int id);
+        // ----------
+        // WorkHours
+        // ----------
 
-        List<ApplicationUser> getAlApplicationlUsers();
+        void GenerateNewWorkHours(DateTime startDate, DateTime endDate, decimal hours);
+
+        void DeleteOldWorkHours(DateTime startDate, DateTime endDate);
+
+        List<WorkHours> GetAllWorkHours();
+
+        WorkHours GetWorkHours(int id);
+
+        WorkHours GetWorkHours(DateTime date);
+
+        void UpdateWorkHours(WorkHours workHours);
 
         //void Dispose();
 

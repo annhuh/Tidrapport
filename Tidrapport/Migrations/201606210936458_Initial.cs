@@ -69,11 +69,10 @@ namespace Tidrapport.Migrations
                         ZipCode = c.String(),
                         City = c.String(),
                         Country = c.String(),
-                        EmployedFrom = c.DateTime(),
+                        EmployedFrom = c.DateTime(nullable: false),
                         EmployedTo = c.DateTime(),
                         NormalWeekHours = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        HoldayPeriodFrom = c.DateTime(nullable: false),
-                        HolidayPeriodTo = c.DateTime(nullable: false),
+                        HolidayPeriod = c.Int(nullable: false),
                         NumberOfHolidaysPerYear = c.Int(nullable: false),
                         FlexBalance = c.Decimal(nullable: false, precision: 18, scale: 2),
                         OverTimeBalance1 = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -177,7 +176,7 @@ namespace Tidrapport.Migrations
                         Hours = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Note = c.String(),
                         InvoiceBy = c.String(),
-                        InvpoiceTime = c.DateTime(nullable: false),
+                        InvoiceTime = c.DateTime(),
                         TimeReportId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)

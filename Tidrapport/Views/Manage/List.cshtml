@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Tidrapport.Models.UserRoleViewModel>
+
+@{
+    ViewBag.Title = "Användare";
+}
+
+<h2>Användare</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockOutEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockedOutEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Roles)
+        </th>
+        <th>
+            <a href="@Url.Action("Register")" class="btn btn-default btn-">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Skapa ny användare (admin, ekonomi)
+            </a>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LockOutEnabled)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LockedOutEndDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Roles)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
+            
+            @{
+                if (@item.Roles.Contains("admin"))
+                {
+                    if (@item.UserName == User.Identity.Name)
+                    {
+                        <span class="glyphicon glyphicon-asterisk"></span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Delete", new { id = @item.Id })" class="btn btn-default btn-">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            Tabort
+                        </a>
+                    }
+
+                }
+                else if (@item.Roles.Contains("ekonomi"))
+                {
+                    <a href="@Url.Action("Delete", new { id = @item.Id })" class="btn btn-default btn-">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Tabort
+                    </a>
+                }
+                else
+                {
+                    if (@item.LockedOutEndDate == null)
+                    {
+                        <a href="@Url.Action("LockOut", new { id = @item.Id })" class="btn btn-default btn-">
+                            <span class="glyphicon glyphicon-lock"></span>
+                            Blockera
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("UnLockOut", new { id = @item.Id })" class="btn btn-default btn-">
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                            Tabort blockering
+                        </a>
+                    }
+
+
+                }
+            }
+             
+        </td>
+    </tr>
+                }
+
+</table>

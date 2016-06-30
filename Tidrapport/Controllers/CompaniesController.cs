@@ -18,7 +18,7 @@ namespace Tidrapport.Controllers
 
         public CompaniesController()
         {
-            repository = new TimeReportRepository();
+            repository = new Repository();
         }
 
         public CompaniesController ( IRepository rep )
@@ -135,7 +135,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                //db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -3,14 +3,19 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*<meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>@ViewBag.Title - NTAB Tidredovisning</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <br />
+    <br />
+    <br />
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
+        @*<a class="toggleMenu" href="#">Menu</a>*@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -21,32 +26,69 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Home", "Index", null, htmlAttributes: new { @class = "<your class>", @style = "font:<your font>" })</li>*@
-                    @*<li>@Html.ActionLink("Hem", "Index", "Home")</li>*@
+                @*<li>@Html.ActionLink("Home", "Index", null, htmlAttributes: new { @class = "<your class>", @style = "font:<your font>" })</li>*@
+                @*<li>@Html.ActionLink("Hem", "Index", "Home")</li>*@
                     @if (User.IsInRole("admin"))
                     {
-                        <li>@Html.ActionLink("Företag", "Index", "Companies")</li>
-                        <li>@Html.ActionLink("Anställd", "Index", "Employees")</li>
-                        <li>@Html.ActionLink("Tidrapport", "Index", "TimeReports")</li>
-                        <li>@Html.ActionLink("Kund", "Index", "Customers")</li>
-                        <li>@Html.ActionLink("Projekt", "Index", "Projects")</li>
-                        <li>@Html.ActionLink("Lista användare", "Index", "Users")</li>
-                        <li>@Html.ActionLink("Skapa användare", "Register", "Account")</li>
-                        <li>@Html.ActionLink("Inställningar", "Index", "Administrera")</li>
+                        <li>
+                            <a href="#">Företag</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "Index", "Companies")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Anställda</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "Index", "Employees")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Tidrapporter</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "Index", "TimeReports")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Kunder</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "Index", "Customers")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Projekt</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "Index", "Projects")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Användare</a>
+                            <ul>
+                                <li>@Html.ActionLink("Lista", "List", "Manage")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Inställningar</a>
+                            <ul>
+                                <li>@Html.ActionLink("1 Jan - Arbetstider", "Index", "WorkHours")</li>
+                                <li>@Html.ActionLink("1 Jan - Övertidsperioder", "Index", "OvertimeBalancePeriods")</li>
+                                <li>@Html.ActionLink("1 Jan - Nationaldagssaldo", "Index", "NationalHolidayBalancePeriods")</li>
+                                <li>@Html.ActionLink("1 Jan/1 April - Semesterperioder", "Index", "HolidayBalancePeriods")</li>
+                            </ul>
+                        </li>
                     }
-                    
+
                     @if (User.IsInRole("anställd"))
                     {
                         <li>@Html.ActionLink("Min profil", "MyProfile", "Employees")</li>
-                        <li>@Html.ActionLink("Mina projekt", "MyProjects", "ProjectEmployees")</li>
-                        <li>@Html.ActionLink("Mina tidrapporter", "MyTimeReports", "TimeReports")</li>
-                        <li>@Html.ActionLink("Min mall", "MyTemplate", "TimeReportTemplates")</li>
+                                    <li>@Html.ActionLink("Mina projekt", "MyProjects", "ProjectEmployees")</li>
+                                    <li>@Html.ActionLink("Mina tidrapporter", "MyTimeReports", "TimeReports")</li>
+                                    <li>@Html.ActionLink("Min mall", "MyTemplate", "TimeReportTemplates")</li>
                     }
-                    
+
                     @if (User.IsInRole("ekonomi"))
                     {
                         <li>@Html.ActionLink("Faktura underlag", "InvoiceData", "TimeReports")</li>
-                        <li>@Html.ActionLink("Saldo kontrollen", "InvoiceData", "TimeReports")</li>
+                                    <li>@Html.ActionLink("Saldo kontrollen", "InvoiceData", "TimeReports")</li>
                     }
 
                     @*<li>@Html.ActionLink("Administration", "Index", "Administrates")</li>
@@ -55,11 +97,15 @@
                     <li>@Html.ActionLink("Tidrapport", "Index", "TimeReports")</li>
                     <li>@Html.ActionLink("Kund", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Projekt", "Index", "Projects")</li>
-                    <li>@Html.ActionLink("Ekonomi", "Index", "Ekonomy")</li>*@               
+                    <li>@Html.ActionLink("Ekonomi", "Index", "Ekonomy")</li>*@
 
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+
                 </ul>
+
+
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

@@ -209,10 +209,10 @@
     <Compile Include="Controllers\NationalHolidayBalancePeriodsController.cs" />
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Controllers\WorkHoursController.cs" />
-    <Compile Include="Dal\TimeReportRepository.cs" />
-    <Compile Include="Migrations\201606161635089_Initial.cs" />
-    <Compile Include="Migrations\201606161635089_Initial.Designer.cs">
-      <DependentUpon>201606161635089_Initial.cs</DependentUpon>
+    <Compile Include="Dal\Repository.cs" />
+    <Compile Include="Migrations\201606210936458_Initial.cs" />
+    <Compile Include="Migrations\201606210936458_Initial.Designer.cs">
+      <DependentUpon>201606210936458_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -221,12 +221,11 @@
     <Compile Include="Models\Enumerators.cs" />
     <Compile Include="Models\TimeReportRow.cs" />
     <Compile Include="Models\WorkHours.cs" />
-    <Compile Include="ViewModels\EmployeeLoginInfo_VM.cs" />
-    <Compile Include="ViewModels\TimeReportDraft_VM.cs" />
-    <Compile Include="ViewModels\TimeReportIncludingRows_VM.cs" />
-    <Compile Include="ViewModels\WorkHoursPeriod_VM.cs" />
+    <None Include="ViewModels\_OLD\EmployeeLoginInfo_VM.cs.OLD" />
+    <None Include="ViewModels\_OLD\TimeReportDraft_VM.cs.OLD" />
+    <Compile Include="ViewModels\WorkHoursViewModels.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
-    <Compile Include="ViewModels\EmployeeRole.cs" />
+    <None Include="ViewModels\_OLD\EmployeeRole.cs.OLD" />
     <Compile Include="ViewModels\EconomicalTimeReport_VM.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -239,17 +238,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CalendarTimeReportEvent.cs" />
-    <Compile Include="ViewModels\Role_VM.cs" />
-    <Compile Include="ViewModels\TimeReport_VM.cs" />
+    <None Include="ViewModels\_OLD\CalendarTimeReportEvent.csNOTUSED" />
+    <Compile Include="ViewModels\TimeReportViewModels.cs" />
+    <Content Include="Content\OLD\Tidrapport.css" />
     <Content Include="Migrations\Backup\Backup.txt" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Migrations\Backup\Configuration.cs.bcp" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\OvertimeBalancePeriod.cs" />
-    <Compile Include="ViewModels\CreateProjcet_VM.cs" />
-    <Compile Include="ViewModels\RegisterEmployee_VM.cs" />
+    <None Include="ViewModels\_OLD\CreateProjcet_VM.cs.OLD" />
+    <Compile Include="ViewModels\EmployeeViewModels.cs" />
     <Compile Include="Models\NationalHolidayBalancePeriod.cs" />
     <Compile Include="Models\ProjectEmployee.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -265,13 +264,13 @@
     <Compile Include="Models\TimeReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\DeleteFromIdentity_VM.cs" />
     <Compile Include="ViewModels\EconomicalTimeReportDetailed_VM.cs" />
     <Content Include="Pictures\Clock.jpg" />
     <Content Include="Pictures\Clock2.jpg" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <None Include="Scripts\TimeReportApp\_OLD\Tidrapport_ToggleMenu.js.OLD" />
     <Content Include="Scripts\datepicker.js" />
-    <Content Include="Scripts\App\custom.validate.js" />
+    <Content Include="Scripts\TimeReportApp\custom.validate.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Delete.cshtml" />
@@ -289,6 +288,8 @@
     <Content Include="Views\Employees\NationaHolidayBalancePeriod_partial.cshtml" />
     <Content Include="Views\Employees\AllDetails.cshtml" />
     <Content Include="Views\Employees\RegisterEmployee.cshtml" />
+    <Content Include="Views\Manage\List.cshtml" />
+    <None Include="Views\Employees\RegisterEmployeeOLD.cshtml" />
     <Content Include="Views\ProjectEmployees\Employees.cshtml" />
     <Content Include="Views\ProjectEmployees\Projects.cshtml" />
     <Content Include="Views\Employees\myProfile.cshtml" />
@@ -297,11 +298,11 @@
     <Content Include="Views\TimeReports\myTimeReports.cshtml" />
     <Content Include="Views\WorkHours\Edit.cshtml" />
     <Content Include="Views\WorkHours\Index.cshtml" />
-    <Content Include="Views\FlexDateBalances\Create.cshtml" />
-    <Content Include="Views\FlexDateBalances\Delete.cshtml" />
-    <Content Include="Views\FlexDateBalances\Details.cshtml" />
-    <Content Include="Views\FlexDateBalances\Edit.cshtml" />
-    <Content Include="Views\FlexDateBalances\Index.cshtml" />
+    <Content Include="Views\_OLD\FlexDateBalances\Create.cshtml" />
+    <Content Include="Views\_OLD\FlexDateBalances\Delete.cshtml" />
+    <Content Include="Views\_OLD\FlexDateBalances\Details.cshtml" />
+    <Content Include="Views\_OLD\FlexDateBalances\Edit.cshtml" />
+    <Content Include="Views\_OLD\FlexDateBalances\Index.cshtml" />
     <Content Include="Views\WorkHours\GenerateNewWorkHours.cshtml" />
     <Content Include="Views\WorkHours\DeleteOldWorkHours.cshtml" />
     <Content Include="Views\TimeReports\Create.cshtml" />
@@ -389,6 +390,9 @@
     <Content Include="Views\TimeReports\Delete.cshtml" />
     <Content Include="Views\TimeReports\Index.cshtml" />
     <Content Include="Views\TimeReports\Details.cshtml" />
+    <Content Include="Views\Manage\LockOut.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+    <Content Include="Views\Manage\UnLockOut.cshtml" />
     <None Include="Views\TimeReportTemplates\Create.cshtml" />
     <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
     <Content Include="Views\TimeReportTemplates\Details.cshtml" />
@@ -412,6 +416,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\OLD\" />
+    <Folder Include="Models\_OLD\" />
     <Folder Include="Views\Initialize\" />
     <Folder Include="Views\InitWorkHoursCalendar\" />
     <Folder Include="Views\Init\" />
@@ -424,8 +430,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606161635089_Initial.resx">
-      <DependentUpon>201606161635089_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606210936458_Initial.resx">
+      <DependentUpon>201606210936458_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -20,7 +20,7 @@ namespace Tidrapport.ViewModels
         [Display(Name = "Antal timmar")]
         public decimal NumberOfHours { get; set; }
 
-        public Status Status { get; set; }
+        public TRStatus Status { get; set; }
 
         [Display(Name = "Inskickad av")]
         public string SubmittedBy { get; set; }

@@ -6,34 +6,42 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 
 namespace Tidrapport.Controllers
 {
     public class ProjectsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+
+        private IRepository repository;
+
+        public ProjectsController()
+        {
+            repository = new Repository();
+        }
+
+        public ProjectsController(IRepository rep)
+        {
+            repository = rep;
+        }
 
         // GET: Projects
         public ActionResult Index(int? id)
         {
             ViewBag.CustomerId = id;
-            var projects = db.Projects.Include(p => p.Customer);
             
             if (id != null)
             {
-                projects = from project in projects
-                           where project.CustomerId == id
-                           orderby project.Name
-                           select project;
-                     
-                return View(projects.ToList());
+                var projects = repository.GetAllProjectsForCustomer((int)id);
+
+                return View(projects);
             }
             else {
-                projects = from project in projects
-                           orderby project.Customer.Name, project.Name
-                           select project;
-                return View(projects.ToList());
+                var projects = repository.GetAllProjects();
+
+                return View(projects);
             }
         }
 
@@ -44,7 +52,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+
+            Project project = repository.GetProject ((int)id);
+
             if (project == null)
             {
                 return HttpNotFound();
@@ -57,15 +67,18 @@ namespace Tidrapport.Controllers
         {
             if (id != null)
             {
-                var customers = db.Customers;
-                var theCustomer = from customer in customers
-                                  where customer.CustomerId == id
-                                  select customer;
-                ViewBag.CustomerId = new SelectList(theCustomer, "CustomerId", "Name");
+                var theCustomer = repository.GetCustomer ((int)id);
+
+                List<Customer> customers = new List<Customer>();
+                customers.Add(theCustomer);
+
+                ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name");
             }
             else
             {
-                ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name");
+                var customers = repository.GetAllCustomers();
+
+                ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name");
             }
             
             return View();
@@ -80,12 +93,13 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
-                db.SaveChanges();
+                repository.AddProject(project);
                 return RedirectToAction("Index", new { id = project.CustomerId });
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
+            var customers = repository.GetAllCustomers();
+
+            ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name", project.CustomerId);
             return View(project);
         }
 
@@ -96,12 +110,16 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = repository.GetProject((int)id);
             if (project == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
+
+            var customers = repository.GetAllCustomers();
+
+            ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name", project.CustomerId);
+
             return View(project);
         }
 
@@ -114,11 +132,13 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateProject(project);
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "Name", project.CustomerId);
+
+            var customers = repository.GetAllCustomers();
+
+            ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name", project.CustomerId);
             return View(project);
         }
 
@@ -129,7 +149,9 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+
+            Project project = repository.GetProject((int)id);
+
             if (project == null)
             {
                 return HttpNotFound();
@@ -142,9 +164,8 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
-            db.SaveChanges();
+            repository.DeleteProject(id);
+
             return RedirectToAction("Index");
         }
 
@@ -152,7 +173,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,10 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
 namespace Tidrapport.Models
 {
+    public class UserRoleViewModel
+    {
+        [Display(Name = "Id")]
+        public int Id { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Spärrbar")]
+        public bool LockOutEnabled { get; set; }
+
+        [Display(Name = "Spärrad tills")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? LockedOutEndDate { get; set; }
+
+        [Display(Name = "Roller")]
+        public List<string> Roles { get; set; }
+    }
+
     public class IndexViewModel
     {
         public bool HasPassword { get; set; }

@@ -40,9 +40,9 @@ namespace Tidrapport.Migrations
                 var userStore = new CustomUserStore(context);
                 var userManager = new UserManager<ApplicationUser, int>(userStore);
 
-                var a1 = new ApplicationUser { Email = "admin@mail.com", PhoneNumber = "070-1111111", UserName = "admin@mail.com" };
-                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", PhoneNumber = "070-1111111", UserName = "ekonomi@mail.com" };
-                var k1 = new ApplicationUser { Email = "annhuh@mail.com", PhoneNumber = "070-1111111", UserName = "annhuh@mail.com" };
+                var a1 = new ApplicationUser { Email = "admin@mail.com", UserName = "admin@mail.com", LockoutEnabled = false };
+                var e1 = new ApplicationUser { Email = "ekonomi@mail.com", UserName = "ekonomi@mail.com", LockoutEnabled = true };
+                var k1 = new ApplicationUser { Email = "annhuh@mail.com", UserName = "annhuh@mail.com", LockoutEnabled = true };
 
                 userManager.Create(a1, "Pass#1");
                 userManager.Create(e1, "Pass#1");

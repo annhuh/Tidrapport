@@ -16,13 +16,11 @@ namespace Tidrapport.Controllers
 {
     public class EmployeesController : Controller
     {
-        //private ApplicationDbContext db = new ApplicationDbContext();
-
         private IRepository repository;
 
         public EmployeesController()
         {
-            repository = new TimeReportRepository();
+            repository = new Repository();
         }
 
         public EmployeesController(IRepository rep)
@@ -34,11 +32,10 @@ namespace Tidrapport.Controllers
         public ActionResult Index(int? id, string sortOrder)
         {
             var companyId = id;
-            var employeeList = repository.GetAllEmployeesIncludeCompany();
-
+   
             if (companyId != null)
             {
-                //var employees = repository.GetAllEmployeesIncludeCompany((int)companyId);
+                var employeeList = repository.GetAllEmployeesIncludeCompany((int)id);
 
                 ViewBag.CompanyId = companyId;
                 ViewBag.CompanyName = repository.GetCompany((int)companyId).Name;
@@ -52,7 +49,7 @@ namespace Tidrapport.Controllers
                 ViewBag.SSNSortParm = sortOrder == "SSN" ? "ssn_desc" : "SSN";
                 ViewBag.CompanySortParm = sortOrder == "Company" ? "Company_desc" : "Company";
 
-                var employees = repository.GetAllEmployeesIncludeCompany();
+                var employeeList = repository.GetAllEmployeesIncludeCompany();
 
                 switch (sortOrder)
                 {
@@ -158,59 +155,6 @@ namespace Tidrapport.Controllers
             return View(employee);
         }
 
-        //// GET: Employees/Create
-        //public ActionResult Create(int? id)
-        //{
-        //    var companyId = id;
-
-        //    var companies = db.Companies;
-        //    var sortedCompanies = from company in companies
-        //                          orderby company.Name
-        //                          select company;
-
-        //    if (id != null)
-        //    {
-        //        var company = db.Companies.Find(companyId);
-
-        //        ViewBag.CompanyId = new SelectList(sortedCompanies, "CompanyId", "Name", company);
-        //    }
-        //    else
-        //    {
-        //        ViewBag.CompanyId = new SelectList(sortedCompanies, "CompanyId", "OrgRegNo");
-        //    }
-
-            
-        //    return View();
-        //}
-
-        //// POST: Employees/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "EmployeeId,SSN,EmployedFrom,EmployedTo,NormalWeekHours,NumberOfHolidaysPerYear,FirstName,LastName,Address,ZipCode,City,Country,FlexBalance,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,SavedHolidays,CompanyId")] Employee employee)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var userStore = new CustomUserStore(db);
-        //        var userManager = new UserManager<ApplicationUser, int>(userStore);
-
-        //        var employeeUser = new ApplicationUser { Email = "testuser@mail.com", PhoneNumber = "070-9999999", UserName = "testuser@mail.com" };
-
-        //        userManager.Create(employeeUser, "Pass#1");
-        //        userManager.AddToRole(employeeUser.Id, "anställd");
-
-        //        employee.EmployeeId = employeeUser.Id;
-                
-        //        db.Employees.Add(employee);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "OrgRegNo", employee.CompanyId);
-        //    return View(employee);
-        //}
-
         // GET: Employees/RegisterEmployee
         public ActionResult RegisterEmployee(int? id)
         {
@@ -225,7 +169,9 @@ namespace Tidrapport.Controllers
                 ViewBag.CompanyId = new SelectList(repository.GetAllCompanies(), "CompanyId", "Name");
                 ViewBag.CompanyName = "*";
             }
-                             
+
+            //ViewBag.HolidayPeriods = new SelectList(Enum.GetValues(typeof(HolidayPeriod)), HolidayPeriod.April);
+
             return View();
         }
 
@@ -234,8 +180,8 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RegisterEmployee(
-            [Bind(Include = "CompanyId,Email,Password,SSN,FirstName,LastName,Address,ZipCode,City,Country,EmployedFrom,EmployedTo,NormalWeekHours,HolidayPeriod,NumberOfHolidaysPerYear,FlexBalance,OverTimeBalance1,OverTimeBalance2,OverTimeBalance3,SavedHolidays")] RegisterEmployee_VM employee)
+        public ActionResult RegisterEmployee([Bind(
+            Include = "CompanyId,Email,Password,SSN,FirstName,LastName,Address,ZipCode,City,Country,EmployedFrom,EmployedTo,NormalWeekHours,Period,NumberOfHolidaysPerYear,FlexBalance,OverTimeBalance2,OverTimeBalance3,SavedHolidays")] RegisterEmployee_VM employee)
         {
             if (ModelState.IsValid)
             {
@@ -255,7 +201,7 @@ namespace Tidrapport.Controllers
                         EmployedFrom = employee.EmployedFrom, 
                         EmployedTo = employee.EmployedTo,
                         NormalWeekHours = employee.NormalWeekHours, 
-                        HolidayPeriod = employee.HolidayPeriod,
+                        HolidayPeriod = employee.Period,
                         NumberOfHolidaysPerYear = employee.NumberOfHolidaysPerYear,
                         ZipCode = employee.ZipCode, 
                         City = employee.City, 
@@ -270,11 +216,13 @@ namespace Tidrapport.Controllers
 
                 repository.RegisterNewEmployeeAndCurrentBalancePeriods(newEmployee);
 
-                return RedirectToAction("AllEmployeeDetails");
+                return RedirectToAction("Index");
             }
-
-            ViewBag.CompanyId = new SelectList(repository.GetAllCompanies(), "CompanyId", "OrgRegNo", employee.CompanyId);
-            return View(employee);
+            else
+            {
+                ViewBag.CompanyId = new SelectList(repository.GetAllCompanies(), "CompanyId", "OrgRegNo", employee.CompanyId);
+                return View(employee);
+            }
         }
 
         // GET: Employees/Edit/5
@@ -333,7 +281,7 @@ namespace Tidrapport.Controllers
             Employee employee = repository.GetEmployee(id);
             var companyId = employee.CompanyId;
 
-            repository.ClearUserName(id);
+            repository.DeleteEmployee(id);
 
             return RedirectToAction("Index", new { id = companyId });
         }
@@ -356,7 +304,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                //db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

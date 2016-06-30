@@ -13,9 +13,13 @@ namespace Tidrapport.Models
         public int Id { get; set; }
 
         [Display(Name = "Giltig från")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ValidFrom { get; set; }
 
         [Display(Name = "Giltig till")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ValidTo { get; set; }
             
         [Display(Name="Saldo")]

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -24,6 +26,163 @@ namespace Tidrapport.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
+        }
+
+        public ActionResult List()
+        {
+
+            var applicationUsers = UserManager.Users.OrderBy(a => a.Email).ToList();
+
+            List<UserRoleViewModel> userList = new List<UserRoleViewModel>();
+
+            foreach (var user in applicationUsers)
+            {
+                var userroles = new UserRoleViewModel
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Roles = UserManager.GetRoles(user.Id).ToList(),
+                    LockOutEnabled = user.LockoutEnabled,
+                    LockedOutEndDate = user.LockoutEndDateUtc
+                };
+
+                userList.Add(userroles);
+
+            }
+            return View(userList);
+        }
+
+        public ActionResult LockOut(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = UserManager.FindById((int)id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var roles = UserManager.GetRoles((int)id);
+
+            var userRoles = new UserRoleViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                LockOutEnabled = user.LockoutEnabled,
+                LockedOutEndDate = user.LockoutEndDateUtc,
+                Roles = roles.ToList()
+            };
+
+            return View(userRoles);
+        }
+
+        [HttpPost, ActionName("LockOut")]
+        [ValidateAntiForgeryToken]
+        public ActionResult LockOutConfirmed(int id)
+        {
+            var user = UserManager.FindById(id);
+
+            user.LockoutEnabled = true;
+            user.LockoutEndDateUtc = new DateTime(2050, 1, 1);
+
+            UserManager.Update(user);
+
+            return RedirectToAction("List");
+        }
+
+        public ActionResult UnLockOut(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = UserManager.FindById((int)id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var roles = UserManager.GetRoles((int)id);
+
+            var userRoles = new UserRoleViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                LockOutEnabled = user.LockoutEnabled,
+                LockedOutEndDate = user.LockoutEndDateUtc,
+                Roles = roles.ToList()
+            };
+
+            return View(userRoles);
+        }
+
+        [HttpPost, ActionName("UnLockOut")]
+        [ValidateAntiForgeryToken]
+        public ActionResult UnLockOutConfirmed(int id)
+        {
+            var user = UserManager.FindById(id);
+
+            user.LockoutEnabled = true;
+            user.LockoutEndDateUtc = null;
+
+            UserManager.Update(user);
+
+            return RedirectToAction("List");
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = UserManager.FindById((int)id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var roles = UserManager.GetRoles((int)id);
+
+            var userRoles = new UserRoleViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                LockOutEnabled = user.LockoutEnabled,
+                LockedOutEndDate = user.LockoutEndDateUtc,
+                Roles = roles.ToList()
+            };
+
+            return View(userRoles);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var user = UserManager.FindById(id);
+            var userRoles = user.Roles;
+
+            foreach (var role in userRoles)
+            {
+                UserManager.RemoveFromRoles(id, role.ToString());
+            }
+
+            UserManager.Delete(user);
+
+            return RedirectToAction("List");
         }
 
         public ApplicationSignInManager SignInManager

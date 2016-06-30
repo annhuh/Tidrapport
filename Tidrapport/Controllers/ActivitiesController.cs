@@ -6,19 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Tidrapport.Models;
 using Tidrapport.Dal;
+using Tidrapport.Models;
+
 
 namespace Tidrapport.Controllers
 {
     public class ActivitiesController : Controller
     {
-        //private ApplicationDbContext db = new ApplicationDbContext();
         private IRepository repository;
 
         public ActivitiesController ()
         {
-            repository = new TimeReportRepository();
+            repository = new Repository();
         }
 
         public ActivitiesController (IRepository rep)
@@ -154,7 +154,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                //repository.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -32,8 +32,8 @@ namespace Tidrapport.Models
     public enum HolidayPeriod
     {
         [Display(Name = "1 Januari - 31 December")]
-        Januari = 1,
+        Januari,
         [Display(Name = "1 April - 31 Mars")]
-        April = 2
+        April
     }
 }

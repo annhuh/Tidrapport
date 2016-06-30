@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Tidrapport.Dal;
 using Tidrapport.Models;
 using Tidrapport.ViewModels;
 
@@ -14,7 +15,18 @@ namespace Tidrapport.Controllers
     [Authorize(Roles = "admin")]
     public class WorkHoursController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IRepository repository;
+
+        public WorkHoursController()
+        {
+            repository = new Repository();
+        }
+
+        public WorkHoursController(IRepository rep)
+        {
+            repository = rep;
+        }
+
 
         // GET: InitWorkHoursCalendar
         public ActionResult GenerateNewWorkHours()
@@ -29,35 +41,7 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GenerateNewWorkHours([Bind(Include = "StartDate, EndDate, WorkHours")] WorkHoursPeriod_VM dates)
         {
-            DateTime start = dates.StartDate;
-            DateTime end = dates.EndDate;
-
-            while ( start.CompareTo ( end ) <= 0 ) 
-            {
-                WorkHours workHours = new WorkHours();
-                workHours.Date = start;
-
-                switch ( (int) start.DayOfWeek )
-                {
-                    case 0:
-                    case 6:
-                        workHours.Hours = 0;
-                        break;
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        workHours.Hours = dates.WorkHours;
-                        break;
-                }
-
-                db.WorkHours.Add(workHours);
-
-                start = start.AddDays(1);
-            }
-
-            db.SaveChanges();
+            repository.GenerateNewWorkHours(dates.StartDate, dates.EndDate, dates.WorkHours);
 
             return RedirectToAction("Index");
         }
@@ -75,15 +59,7 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteOldWorkHours([Bind(Include = "StartDate, EndDate")] WorkHoursPeriod_VM dates)
         {
-            DateTime start = dates.StartDate;
-            DateTime end = dates.EndDate;
-
-            var workHours = db.WorkHours
-                .Where (wh => (wh.Date >= dates.StartDate ) && (wh.Date <= dates.EndDate));
-
-            db.WorkHours.RemoveRange(workHours);
-
-            db.SaveChanges();
+            repository.DeleteOldWorkHours(dates.StartDate, dates.EndDate);
 
             return RedirectToAction("Index");
         }
@@ -91,7 +67,7 @@ namespace Tidrapport.Controllers
         // GET: WorkHours
         public ActionResult Index()
         {
-            return View(db.WorkHours.ToList());
+            return View(repository.GetAllWorkHours());
         }
 
         // GET: WorkHours/Edit/5
@@ -101,11 +77,14 @@ namespace Tidrapport.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WorkHours date = db.WorkHours.Find(id);
+
+            WorkHours date = repository.GetWorkHours((int)id);
+
             if (date == null)
             {
                 return HttpNotFound();
             }
+
             return View(date);
         }
 
@@ -118,8 +97,8 @@ namespace Tidrapport.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(workHours).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateWorkHours(workHours);
+
                 return RedirectToAction("Index");
             }
             return View(workHours);
@@ -129,7 +108,7 @@ namespace Tidrapport.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }
