@@ -240,7 +240,7 @@
     </Compile>
     <None Include="ViewModels\_OLD\CalendarTimeReportEvent.csNOTUSED" />
     <Compile Include="ViewModels\TimeReportViewModels.cs" />
-    <Content Include="Content\OLD\Tidrapport.css" />
+    <Content Include="Content\_OLD\Tidrapport.css" />
     <Content Include="Migrations\Backup\Backup.txt" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Migrations\Backup\Configuration.cs.bcp" />
@@ -418,9 +418,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\OLD\" />
     <Folder Include="Models\_OLD\" />
-    <Folder Include="Views\Initialize\" />
-    <Folder Include="Views\InitWorkHoursCalendar\" />
-    <Folder Include="Views\Init\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

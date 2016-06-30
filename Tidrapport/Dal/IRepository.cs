@@ -107,6 +107,8 @@ namespace Tidrapport.Dal
 
         List<Project> GetAllProjectsForCustomer(int customerId);
 
+        List<Project> GetAssignableProjects();
+
         Project GetProject(int id);
 
         Project AddProject(Project project);
@@ -121,9 +123,9 @@ namespace Tidrapport.Dal
 
         List<ProjectEmployee> GetAllProjectEmployees();
 
-        List<ProjectEmployee> GetProjectsForEmployee(int employeeId);
+        List<ProjectEmployee> GetProjectsAssignedToEmployee(int employeeId);
 
-        List<ProjectEmployee> GetEmployeesForProject(int projectId);
+        List<ProjectEmployee> GetEmployeesAssignedToProject(int projectId);
 
         ProjectEmployee GetProjectEmployee(int id);
 

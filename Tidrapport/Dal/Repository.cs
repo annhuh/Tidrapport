@@ -33,24 +33,25 @@ namespace Tidrapport.Dal
 
         public List<Activity> GetProjectsAndActivitiesForEmployee (int employeeId)
         {
+            // NOT WORKING
 
             var activities = db.Activities
-            .Where(a => a.IsActive == true)
-            .Join(db.Projects, a => a.ProjectId, p => p.ProjectId, (a, p) => new { a, p })
-            .Where(r => r.p.IsTemplate == false)
-            .Join(db.ProjectEmployees, r => r.p.ProjectId, pe => pe.ProjectId, (r, pe) => new { r, pe })
-            .Where(res => ((res.pe.EmployeeId == employeeId) && (res.r.p.ProjectId != res.pe.ProjectId)))
-            .Select(res => new Activity
-            {
-                Id = res.r.a.Id,
-                Name = res.r.a.Name,
-                ProjectId = res.r.a.ProjectId,
-                Project = new Project
-                {
-                    ProjectId = res.r.p.ProjectId,
-                    Name = res.r.p.Name
-                }
-            }).ToList(); ;
+                                .Where ( a => a.IsActive == true )
+                                .Join ( db.Projects, a => a.ProjectId, p => p.ProjectId, (a, p) => new { a, p } )
+                                .Where ( pa => pa.p.IsTemplate == false)
+                                .Join ( db.ProjectEmployees, pa => pa.p.ProjectId, pe => pe.ProjectId, (pa, pe) => new { pa, pe } )
+                                .Where ( res => ( ( res.pe.EmployeeId == employeeId ) && ( res.pa.p.ProjectId != res.pe.ProjectId ) ) )
+                                .Select ( res => new Activity
+                                {
+                                    Id = res.pa.a.Id,
+                                    Name = res.pa.a.Name,
+                                    ProjectId = res.pa.a.ProjectId,
+                                    Project = new Project
+                                    {
+                                        ProjectId = res.pa.p.ProjectId,
+                                        //Name = res.pa.p.Name
+                                    }
+                                });
 
             //var activities = db.Activities
             //.Where(a => a.IsActive == true)
@@ -413,6 +414,14 @@ namespace Tidrapport.Dal
                     .OrderBy(p => p.Name).ToList();
         }
 
+        public List<Project> GetAssignableProjects()
+        {
+            var projects = db.Projects
+                           .Where (p => (p.IsTemplate == false) && ((p.EndDate == null) || (p.EndDate > DateTime.Today)));
+
+            return projects.ToList();
+        }
+
         public Project GetProject (int id)
         {
             return db.Projects.Find(id);
@@ -451,7 +460,7 @@ namespace Tidrapport.Dal
             return projectemployees.ToList();
         }
 
-        public List<ProjectEmployee> GetProjectsForEmployee (int employeeId)
+        public List<ProjectEmployee> GetProjectsAssignedToEmployee (int employeeId)
         {
             var projects = db.ProjectEmployees
                 .Where ( pe => pe.EmployeeId == employeeId )
@@ -463,7 +472,7 @@ namespace Tidrapport.Dal
             return projects.ToList();
         }
 
-        public List<ProjectEmployee> GetEmployeesForProject(int projectId)
+        public List<ProjectEmployee> GetEmployeesAssignedToProject(int projectId)
         {
 
             var projectEmployees = db.ProjectEmployees

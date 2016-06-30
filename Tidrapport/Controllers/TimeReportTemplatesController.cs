@@ -37,7 +37,7 @@ namespace Tidrapport.Controllers
 
             int employeeId = int.Parse(id);
 
-            var myProjects = repository.GetProjectsForEmployee(employeeId);
+            var myProjects = repository.GetProjectsAssignedToEmployee(employeeId);
 
             var timeReportTemplates = repository.GetTimeReportTemplatesForEmployee(employeeId);
 

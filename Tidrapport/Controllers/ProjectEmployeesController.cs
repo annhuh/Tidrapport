@@ -51,7 +51,7 @@ namespace Tidrapport.Controllers
 
             var employee = repository.GetEmployee(employeeId);
 
-            var myProjects = repository.GetProjectsForEmployee(employeeId);
+            var myProjects = repository.GetProjectsAssignedToEmployee(employeeId);
                
             ViewBag.EmployeeId = employeeId;
             ViewBag.Name = employee.FullName;
@@ -62,7 +62,7 @@ namespace Tidrapport.Controllers
         // GET: Employees (ProjectEmployees) for a project (id)
         public ActionResult Employees(int id)
         {
-            var projectEmployees = repository.GetEmployeesForProject(id);
+            var projectEmployees = repository.GetEmployeesAssignedToProject(id);
 
             return View(projectEmployees);
         }
@@ -71,7 +71,7 @@ namespace Tidrapport.Controllers
         public ActionResult Projects(int id)
         {
             int employeeId = id;
-            var projectEmployees = repository.GetProjectsForEmployee(employeeId);
+            var projectEmployees = repository.GetProjectsAssignedToEmployee(employeeId);
 
             var employee = repository.GetEmployee(employeeId);
 
@@ -110,7 +110,7 @@ namespace Tidrapport.Controllers
 
             // get all selectable projects (not templates)
             // -------------------------------------------
-            var notTemplateNorTerminatedProjects = repository.GetProjectsAndActivitiesForEmployee(employee.EmployeeId);
+            var notTemplateNorTerminatedProjects = repository.GetAssignableProjects();
 
             //var notTemplateNorTerminatedProjects = from project in db.Projects
             //                                       where project.IsTemplate == false
@@ -122,26 +122,27 @@ namespace Tidrapport.Controllers
 
             //&& DateTime. p.EndDate != null?p.EndDate.Value>=DateTime.Today:false);
 
-            // get all already assigned projects for the employee
-            // --------------------------------------------------
-            //var assignedProjects = from projectEmployee in db.ProjectEmployees
-            //                       where projectEmployee.EmployeeId == employeeId
-            //                       select new
-            //                       {
-            //                           ProjectId = projectEmployee.ProjectId,
-            //                           Name = ""
-            //                       };
+            //get all already assigned projects for the employee
+            //--------------------------------------------------
+            var assignedProjects = repository.GetProjectsAssignedToEmployee(employeeId);
+
+            //from projectEmployee in db.ProjectEmployees
+            //                  where projectEmployee.EmployeeId == employeeId
+            //                  select new
+            //                  {
+            //                      ProjectId = projectEmployee.ProjectId,
+            //                      Name = ""
+            //                  };
 
 
             // Nota Bene!
             // ----------
-            //var selectableProjects = notTemplateNorTerminatedProjects
-            //    .Where(p => !assignedProjects.Any(pe => pe.ProjectId == p.ProjectId));
+            var selectableProjects = notTemplateNorTerminatedProjects
+                .Where(p => !assignedProjects.Any(pe => pe.ProjectId == p.ProjectId));
 
-            //
-            var theSelectList = notTemplateNorTerminatedProjects;
+            //var theSelectList = notTemplateNorTerminatedProjects;
             
-            ViewBag.ProjectId = new SelectList(notTemplateNorTerminatedProjects, "ProjectId", "Name");
+            ViewBag.ProjectId = new SelectList(selectableProjects, "ProjectId", "Name");
 
             return View();
         }
@@ -156,7 +157,7 @@ namespace Tidrapport.Controllers
             if (ModelState.IsValid)
             {
                 repository.AddProjectEmployee(projectEmployee);
-                return RedirectToAction("Index");
+                return RedirectToAction("Projects", projectEmployee.EmployeeId);
             }
 
             //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", projectEmployee.EmployeeId);
