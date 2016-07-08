@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Tidrapport.Models;
+using Tidrapport.ViewModels;
 
 namespace Tidrapport.Dal
 {
@@ -13,9 +15,11 @@ namespace Tidrapport.Dal
         // Activity
         // ----------
 
-        List<Activity> GetAllActivities();
+        List<Activity> GetAllActivitiesIncludeProject();
 
-        List<Activity> GetProjectsAndActivitiesForEmployee(int employeeId);
+        List<Activity> GetAllActivitiesForProjectIncludeProject(int projectId);
+
+        //List<ProjectActivity_VM> GetActiveProjectsAndActivitiesForEmployee(int employeeId);
 
         Activity GetActivity(int id);
 
@@ -79,6 +83,8 @@ namespace Tidrapport.Dal
 
         void DeleteHolidayBalancePeriod(int id);
 
+        HolidayBalancePeriod GetHolidayBalancePeriodForEmployeeForDate(int employeeId, DateTime date);
+
         // ----------
         // NationalHolidayBalancePeriod
         // ----------
@@ -86,6 +92,8 @@ namespace Tidrapport.Dal
         List<NationalHolidayBalancePeriod> GetAllNationalHolidayBalancePeriods();
 
         NationalHolidayBalancePeriod GetNationalHolidayBalancePeriod(int id);
+
+        NationalHolidayBalancePeriod GetNationalHolidayBalancePeriodForEmployeeForDate (int employeeId, DateTime date);
 
         void DeleteNationalHolidayBalancePeriod(int id);
 
@@ -108,6 +116,8 @@ namespace Tidrapport.Dal
         List<Project> GetAllProjectsForCustomer(int customerId);
 
         List<Project> GetAssignableProjects();
+
+        IEnumerable<SelectListItem> GetAssignedProjectsForEmployee(int employeeId);
 
         Project GetProject(int id);
 
@@ -139,11 +149,13 @@ namespace Tidrapport.Dal
 
         TimeReport GetTimeReport ( int id );
 
+        TimeReport GetTimeReport ( int employeeId, DateTime date);
+
         List<TimeReport> GetAllTimeReports ( int? employeeId );
 
-        TimeReport GetTimeReport(int employeeId, DateTime date);
+        List<TimeReport> GetTimeReportsForEmployeeForWeek(int employeeId, string yearweek);
 
-        DateTime GetLatestTimeReportDate ( int employeeId );
+        List<string> GetReportedWeeksForEmployee(int employeeId, DateTime fromDate, DateTime toDate);
 
         TimeReport AddTimeReport(TimeReport tr);
 
@@ -155,9 +167,12 @@ namespace Tidrapport.Dal
         // TimeReportRow
         // ----------
 
-        //List<TimeReportRow> GetAllTimeReportRows();
+        List<TimeReportRow> GetAllTimeReportRows(DateTime fromDate, DateTime toDate);    
 
         List<TimeReportRow> GetTimeReportRowsForTimeReport(int id);
+
+        TimeReportRow AddTimeReportRow(TimeReportRow row);
+
 
         // ----------
         // TimeReportTemplate

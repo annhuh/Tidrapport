@@ -6,13 +6,11 @@
 
 <h2>Aktivitet</h2>
 
-@*<p>
-    @Html.ActionLink("Skapa ny aktivitet", "Create")
-</p>*@
+<h4>Projekt: *</h4>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Project.Number)
+            @Html.DisplayNameFor(model => model.Project.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -24,19 +22,17 @@
             @Html.DisplayNameFor(model => model.BalanceEffect)
         </th>
         <th>
-            <span>
-                <a href="@Url.Action("Create")" class="btn btn-default btn-">
-                    <span class="glyphicon glyphicon-plus-sign"></span>
-                    Skapa ny aktivitet
-                </a>
-            </span>
+            <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Skapa ny aktivitet
+            </a>
 </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Project.Number)
+            @Html.DisplayFor(modelItem => item.Project.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

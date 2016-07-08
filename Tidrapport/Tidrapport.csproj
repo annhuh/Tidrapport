@@ -210,9 +210,9 @@
     <Compile Include="Controllers\OvertimeBalancePeriodsController.cs" />
     <Compile Include="Controllers\WorkHoursController.cs" />
     <Compile Include="Dal\Repository.cs" />
-    <Compile Include="Migrations\201606210936458_Initial.cs" />
-    <Compile Include="Migrations\201606210936458_Initial.Designer.cs">
-      <DependentUpon>201606210936458_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201607050901565_Initial.cs" />
+    <Compile Include="Migrations\201607050901565_Initial.Designer.cs">
+      <DependentUpon>201607050901565_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <SubType>Code</SubType>
@@ -223,6 +223,8 @@
     <Compile Include="Models\WorkHours.cs" />
     <None Include="ViewModels\_OLD\EmployeeLoginInfo_VM.cs.OLD" />
     <None Include="ViewModels\_OLD\TimeReportDraft_VM.cs.OLD" />
+    <Compile Include="ViewModels\ProjectActivity_VM.cs" />
+    <Compile Include="ViewModels\TimeReportRowViewModels.cs" />
     <Compile Include="ViewModels\WorkHoursViewModels.cs" />
     <Compile Include="ViewModels\AllEmployeeDetails.cs" />
     <None Include="ViewModels\_OLD\EmployeeRole.cs.OLD" />
@@ -272,6 +274,7 @@
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\TimeReportApp\custom.validate.js" />
     <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\TimeReportApp\ProjectActivites.js" />
     <Content Include="Views\Customers\Create.cshtml" />
     <Content Include="Views\Customers\Delete.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
@@ -375,11 +378,10 @@
     <Content Include="Views\Activities\Details.cshtml" />
     <Content Include="Views\Activities\Edit.cshtml" />
     <Content Include="Views\Activities\Index.cshtml" />
-    <Content Include="Views\ProjectEmployees\Create.cshtml" />
+    <Content Include="Views\ProjectEmployees\ConnectProjectToEmployee.cshtml" />
     <Content Include="Views\ProjectEmployees\Delete.cshtml" />
     <Content Include="Views\ProjectEmployees\Details.cshtml" />
     <Content Include="Views\ProjectEmployees\Edit.cshtml" />
-    <Content Include="Views\ProjectEmployees\Index.cshtml" />
     <Content Include="Views\Companies\Create.cshtml" />
     <Content Include="Views\Companies\Delete.cshtml" />
     <Content Include="Views\Companies\Details.cshtml" />
@@ -393,6 +395,9 @@
     <Content Include="Views\Manage\LockOut.cshtml" />
     <Content Include="Views\Manage\Delete.cshtml" />
     <Content Include="Views\Manage\UnLockOut.cshtml" />
+    <Content Include="Views\ProjectEmployees\ConnectEmployeeToProject.cshtml" />
+    <Content Include="Views\TimeReports\CreateWeekReport.cshtml" />
+    <Content Include="Views\TimeReports\WeekDetails.cshtml" />
     <None Include="Views\TimeReportTemplates\Create.cshtml" />
     <Content Include="Views\TimeReportTemplates\Delete.cshtml" />
     <Content Include="Views\TimeReportTemplates\Details.cshtml" />
@@ -427,8 +432,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606210936458_Initial.resx">
-      <DependentUpon>201606210936458_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607050901565_Initial.resx">
+      <DependentUpon>201607050901565_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

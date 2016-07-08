@@ -1,14 +1,14 @@
 ﻿@model Tidrapport.Models.Customer
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Kund";
 }
 
-<h2>Delete</h2>
+<h2>Kund</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+
 <div>
-    <h4>Customer</h4>
+    <h4>Tabort</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -29,12 +29,15 @@
 
     </dl>
 
+    @*<h3>Är du säker ? Tänk på att kundens alla projekt också tas bort.</h3>*@
+
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Bekräfta" class="btn btn-default" /> @*|*@
             @*@Html.ActionLink("Back to List", "Index")*@
+            <p></p>
         </div>
         <div>
         <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">

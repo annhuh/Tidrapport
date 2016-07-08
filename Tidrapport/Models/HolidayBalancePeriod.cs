@@ -23,10 +23,10 @@ namespace Tidrapport.Models
         public DateTime ValidTo { get; set; }
         
         [Display(Name="Betald semester")]
-        public int PayedHolidayBalance { get; set; }
+        public int PaidHolidayBalance { get; set; }
         
         [Display(Name="Obetald semester")]
-        public int UnPayedHolidayBalance { get; set; }
+        public int UnpaidHolidayBalance { get; set; }
 
         public int EmployeeId { get; set; }
 

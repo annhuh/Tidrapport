@@ -1,0 +1,214 @@
+﻿@model IEnumerable<Tidrapport.ViewModels.TimeReportIncludingRows_VM>
+
+@{
+    ViewBag.Title = "Tidrapport vecka";
+}
+
+<h2>Detaljer för tidrapport, vecka @ViewBag.YearWeek</h2>
+<h4>@ViewBag.FullName</h4>
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+
+<hr />
+
+<div>
+    <h4>Ingående saldon</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ÖTID1</th>
+                <th>ÖTID2</th>
+                <th>ÖTID3</th>
+                <th>Flex</th>
+                <th>Betald sem</th>
+                <th>Obet. sem</th>
+                <th>Sparad sem</th>
+                <th>Nationaldag</th>
+            </tr>
+        </thead>
+        <tfoot>
+
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>@ViewBag.OvertimeBalance1</td>
+                <td>@ViewBag.OverTimeBalance2</td>
+                <td>@ViewBag.OverTimeBalance3</td>
+                <td>@ViewBag.FlexBalance</td>
+                <td>@ViewBag.PaidHolidayBalance</td>
+                <td>@ViewBag.UnpaidHolidayBalance</td>
+                <td>@ViewBag.SavedHolidaysBalance</td>
+                <td>@ViewBag.NationalHolidayBalance</td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+
+    </div> 
+        <table class="table">
+            <thead>
+                <tr>
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.YearWeek)
+                </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.EmployeeId)
+                </th>*@
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>*@
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>*@
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.SubmittedBy)
+                </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubmittedTime)
+                    </th>
+                    @*<th>
+                    @Html.DisplayNameFor(model => model.ApprovedBy)
+                </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.ApprovedTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Presence)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Absence)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Summary)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Flex)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Overtime1)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Overtime2)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Overtime3)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.Comp1)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Comp2)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Comp3)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NationalHoliday)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PaidHoliday)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnpaidHoliday)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SavedHoliday)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+
+            </tfoot>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.YearWeek)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.EmployeeId)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.SubmittedBy)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubmittedTime)
+                        </td>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.ApprovedBy)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApprovedTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Presence)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Absence)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Summary)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Flex)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Overtime1)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overtime2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Overtime3)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Comp1)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comp2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comp3)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NationalHoliday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaidHoliday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnpaidHoliday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SavedHoliday)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-default btn-">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                Rapportera tid
+                            </a>
+                            @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+    </table>
+</div>
+

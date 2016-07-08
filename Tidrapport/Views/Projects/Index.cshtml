@@ -6,108 +6,117 @@
 
 <h2>Projekt</h2>
 
-<h4>Företag: @ViewBag.CompanyName</h4>
+<h4>Företag: @ViewBag.CustomerName</h4>
 
 @*<p>
     @Html.ActionLink("Skapa nytt projekt", "Create")
 </p>*@
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Number)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsTemplate)
-        </th>
-        <th>
-            <span>
-                @if (ViewBag.CustomerId == null)
-                { 
-                    <a href="@Url.Action("Create")" class="btn btn-default btn-">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                        Skapa nytt projekt
-                    </a>
-                }
-                else
+    <thead>
+        <tr>
+            @if (ViewBag.CustomerName == "*")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.Name)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTemplate)
+            </th>
+            <th>
+                <span>
+                    @if (ViewBag.CustomerId == null)
+                    {
+                        <a href="@Url.Action("Create")" class="btn btn-default btn-">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            Skapa nytt projekt
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Create", new { id = ViewBag.CustomerId})" class="btn btn-default btn-">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            Skapa nytt projekt
+                        </a>
+                    }
+                </span>
+            </th>
+        </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (ViewBag.CustomerName == "*")
                 {
-                    <a href="@Url.Action("Create", new { id = ViewBag.CustomerId})" class="btn btn-default btn-">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                        Skapa nytt projekt
-                    </a>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.Name)
+                    </td>
                 }
-            </span>
-        </th>
-    </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsTemplate)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.ProjectId })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-edit"></span> Editera
+                    </a>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Number)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsTemplate)
-        </td>
-        <td>
-            <span>
-                <a href="@Url.Action("Edit", new { id = item.ProjectId })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-edit"></span> Editera
-                </a>
-            </span>
-            @*<span>
-                <a href="@Url.Action("Details", new { id = item.ProjectId })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-expand"></span> Detaljer
-                </a>
-            </span>*@
-            <span>
-                <a href="@Url.Action("Delete", new { id = item.ProjectId })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-trash"></span> Tabort
-                </a>
-            </span>
-            <span> </span>
-            <span>
-                <a href="@Url.Action("ProjectActivities", "Activities", new { cid = item.CustomerId, pid = item.ProjectId })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-folder-open"></span> Projekt akiviteter
-                </a>
-            </span>
-            <span>
-                <a href="@Url.Action("Index", "ProjectEmployees", new { id = item.ProjectId })" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-user"></span> Anställda
-                </a>
-            </span>
-  
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.ProjectId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProjectId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProjectId }) |*@ 
-            @*@Html.ActionLink("Projekt akiviteter", "ProjectActivities", "Activities", new { cid = item.CustomerId, pid = item.ProjectId }, null)*@
-        </td>
-    </tr>
-}
+                    @*
+                        <a href="@Url.Action("Details", new { id = item.ProjectId })" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-expand"></span> Detaljer
+                        </a>
+                    *@
 
+                    @*
+                        <a href="@Url.Action("Delete", new { id = item.ProjectId })" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span> Tabort
+                        </a>
+                    *@
+
+                    <a href="@Url.Action("ProjectActivities", "Activities", new { cid = item.CustomerId, pid = item.ProjectId })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-folder-open"></span> Projekt akiviteter
+                    </a>
+
+                    <a href="@Url.Action("Employees", "ProjectEmployees", new { id = item.ProjectId })" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-user"></span> Medlemmar
+                    </a>
+
+                    @*@Html.ActionLink("Edit", "Edit", new { id=item.ProjectId }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.ProjectId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.ProjectId }) |*@
+                    @*@Html.ActionLink("Projekt akiviteter", "ProjectActivities", "Activities", new { cid = item.CustomerId, pid = item.ProjectId }, null)*@
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 <div>
     <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">

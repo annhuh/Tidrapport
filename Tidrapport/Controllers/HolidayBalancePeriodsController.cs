@@ -62,7 +62,7 @@ namespace Tidrapport.Controllers
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,ValidFrom,ValidTo,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalancePeriod holidayBalancePeriod)
+        //public ActionResult Create([Bind(Include = "Id,ValidFrom,ValidTo,PaidHolidayBalance,UnpaidHolidayBalance,EmployeeId")] HolidayBalancePeriod holidayBalancePeriod)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -96,7 +96,7 @@ namespace Tidrapport.Controllers
         //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,ValidFrom,ValidTo,PayedHolidayBalance,UnPayedHolidayBalance,EmployeeId")] HolidayBalancePeriod holidayBalancePeriod)
+        //public ActionResult Edit([Bind(Include = "Id,ValidFrom,ValidTo,PaidHolidayBalance,UnpaidHolidayBalance,EmployeeId")] HolidayBalancePeriod holidayBalancePeriod)
         //{
         //    if (ModelState.IsValid)
         //    {

@@ -92,8 +92,8 @@ namespace Tidrapport.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         ValidFrom = c.DateTime(nullable: false),
                         ValidTo = c.DateTime(nullable: false),
-                        PayedHolidayBalance = c.Int(nullable: false),
-                        UnPayedHolidayBalance = c.Int(nullable: false),
+                        PaidHolidayBalance = c.Int(nullable: false),
+                        UnpaidHolidayBalance = c.Int(nullable: false),
                         EmployeeId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -207,6 +207,10 @@ namespace Tidrapport.Migrations
                         Comp1 = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Comp2 = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Comp3 = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        PaidHoliday = c.Int(nullable: false),
+                        UnpaidHoliday = c.Int(nullable: false),
+                        SavedHoliday = c.Int(nullable: false),
+                        NationalHoliday = c.Decimal(nullable: false, precision: 18, scale: 2),
                         EmployeeId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)

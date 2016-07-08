@@ -28,27 +28,52 @@ namespace Tidrapport.Controllers
 
 
         // GET: Activities
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var activities = repository.GetAllActivities();
-   
-            return View(activities.ToList());
+            if (id != null)
+            {
+                var project = repository.GetProject((int)id);
+                ViewBag.ProjectName = project.Name;
+
+                var activities = repository.GetAllActivitiesForProjectIncludeProject((int)id);
+                
+                return View(activities.ToList());
+            }
+            else
+            {
+                ViewBag.ProjectName = "*";
+                var activities = repository.GetAllActivitiesIncludeProject();
+
+                return View(activities.ToList());
+            }
         }
 
         // GET: Activities
-        public ActionResult ProjectActivities(int? cid, int? pid)
+        public ActionResult ProjectActivities(int cid, int pid)
         {
-            var activities = repository.GetAllActivities();
+            var activities = repository.GetAllActivitiesForProjectIncludeProject(pid);
 
+            var project = repository.GetProject(pid);
+            ViewBag.ProjectName = project.Name;
             ViewBag.CustomerId = cid;
-            
-            var projectActivities = from activity in activities
-                                    where activity.ProjectId == pid
-                                    orderby activity.Name
-                                    select activity;
-             
-            return View(projectActivities.ToList());
+
+            return View(activities);
         }
+
+        public ActionResult Activities (int id)
+        {
+            var projectId = id;
+
+            return Json(
+                repository.GetAllActivitiesForProjectIncludeProject(projectId)
+                .Where(a => a.IsActive)
+                .Select(a => new
+                {
+                    value = a.Id,
+                    text = a.Name
+                }), JsonRequestBehavior.AllowGet);
+        } 
+        
 
         // GET: Activities/Details/5
         public ActionResult Details(int? id)
@@ -66,10 +91,30 @@ namespace Tidrapport.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number");
-            return View();
+            
+
+            if (id != null)
+            {
+                int projectId = (int)id;
+                var project = repository.GetProject(projectId);
+
+                var projectList = new List<Project>();
+                projectList.Add(project);
+
+                ViewBag.ProjectId = new SelectList(projectList, "ProjectId", "Name");
+                ViewBag.ProjectName = project.Name;
+
+                return View();
+            }
+            else
+            {
+                ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Name");
+                ViewBag.ProjectName = "*";
+
+                return View(); 
+            }
         }
 
         // POST: Activities/Create
@@ -82,7 +127,8 @@ namespace Tidrapport.Controllers
             if (ModelState.IsValid)
             {
                 repository.AddActivity(activity);
-                return RedirectToAction("Index");
+                ViewBag.ProjectName = activity.Project.Name;
+                return RedirectToAction("Index", activity.ProjectId);
             }
 
             ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
@@ -102,7 +148,7 @@ namespace Tidrapport.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
+            ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Name", activity.ProjectId);
             return View(activity);
         }
 
@@ -117,7 +163,7 @@ namespace Tidrapport.Controllers
             {
                 repository.UpdateActivity(activity);
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", activity.ProjectId);
             }
             ViewBag.ProjectId = new SelectList(repository.GetAllProjects(), "ProjectId", "Number", activity.ProjectId);
             return View(activity);

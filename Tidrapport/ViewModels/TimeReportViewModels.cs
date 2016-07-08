@@ -15,6 +15,7 @@ namespace Tidrapport.ViewModels
         public string YearWeek { get; set; }
 
         [Display(Name = "Datum")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
@@ -30,12 +31,14 @@ namespace Tidrapport.ViewModels
         public string SubmittedBy { get; set; }
 
         [Display(Name = "Inskickad")]
+        [DataType(DataType.Date)]
         public DateTime? SubmittedTime { get; set; }
 
         [Display(Name = "Godkänd av")]
         public string ApprovedBy { get; set; }
 
         [Display(Name = "Godkänd")]
+        [DataType(DataType.Date)]
         public DateTime? ApprovedTime { get; set; }
 
         [Display(Name = "Närvaro")]
@@ -95,12 +98,14 @@ namespace Tidrapport.ViewModels
         public string SubmittedBy { get; set; }
 
         [Display(Name = "Inskickad")]
+        [DataType(DataType.Date)]
         public DateTime? SubmittedTime { get; set; }
 
         [Display(Name = "Godkänd av")]
         public string ApprovedBy { get; set; }
 
         [Display(Name = "Godkänd")]
+        [DataType(DataType.Date)]
         public DateTime? ApprovedTime { get; set; }
 
         [Display(Name = "Närvaro")]
@@ -133,9 +138,31 @@ namespace Tidrapport.ViewModels
         [Display(Name = "Komp3")]
         public decimal Comp3 { get; set; }
 
+        [Display(Name = "Nationaldag")]
+        public decimal NationalHoliday { get; set; }
+
+        [Display(Name = "Bet. sem")]
+        public int PaidHoliday { get; set; }
+
+        [Display(Name = "Obet. sem")]
+        public int UnpaidHoliday { get; set; }
+
+        [Display(Name = "Sparad sem")]
+        public int SavedHoliday { get; set; }
+
         [Display(Name = "Status")]
         public Tidrapport.Models.TRStatus Status { get; set; }
 
         public IEnumerable<TimeReportRow> Rows { get; set; }
     }
+
+    public class Week_VM
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Vecka")]
+        public string YearWeek { get; set; }
+       
+        public string WeekFirstDate { get; set; }
+    } 
 }

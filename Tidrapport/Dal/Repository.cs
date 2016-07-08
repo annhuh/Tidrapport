@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Tidrapport.Models;
+using Tidrapport.ViewModels;
 
 namespace Tidrapport.Dal
 {
@@ -23,7 +24,7 @@ namespace Tidrapport.Dal
         // ----------
         // Activity
         // ----------
-        public List<Activity> GetAllActivities()
+        public List<Activity> GetAllActivitiesIncludeProject()
         {
             var activities = db.Activities
                                 .Include(a => a.Project);
@@ -31,49 +32,38 @@ namespace Tidrapport.Dal
             return activities.ToList();
         }
 
-        public List<Activity> GetProjectsAndActivitiesForEmployee (int employeeId)
+        public List<Activity> GetAllActivitiesForProjectIncludeProject(int projectId)
         {
-            // NOT WORKING
-
             var activities = db.Activities
-                                .Where ( a => a.IsActive == true )
-                                .Join ( db.Projects, a => a.ProjectId, p => p.ProjectId, (a, p) => new { a, p } )
-                                .Where ( pa => pa.p.IsTemplate == false)
-                                .Join ( db.ProjectEmployees, pa => pa.p.ProjectId, pe => pe.ProjectId, (pa, pe) => new { pa, pe } )
-                                .Where ( res => ( ( res.pe.EmployeeId == employeeId ) && ( res.pa.p.ProjectId != res.pe.ProjectId ) ) )
-                                .Select ( res => new Activity
-                                {
-                                    Id = res.pa.a.Id,
-                                    Name = res.pa.a.Name,
-                                    ProjectId = res.pa.a.ProjectId,
-                                    Project = new Project
-                                    {
-                                        ProjectId = res.pa.p.ProjectId,
-                                        //Name = res.pa.p.Name
-                                    }
-                                });
-
-            //var activities = db.Activities
-            //.Where(a => a.IsActive == true)
-            //.Join(db.Projects, a => a.ProjectId, p => p.ProjectId, (a, p) => new { a, p })
-            //.Where (p => p.IsTemplate == false)
-            //.Join (db.ProjectEmployees, r => r.p.ProjectId, pe => pe.ProjectId, (r, pe) => new { r, pe })
-            //.Where !res.Any(res.per => (res.per.ProjectId == res.r.p.ProjectId) && (res.pe.EmployeeId == employeeId))
-            ////.Where(res => res.pe.EmployeeId == employeeId)
-            //.Select(res => new Activity
-            //{
-            //    Id = res.r.a.Id,
-            //    Name = res.r.a.Name,
-            //    ProjectId = res.r.a.ProjectId,
-            //    Project = new Project
-            //    {
-            //        ProjectId = res.r.p.ProjectId,
-            //        Name = res.r.p.Name
-            //    }
-            //});
+                                .Include ( a => a.Project )
+                                .Where ( a => a.ProjectId == projectId );
 
             return activities.ToList();
         }
+
+        //public List<ProjectActivity_VM> GetActiveProjectsAndActivitiesForEmployee (int employeeId)
+        //{
+        //    // NOT WORKING
+
+        //    var activities = db.Activities.Where(a => a.IsActive == true)
+        //                    .Join ( 
+        //                        db.Projects.Where (p => p.IsTemplate == false),
+        //                        activity => activity.ProjectId, project => project.ProjectId, 
+        //                        (activity, project) => new { Activity = activity, Project = project } )
+        //                    .Join ( 
+        //                        db.ProjectEmployees.Where (projectemployee => (projectemployee.EmployeeId == employeeId)),
+        //                        pa => pa.Project.ProjectId, 
+        //                        projectemployee => projectemployee.ProjectId, 
+        //                        (pa, projectemployee) => new { pa.Activity, pa.Project, projectemployee } )
+        //                    .Select ( res => new ProjectActivity_VM{
+        //                            ProjectId = res.Project.ProjectId,
+        //                            ProjectName = res.Project.Name,
+        //                            ActivityId = res.Activity.Id,
+        //                            ActivityName = res.Activity.Name                         
+        //                        });
+
+        //    return activities.ToList();
+        //}
 
         public Activity GetActivity(int id)
         {
@@ -223,7 +213,7 @@ namespace Tidrapport.Dal
             DateTime hbStartDate = new DateTime();
             DateTime hbEndDate = new DateTime();
             double numberOfDaysEmployed = 0;
-            int numberOfPayedHolidays = 0;
+            int numberOfPaidHolidays = 0;
 
             if (employee.HolidayPeriod == HolidayPeriod.Januari)
             {
@@ -248,11 +238,11 @@ namespace Tidrapport.Dal
             {
                 numberOfDaysEmployed = (hbEndDate.Date - employee.EmployedFrom.Date).Days;
                
-                numberOfPayedHolidays = (int)Math.Ceiling((numberOfDaysEmployed * employee.NumberOfHolidaysPerYear) / 365);
+                numberOfPaidHolidays = (int)Math.Ceiling((numberOfDaysEmployed * employee.NumberOfHolidaysPerYear) / 365);
             }
             else
             {
-                numberOfPayedHolidays = employee.NumberOfHolidaysPerYear;
+                numberOfPaidHolidays = employee.NumberOfHolidaysPerYear;
             }
 
             var newHolidayBalancePeriod = new HolidayBalancePeriod
@@ -260,8 +250,8 @@ namespace Tidrapport.Dal
                 EmployeeId = employee.EmployeeId,
                 ValidFrom = hbStartDate,
                 ValidTo = hbEndDate,
-                PayedHolidayBalance = numberOfPayedHolidays,
-                UnPayedHolidayBalance = employee.NumberOfHolidaysPerYear - numberOfPayedHolidays
+                PaidHolidayBalance = numberOfPaidHolidays,
+                UnpaidHolidayBalance = employee.NumberOfHolidaysPerYear - numberOfPaidHolidays
             };
 
             db.HolidayBalancePeriods.Add(newHolidayBalancePeriod);
@@ -347,6 +337,19 @@ namespace Tidrapport.Dal
             db.SaveChanges();
         }
 
+        public HolidayBalancePeriod GetHolidayBalancePeriodForEmployeeForDate(int employeeId, DateTime date)
+        {
+            var holidayBalancePeriod = db.HolidayBalancePeriods
+                .Where(h => (h.EmployeeId == employeeId && h.ValidFrom <= date && date <= h.ValidTo));
+
+            //if (holidayBalancePeriod == null)
+            //{ 
+            //    throw Exception("HoldayBalancePeriod not fount for; employeeId =" + id.ToString() + " and date = " + date.ToString());
+            //}
+
+            return holidayBalancePeriod.FirstOrDefault();
+        }
+
         // ----------
         // NationalHolidayBalancePeriod
         // ----------
@@ -362,6 +365,14 @@ namespace Tidrapport.Dal
         public NationalHolidayBalancePeriod GetNationalHolidayBalancePeriod(int id)
         {
             return db.NationalHolidayBalancePeriods.Find(id);
+        }
+
+        public NationalHolidayBalancePeriod GetNationalHolidayBalancePeriodForEmployeeForDate (int employeeId, DateTime date)
+        {
+            var nationalHolidayBalancePeriod = db.NationalHolidayBalancePeriods
+                .Where (n => (n.EmployeeId == employeeId && n.ValidFrom <= date && date <= n.ValidTo));
+
+            return nationalHolidayBalancePeriod.FirstOrDefault();
         }
 
         public void DeleteNationalHolidayBalancePeriod (int id)
@@ -420,6 +431,23 @@ namespace Tidrapport.Dal
                            .Where (p => (p.IsTemplate == false) && ((p.EndDate == null) || (p.EndDate > DateTime.Today)));
 
             return projects.ToList();
+        }
+
+        public IEnumerable<SelectListItem> GetAssignedProjectsForEmployee(int employeeId)
+        {
+            var projects = db.Projects.Where(p => p.IsTemplate == false)
+                             .Join(
+                                db.ProjectEmployees.Where(projectemployee => (projectemployee.EmployeeId == employeeId)),
+                                p => p.ProjectId,
+                                projectemployee => projectemployee.ProjectId,
+                                (p, projectemployee) => new { p, projectemployee })
+                            .Select(res => new SelectListItem
+                            {
+                                Value = res.p.ProjectId.ToString(),
+                                Text = res.p.Name,
+                            });
+
+            return projects;
         }
 
         public Project GetProject (int id)
@@ -540,13 +568,13 @@ namespace Tidrapport.Dal
             }
         }
 
-        public DateTime GetLatestTimeReportDate(int employeeId)
+        public List<TimeReport> GetTimeReportsForEmployeeForWeek (int employeeId, string yearweek)
         {
-            var latestTimeReport =  db.TimeReports
-                                        .Where(tr => tr.EmployeeId == employeeId)
-                                        .Max(tr => tr.Date);
+            var timeReports = db.TimeReports
+                .Where(t => (t.EmployeeId == employeeId && t.YearWeek == yearweek))
+                .OrderBy(t => t.Date);
 
-            return (latestTimeReport);
+            return timeReports.ToList();
         }
 
         public TimeReport AddTimeReport (TimeReport tr)
@@ -563,6 +591,16 @@ namespace Tidrapport.Dal
             db.SaveChanges();
         }
 
+        public List<string> GetReportedWeeksForEmployee(int employeeId, DateTime fromDate, DateTime toDate)
+        {
+            var timereports = db.TimeReports
+                .Where(tr => (tr.EmployeeId == employeeId && fromDate <= tr.Date && tr.Date <= toDate))
+                .Select(tr => tr.YearWeek)
+                .Distinct();
+            
+            return timereports.ToList();          
+        }
+
         public void DeleteTimeReportAndTimeReportRows (int id)
         {
             TimeReport timeReport = db.TimeReports.Find(id);
@@ -577,12 +615,13 @@ namespace Tidrapport.Dal
         // ----------
         // TimeReportRow
         // ----------
-        //public List<TimeReportRow> GetAllTimeReportRows()
-        //{
-        //    var timereportrows = db.TimeReportRows;
 
-        //    return timereportrows.ToList();
-        //}
+        public List<TimeReportRow> GetAllTimeReportRows(DateTime fromDate, DateTime toDate)
+        {
+            var timereportrows = db.TimeReportRows;
+
+            return timereportrows.ToList();
+        }
 
         public List<TimeReportRow> GetTimeReportRowsForTimeReport(int id)
         {
@@ -592,6 +631,14 @@ namespace Tidrapport.Dal
                         .ThenBy(trr => trr.Activity.Name);
 
             return rows.ToList();
+        }
+
+        public TimeReportRow AddTimeReportRow(TimeReportRow row)
+        {
+            var timereportrow = db.TimeReportRows.Add(row);
+            db.SaveChanges();
+
+            return timereportrow;
         }
 
         // ----------

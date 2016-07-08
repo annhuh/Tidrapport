@@ -1,29 +1,214 @@
 ﻿@model Tidrapport.Models.TimeReport
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Tidrapport";
 }
 
-<h2>Create</h2>
-
+<h2>Tidrapport, @Html.DisplayFor(model => model.YearWeek) (@ViewBag.Monday-@ViewBag.Sunday)</h2>
+<h4>Anställd: @Model.Employee.FullName</h4>
 <div>
-    <h4>TimeReport</h4>
+    <h4>Arbetad tid (provar dagsvyn till att börja med)</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.SSN)
-        </dt>
+    <h4>Ingående saldon</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@Html.DisplayNameFor(model => model.Employee.OverTimeBalance1)</th>
+                <th>@Html.DisplayNameFor(model => model.Employee.OverTimeBalance2)</th>
+                <th>@Html.DisplayNameFor(model => model.Employee.OverTimeBalance3)</th>
+                <th>@Html.DisplayNameFor(model => model.Employee.FlexBalance)</th>
+                <th>@Html.DisplayNameFor(model => model.Employee.SavedHolidays)</th>            
+            </tr>
+        </thead>
+        <tfoot>
 
-        <dd>
-            @Html.DisplayFor(model => model.Employee.SSN)
-        </dd>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.Employee.OverTimeBalance1)</td>
+                <td>@Html.DisplayFor(model => model.Employee.OverTimeBalance2)</td>
+                <td>@Html.DisplayFor(model => model.Employee.OverTimeBalance3)</td>
+                <td>@Html.DisplayFor(model => model.Employee.FlexBalance)</td>
+                <td>@Html.DisplayFor(model => model.Employee.SavedHolidays)</td>    
+            </tr>              
+        </tbody>
+    </table>
+    <div>
 
-        <dt>
+    </div>
+    <h4> Tidrapport @Html.DisplayFor(model => model.YearWeek) (@ViewBag.Monday-@ViewBag.Sunday)</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayFor(model => model.YearWeek)</th>
+                <th>Må, @ViewBag.Monday</th>
+                <th>Ti, @ViewBag.Tueday</th>
+                <th>On, @ViewBag.Wednesday</th>
+                <th>To, @ViewBag.Thursday</th>
+                <th>Fr, @ViewBag.Friday</th>
+                <th>Lö, @ViewBag.Saturday</th>
+                <th>Sö, @ViewBag.Sunday</th>
+            </tr>
+        </thead>
+        <tfoot>
+
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Presence)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Absence)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Summary)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Flex)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Overtime1)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Overtime2)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Overtime3)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Comp1)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Comp2)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Comp3)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.NationalHoliday)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.PaidHoliday)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.UnpaidHoliday)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.SavedHoliday)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+
+    </div>
+    <table>
+        <td>
             @Html.DisplayNameFor(model => model.Date)
-        </dt>
+        </td>
 
         <dd>
-            @Html.DisplayFor(model => model.Date)
+            @*@Html.DisplayFor(model => model.Date)
+                @Html.DisplayFor(model => model.Date.DayOfWeek + model => Model.Date )
+                @Html.DisplayFor(model => model => Model.Date. )*@
         </dd>
 
         <dt>
@@ -31,12 +216,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.YearWeek)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Status)
@@ -154,7 +338,8 @@
             @Html.DisplayFor(model => model.Comp3)
         </dd>
 
-    </dl>
+        </dl>
+    </table>  
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

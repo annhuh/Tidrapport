@@ -195,7 +195,7 @@ namespace Tidrapport.Migrations
             {
                 var holidayBalancePeriods = new System.Collections.Generic.List<HolidayBalancePeriod>
                 {
-                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 20, UnPayedHolidayBalance = 0, EmployeeId = 3 }
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PaidHolidayBalance = 20, UnpaidHolidayBalance = 0, EmployeeId = 3 }
                 };
 
                 holidayBalancePeriods.ForEach(holidayBalance => context.HolidayBalancePeriods.AddOrUpdate(holidayBalance));

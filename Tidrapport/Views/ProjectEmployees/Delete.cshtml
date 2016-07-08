@@ -1,17 +1,18 @@
 ﻿@model Tidrapport.Models.ProjectEmployee
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Tabort projektmedlem";
 }
 
-<h2>Delete</h2>
+<h2>Tabort projektmedlem</h2>
+<h4>Projekt: @Model.Project.Name </h4>
 
-<h3>Are you sure you want to delete this?</h3>
+@*<h3>Are you sure you want to delete this?</h3>*@
 <div>
-    <h4>ProjectEmployee</h4>
+    @*<h4>ProjectEmployee</h4>*@
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Employee.SSN)
         </dt>
 
@@ -25,23 +26,23 @@
 
         <dd>
             @Html.DisplayFor(model => model.Employee.LastName)
-        </dd>
+        </dd>*@
 
         <dt>
-            @Html.DisplayNameFor(model => model.Employee.FirstName)
+            @Html.DisplayNameFor(model => model.Employee.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Employee.FirstName)
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Project.Number)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Project.Number)
-        </dd>
+        </dd>*@
 
     </dl>
 
@@ -49,9 +50,10 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Bekräfta" class="btn btn-default" /> @*|*@
             @*@Html.ActionLink("Back to List", "Index")*@
             <div>
+                <p></p>
                 <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
                 </a>

@@ -49,23 +49,35 @@ namespace Tidrapport.Models
         [Display(Name = "Flex")]
         public decimal Flex { get; set; }
 
-        [Display(Name = "Mertid")]
+        [Display(Name = "ÖTID1")]
         public decimal Overtime1 { get; set; }
 
-        [Display(Name = "Enkel övertid")]
+        [Display(Name = "ÖTID2")]
         public decimal Overtime2 { get; set; }
 
-        [Display(Name = "Kvalificerad övertid")]
+        [Display(Name = "ÖTID3")]
         public decimal Overtime3 { get; set; }
 
-        [Display(Name = "Komp mertid")]
+        [Display(Name = "Komp ÖTID1")]
         public decimal Comp1 { get; set; }
 
-        [Display(Name = "Komp enkel övertid")]
+        [Display(Name = "Komp ÖTID2")]
         public decimal Comp2 { get; set; }
 
-        [Display(Name = "Komp kvalificerad övertid")]
+        [Display(Name = "Komp ÖTID3")]
         public decimal Comp3 { get; set; }
+
+        [Display(Name = "Bet. semester")]
+        public int PaidHoliday { get; set; }
+
+        [Display(Name = "Obet. semester")]
+        public int UnpaidHoliday { get; set; }
+
+        [Display(Name = "Sparad semester")]
+        public int SavedHoliday { get; set; }
+
+        [Display(Name = "Nationaldag")]
+        public decimal NationalHoliday { get; set; }
 
         public int EmployeeId { get; set; }
 

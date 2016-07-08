@@ -100,8 +100,8 @@
                             new Activity { Name = "Övertid 1", IsActive = true, BalanceEffect = BalanceEffect.Overtime1, ProjectId = 1 },
                             new Activity { Name = "Övertid 2", IsActive = true, BalanceEffect = BalanceEffect.Overtime2, ProjectId = 1 },
                             new Activity { Name = "Sparad semester", IsActive = true, BalanceEffect = BalanceEffect.SavedHolidays, ProjectId = 1 },
-                            new Activity { Name = "Betald semester", IsActive = true, BalanceEffect = BalanceEffect.PayedHoliday, ProjectId = 1 },
-                            new Activity { Name = "Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.UnpayedHoliday, ProjectId = 1 },
+                            new Activity { Name = "Betald semester", IsActive = true, BalanceEffect = BalanceEffect.PaidHoliday, ProjectId = 1 },
+                            new Activity { Name = "Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.UnpaidHoliday, ProjectId = 1 },
 
                             // external activities
                             new Activity { Name = "Activity 2", IsActive = true, BalanceEffect = BalanceEffect.NoEffect, ProjectId = 2 },
@@ -148,8 +148,8 @@
                                 var holidayBalances = new System.Collections.Generic.List<holidaybalance>
                                     {
                                     // internal activities
-                                    new HolidayBalance { Id = 1, Period = "2016", PayedHolidayBalance = 20, UnPayedHolidayBalance = 0 },
-                                    new HolidayBalance { Id = 2, Period = "2016", PayedHolidayBalance = 25, UnPayedHolidayBalance = 0 }
+                                    new HolidayBalance { Id = 1, Period = "2016", PaidHolidayBalance = 20, UnpaidHolidayBalance = 0 },
+                                    new HolidayBalance { Id = 2, Period = "2016", PaidHolidayBalance = 25, UnpaidHolidayBalance = 0 }
                                     };
 
                                     holidayBalances.ForEach(employee => context.HolidayBalance.AddOrUpdate(holidayBalances));

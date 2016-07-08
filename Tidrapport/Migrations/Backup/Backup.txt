@@ -113,8 +113,8 @@
                     new Activity { Name = "Uttag Enkel övertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime2, ProjectId = 1 },
                     new Activity { Name = "Uttag Kvalificerad övertid", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromOvertime3, ProjectId = 1 },
                     new Activity { Name = "Uttag Sparad semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromSavedHolidays, ProjectId = 1 },
-                    new Activity { Name = "Uttag Betald semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromPayedHolidays, ProjectId = 1 },
-                    new Activity { Name = "Uttag Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.ReomveFromUnpayedHolidays, ProjectId = 1 },
+                    new Activity { Name = "Uttag Betald semester", IsActive = true, BalanceEffect = BalanceEffect.RemoveFromPaidHolidays, ProjectId = 1 },
+                    new Activity { Name = "Uttag Obetald semester", IsActive = true, BalanceEffect = BalanceEffect.ReomveFromUnpaidHolidays, ProjectId = 1 },
 
                    // Project template activities
                     new Activity { Name = "Mertid", IsActive = true, BalanceEffect = BalanceEffect.AddOnOvertime1, ProjectId = 2 },
@@ -193,9 +193,9 @@
             {
                 var holidayBalancePeriods = new System.Collections.Generic.List<HolidayBalancePeriod>
                 {
-                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 20, UnPayedHolidayBalance = 0, EmployeeId = 1 },
-                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 25, UnPayedHolidayBalance = 0, EmployeeId = 2 },
-                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PayedHolidayBalance = 10, UnPayedHolidayBalance = 15, EmployeeId = 3 }   
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PaidHolidayBalance = 20, UnpaidHolidayBalance = 0, EmployeeId = 1 },
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PaidHolidayBalance = 25, UnpaidHolidayBalance = 0, EmployeeId = 2 },
+                    new HolidayBalancePeriod { ValidFrom = new DateTime(2016, 1, 1), ValidTo = new DateTime(2016, 12, 31), PaidHolidayBalance = 10, UnpaidHolidayBalance = 15, EmployeeId = 3 }   
                 };
 
                 holidayBalancePeriods.ForEach(holidayBalance => context.HolidayBalancePeriods.AddOrUpdate(holidayBalance));

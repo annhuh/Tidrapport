@@ -57,9 +57,9 @@ namespace Tidrapport.Controllers
 
             int employeeId = int.Parse(id);
 
-            var projects = repository.GetProjectsAndActivitiesForEmployee(employeeId);
+            //var projects = repository.GetActiveProjectsAndActivitiesForEmployee(employeeId);
 
-            ViewBag.ActivityId = new SelectList(projects, "Id", "Name");
+            //ViewBag.ActivityId = new SelectList(projects, "Id", "Name");
             ViewBag.EmployeeId = employeeId;            
             
             return View();
@@ -79,9 +79,9 @@ namespace Tidrapport.Controllers
                 return RedirectToAction("Index");
             }
 
-            var activityList = repository.GetProjectsAndActivitiesForEmployee(timeReportTemplate.EmployeeId);
+            //var activityList = repository.GetActiveProjectsAndActivitiesForEmployee(timeReportTemplate.EmployeeId);
 
-            ViewBag.ActivityId = new SelectList(activityList, "Id", "Name", timeReportTemplate.ActivityId);
+            //ViewBag.ActivityId = new SelectList(activityList, "Id", "Name", timeReportTemplate.ActivityId);
             ViewBag.EmployeeId = timeReportTemplate.EmployeeId;
             return View(timeReportTemplate);
         }

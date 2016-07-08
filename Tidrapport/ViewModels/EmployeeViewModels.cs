@@ -145,10 +145,10 @@ namespace Tidrapport.ViewModels
         //public DateTime HolidayBalanceValidTo { get; set; }
 
         //[Display(Name = "Betalda semesterdagar")]
-        //public int PayedHolidayBalance { get; set; }
+        //public int PaidHolidayBalance { get; set; }
 
         //[Display(Name = "Obetalda semesterdagar")]
-        //public int UnPayedHolidayBalance { get; set; }
+        //public int UnpaidHolidayBalance { get; set; }
 
         // -------------------------------
         // National Holiday Balance Period

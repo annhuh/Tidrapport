@@ -1,14 +1,13 @@
 ﻿@model Tidrapport.Models.UserRoleViewModel
 
 @{
-    ViewBag.Title = "LockOut";
+    ViewBag.Title = "Spärra";
 }
 
-<h2>LockOut</h2>
+<h2>Spärra</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>UserRoleViewModel</h4>
+    <h4>Användare</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -35,13 +34,13 @@
             @Html.DisplayFor(model => model.LockOutEnabled)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.LockedOutEndDate)
-        </dt>
+        </dt>*@
 
-        <dd>
+        @*<dd>
             @Html.DisplayFor(model => model.LockedOutEndDate)
-        </dd>
+        </dd>*@
 
     </dl>
 
@@ -49,8 +48,14 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Blockera" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Bekräfta" class="btn btn-default" /> @*|*@
+            @*@Html.ActionLink("Back to List", "Index")*@
+        </div>
+        <div>
+            <p></p>
+            <a href="@Request.UrlReferrer" class="btn btn-default btn-md-10" title="">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Tillbaka
+            </a>
         </div>
     }
 </div>

@@ -37,7 +37,7 @@ namespace Tidrapport.Controllers
         //    projectEmployees = from ep in projectEmployees    
         //                       orderby ep.Employee.LastName, ep.Employee.FirstName, ep.Project.Name
         //                       select ep;
-                
+
         //    return View(projectEmployees.ToList());
         // }
 
@@ -62,6 +62,16 @@ namespace Tidrapport.Controllers
         // GET: Employees (ProjectEmployees) for a project (id)
         public ActionResult Employees(int id)
         {
+            var project = repository.GetProject(id);
+
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ProjectName = project.Name;
+            ViewBag.ProjectId = project.ProjectId;
+
             var projectEmployees = repository.GetEmployeesAssignedToProject(id);
 
             return View(projectEmployees);
@@ -97,13 +107,18 @@ namespace Tidrapport.Controllers
         //}
 
         // GET: ProjectEmployees/Create
-        // connect an employee (id) to a project
-        public ActionResult Create(int id)
+        // connect a project to an employee
+        public ActionResult ConnectProjectToEmployee(int id)
         {
-            var now = DateTime.Now;
+            var today = DateTime.Today;
 
             int employeeId = id;
             Employee employee = repository.GetEmployee(employeeId);
+            
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
 
             ViewBag.EmployeeName = employee.FullName;
             ViewBag.EmployeeId = employee.EmployeeId;
@@ -112,36 +127,15 @@ namespace Tidrapport.Controllers
             // -------------------------------------------
             var notTemplateNorTerminatedProjects = repository.GetAssignableProjects();
 
-            //var notTemplateNorTerminatedProjects = from project in db.Projects
-            //                                       where project.IsTemplate == false
-            //                                       select new
-            //                                       {
-            //                                           ProjectId = project.ProjectId,
-            //                                           Name = project.Name
-            //                                       };
-
-            //&& DateTime. p.EndDate != null?p.EndDate.Value>=DateTime.Today:false);
-
             //get all already assigned projects for the employee
             //--------------------------------------------------
             var assignedProjects = repository.GetProjectsAssignedToEmployee(employeeId);
-
-            //from projectEmployee in db.ProjectEmployees
-            //                  where projectEmployee.EmployeeId == employeeId
-            //                  select new
-            //                  {
-            //                      ProjectId = projectEmployee.ProjectId,
-            //                      Name = ""
-            //                  };
-
 
             // Nota Bene!
             // ----------
             var selectableProjects = notTemplateNorTerminatedProjects
                 .Where(p => !assignedProjects.Any(pe => pe.ProjectId == p.ProjectId));
 
-            //var theSelectList = notTemplateNorTerminatedProjects;
-            
             ViewBag.ProjectId = new SelectList(selectableProjects, "ProjectId", "Name");
 
             return View();
@@ -152,12 +146,12 @@ namespace Tidrapport.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
+        public ActionResult ConnectProjectToEmployee([Bind(Include = "EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
         {
             if (ModelState.IsValid)
             {
                 repository.AddProjectEmployee(projectEmployee);
-                return RedirectToAction("Projects", projectEmployee.EmployeeId);
+                return RedirectToAction("Projects", "ProjectEmployees", new { id = projectEmployee.EmployeeId });
             }
 
             //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", projectEmployee.EmployeeId);
@@ -166,73 +160,76 @@ namespace Tidrapport.Controllers
         }
 
         // GET: ProjectEmployees/Create
-        //public ActionResult CreateEmployee(int id)
-        //{
-        //    // id is the project id
-        //    Employee employee = db.Employees.Find(id);
+        // connect an employee to a project
+        public ActionResult ConnectEmployeeToProject(int id)
+        {
+            var projectId = id;
+            var project = repository.GetProject(projectId);
 
-        //    //ViewBag.EmployeeName = employee.FullName;
-        //    //ViewBag.EmployeeId = employee.EmployeeId;
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                if (project.EndDate != null)
+                {
+                    if (project.EndDate > DateTime.Today)
+                    {
+                        // NOT OK
+                        // Project closed
+                        return View("Projektet " + project.Name + " är avslutat. Öppna igen för att kunna lägga till nya medlemmar. ");
+                    }
+                }
 
-        //    ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN");
 
+                // OK (EndDate == null)
+                var employees = repository.GetAllEmployeesIncludeCompany();
 
-        //    //  TBD
-        //    //var projects = db.Projects;
-        //    //var projectEmployees = db.ProjectEmployees;
-        //    //projectEmployees = from projectEmployee in projectEmployees
-        //    //                   where projectEmployee. == EmployeeId != id
+                var members = repository.GetEmployeesAssignedToProject(projectId);
 
+                // Nota Bene!
+                // ----------
+                var selectableEmployees = employees
+                    .Where(e => !members.Any(pe => pe.EmployeeId == e.EmployeeId))
+                    //.
+                    //.Select(e => new SelectListItem
+                    //{
+                    //    Value = e.EmployeeId.ToString(),
+                    //    Text = e.FullName
+                    //})
+                    .ToList();
 
-        //    //projects = from project in projects
-        //    //           where project.IsTemplate == false && project.EndDate == null && project.ProjectId 
-        //    //               !in (
-        //    //           orderby project.Project.Name
-        //    //           select project;
-        //    //????????????????????????????????????????????????????????????????
+                ViewBag.ProjectName = project.Name;
+                ViewBag.ProjectId = project.ProjectId;
 
-        //    ViewBag.ProjectId = new SelectList(db.Projects, "Project", "Name");
+                ViewBag.EmployeeId = new SelectList(selectableEmployees.ToList(), "EmployeeId", "FullName");
 
-        //    return View();
-        //}
+                return View();
+                
+            }
+        }
 
-        // POST: ProjectEmployees/CreateEmployee
+        // POST: ProjectEmployees/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CreateEmployee([Bind(Include = "Id,EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        int employeeId = projectEmployee.EmployeeId;
-        //        db.ProjectEmployees.Add(projectEmployee);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index", new { id = employeeId });
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConnectEmployeeToProject([Bind(Include = "EmployeeId,ProjectId")] ProjectEmployee projectEmployee)
+        {
+            var ProjectId = projectEmployee.ProjectId;
 
-        //    //ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", projectEmployee.EmployeeId);
-        //    //ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", projectEmployee.ProjectId);
-        //    return View(projectEmployee);
-        //}
+            if (ModelState.IsValid)
+            {
+                repository.AddProjectEmployee(projectEmployee);
+                return RedirectToAction("Employees", "ProjectEmployees", new { id = projectEmployee.ProjectId } );
+            }
 
-        // GET: ProjectEmployees/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ProjectEmployee projectEmployee = db.ProjectEmployees.Find(id);
-        //    if (projectEmployee == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.EmployeeId = new SelectList(db.Employees, "EmployeeId", "SSN", projectEmployee.EmployeeId);
-        //    ViewBag.ProjectId = new SelectList(db.Projects, "ProjectId", "Number", projectEmployee.ProjectId);
-        //    return View(projectEmployee);
-        //}
+            // redirect to another place????
+            return View(projectEmployee);
+        }
 
+ 
         // POST: ProjectEmployees/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -272,9 +269,13 @@ namespace Tidrapport.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var projectEmployee = repository.GetProjectEmployee(id);
+
             repository.DeleteProjectEmployee(id);
 
-            return RedirectToAction("Index", new { id = id });
+            //return RedirectToAction("Index", new { id = projectEmployee.ProjectId });
+            return Redirect(Request.UrlReferrer.ToString());
+
         }
 
         protected override void Dispose(bool disposing)

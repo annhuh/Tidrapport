@@ -34,12 +34,23 @@ namespace Tidrapport.Controllers
             
             if (id != null)
             {
+                var customer = repository.GetCustomer((int)id);
+
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
+
                 var projects = repository.GetAllProjectsForCustomer((int)id);
+
+                ViewBag.CustomerName = customer.Name;
 
                 return View(projects);
             }
             else {
+                
                 var projects = repository.GetAllProjects();
+                ViewBag.CustomerName = "*";
 
                 return View(projects);
             }
@@ -116,9 +127,11 @@ namespace Tidrapport.Controllers
                 return HttpNotFound();
             }
 
-            var customers = repository.GetAllCustomers();
+            //var customer = repository.GetCustomer(project.CustomerId);
+            //var customers = new List<Customer>();
+            //customers.Add(customer);
 
-            ViewBag.CustomerId = new SelectList(customers, "CustomerId", "Name", project.CustomerId);
+            //ViewBag.CustomerId = customer.CustomerId; 
 
             return View(project);
         }
@@ -133,7 +146,7 @@ namespace Tidrapport.Controllers
             if (ModelState.IsValid)
             {
                 repository.UpdateProject(project);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", project.CustomerId);
             }
 
             var customers = repository.GetAllCustomers();
